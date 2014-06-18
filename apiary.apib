@@ -260,6 +260,11 @@ Product is an active item available to your customer.
 </TR>
 </TABLE>
 
+
+
+##List of all the products[/products?key={token}]
+### List of all products [GET]
+
 Call:
 http://api2.freshrealm.co/products?key=myaccesstoken
 
@@ -293,7 +298,8 @@ Ouput:
             etc.
 }            
 
-## Retrieve details for individual product [/products]
+## Retrieve details for individual product [/products/productsId/key={token}]
+### Details for individual products
 
 Call:http://api2.freshrealm.co/products/productId/key=myaccesstoken
 
@@ -374,8 +380,8 @@ Ouput:
 }
 
 
-## Retrieve id, costs, prices [/products/productId/key={token}&fields=[{id},{costs},{prices}
-### Get retrieve id, costs and prices 
+## Retrieve id, costs, prices [/products/productId/key={token}&fields=[{id},{costs},{prices}]
+### Get retrieve id, costs and prices [GET]
 Call:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","costs","prices"]
 
