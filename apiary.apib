@@ -728,14 +728,21 @@ Array
 |-----------------------|:-:|-----------|---------------------------------------|-------------|
 | customerId            |   | int       | `1`                                   | Customer Id |
 | customer              |   | object    | `{...}`                               | Customer object, see `Customer`. |
-| shoppingCart          | * | array     |           |
-| totalPrice            |   | string    | something | Optional. Needed for FreshRealm to provide invoice in shipping container |
-| salesTax              |   | string    | something | Optional. Needed for FreshRealm to provide invoice in shipping container |
-| totalShipping         |   | string    | something | Optional. Needed for FreshRealm to provide invoice in shipping container |
-| deliveryDate          |   | string    | something | Optional for orders not on the earliest delivery date |
-| specialInstructions   |   | string    | something | Optional |
+| shoppingCart          | * | array     | `[...]`                               | See below |
+| totalPrice            |   | string    | `20.98` | Optional. Needed for FreshRealm to provide invoice in shipping container |
+| salesTax              |   | string    | `0.00` | Optional. Needed for FreshRealm to provide invoice in shipping container |
+| totalShipping         |   | string    | `5.00` | Optional. Needed for FreshRealm to provide invoice in shipping container |
+| deliveryDate          |   | string    | `06-28-2014` | Optional for orders not on the earliest delivery date |
+| specialInstructions   |   | string    |  | Optional |
 
 #### Shopping Cart Attributes
+
+| field | required  | type      | example                           | description |
+|---------------|:-:|-----------|-----------------------------------|-------------|
+| sku           | * | string    | `111111`                          | Product SKU |
+| itemId        | * | int       | `1`                               | FreshRealm Item ID |
+| qty           | * | int       | `1`                               | Quantity |
+| itemPrice     |   | string    | `9.99`                            | Optional. Item Price |
 
 ### Place an order [POST]
 
@@ -777,8 +784,8 @@ Array
                 "totalPrice": "20.98",
                 "salesTax": "0",
                 "totalShipping": "5.00",
-                "deliveryDate": "06/14/2014",
-                "specialInstructions": "Be careful"
+                "deliveryDate": "06-14-2014",
+                "specialInstructions": ""
             }
 
 + Response 200 (application/json)
