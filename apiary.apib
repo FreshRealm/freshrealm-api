@@ -724,10 +724,16 @@ Array
 
 ### Attributes
 
-| field         | required | type | example                                | description |
-|---------------|:-:|-------------|----------------------------------------|-------------|
-| customerId    |   | int   | `1`                       | Customer Id |
-| customer      |   | object      | `{...}`           | Customer object, see `Customer`. |
+| field          | required | type      | example                               | description |
+|-----------------------|:-:|-----------|---------------------------------------|-------------|
+| customerId            |   | int       | `1`                                   | Customer Id |
+| customer              |   | object    | `{...}`                               | Customer object, see `Customer`. |
+| shoppingCart          | * | array     |           |
+| totalPrice            |   | string    | something | Optional. Needed for FreshRealm to provide invoice in shipping container |
+| salesTax              |   | string    | something | Optional. Needed for FreshRealm to provide invoice in shipping container |
+| totalShipping         |   | string    | something | Optional. Needed for FreshRealm to provide invoice in shipping container |
+| deliveryDate          |   | string    | something | Optional for orders not on the earliest delivery date |
+| specialInstructions   |   | string    | something | Optional |
 
 ### Place an order [POST]
 
