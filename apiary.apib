@@ -719,21 +719,15 @@ Array
 
 
 # Group Orders
-2.1 Place Order
-Use Case Scenario:  This call is used to place the order with FreshRealm after the customer has placed the order on your website.
 
 ## Orders Collection [/orders]
 
-### Source Fields
+### Attributes
 
-| field      | required | type | example                                | description |
-|------------|:-:|-------------|----------------------------------------|-------------|
-| name       | * | string      | `average-lead-time-frontend`           | Unique name for machines, used as reference key and for url usage. |
-| title      | * | string      | `Average Lead Time Frontend`           | Title for humans. |
-| sourcetype | * | string      | `team-avgLeadTime`                     | Source type identificator. |
-| groups     |   | list        | `["engagement-analytics", "builder"]`  | List of groups where entity is member. |
-| options    |   | object      | `{ "team": 21926 }`                    | Addition options for sourcetype. |
-| data       |   | list        | `[70.3, 31.8]`                         | Actual data held by Source. |
+| field         | required | type | example                                | description |
+|---------------|:-:|-------------|----------------------------------------|-------------|
+| customerId    |   | int   | `1`                       | Customer Id |
+| customer      |   | object      | `{...}`           | Customer object, see `Customer`. |
 
 ### Place an order [POST]
 
