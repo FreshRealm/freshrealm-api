@@ -7,7 +7,7 @@ This document describes the calls needed to FreshRealm’s API operations.  The 
 
 # General Information
 Authentication
-FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your ‘secret code’ that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.  
+FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your ‘secret code’ that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.
 
 # Output Format and Structure
 The REST API supports the response to be in JSON format. The response has the following structure:
@@ -29,7 +29,7 @@ Code is one of the following standard HTTP status codes:
 Timestamp is UNIX timestamp of the request in UTC format.
 Data contains attributes of a single resource or array of resources.
 
-# Service Endpoints 
+# Service Endpoints
 An endpoint provides the URL of the server that handles your request.  The API endpoint for all requests in this document is as follows:
 http://api2.freshrealm.co/
 
@@ -39,13 +39,13 @@ http://api2.freshrealm.co/orders?key=myaccesstoken
 
 A key is a required attribute for each call. See the authentication diagram at the bottom of this document for more information.
 Request specific fields
-For performance reasons, FreshRealm recommends retrieving the minimum amount of fields.  In addition, not all fields are retrieved by default, so additional fields may be requested (details of the attributes of the resources are described in the Resource Description section).  To retrieve less (or more) fields use fields attribute in the GET request in JSON format.  
+For performance reasons, FreshRealm recommends retrieving the minimum amount of fields.  In addition, not all fields are retrieved by default, so additional fields may be requested (details of the attributes of the resources are described in the Resource Description section).  To retrieve less (or more) fields use fields attribute in the GET request in JSON format.
 http://api2.freshrealm.co/orders?fields=[‘totalPrice’]
 
 To obtain multiple fields, separate the fields by commas, such as below:
 http://api2.freshrealm.co/products/1918?fields=["id","costs","prices”]
 
-Some calls retrieve nested arrays.  When this is the case you must use the key of the array to retrieve a subset of the fields.  For example to retrieve customer information for order 678 (e.g. email, phone...) you could use this call:  
+Some calls retrieve nested arrays.  When this is the case you must use the key of the array to retrieve a subset of the fields.  For example to retrieve customer information for order 678 (e.g. email, phone...) you could use this call:
 http://api2.freshrealm.co/orders/678?fields=[‘customer’]
 
 # Limit and Offset
@@ -67,10 +67,10 @@ http://api2.freshrealm.co/orders?timestamp=1367975121
 
 ### Object - Identifier - Object Pattern
 The FreshRealm RESTful API uses best practices including the object, identifier, object pattern.  For example, to get the orders from customer 4412, you would use this operation:
-http://api2.freshrealm.co/customers/4412/orders/ 
+http://api2.freshrealm.co/customers/4412/orders/
 
-# Group Products 
-Use Case Scenario: 
+# Group Products
+Use Case Scenario:
 This operation can be used for testing purposes and also to get the IDs of products that you can submit in the ‘Place Order’ operation. See the ‘Products ‘  resource table for more information.
 HTTP Method Used:GET
 Url:http://api2.freshrealm.co/products?key=myaccesstoken
@@ -291,7 +291,7 @@ Ouput:
 
             [1] => Array
             etc.
-}            
+}
 
 ## Retrieve details for individual product [/products]
 
@@ -299,7 +299,7 @@ Call:http://api2.freshrealm.co/products/productId/key=myaccesstoken
 
 Input:none
 
-Ouput: 
+Ouput:
 {Array
 (
     [code] => 200
@@ -375,7 +375,7 @@ Ouput:
 
 
 ## Retrieve id, costs, prices [/products/productId/key={token}&fields=[{id},{costs},{prices}
-### Get retrieve id, costs and prices 
+### Get retrieve id, costs and prices
 Call:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","costs","prices"]
 
@@ -473,7 +473,7 @@ Call examples:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter={"gtin":"test_fixture_item_16"}
 
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter=[{"field":"gtin","value":"test_fixture_item_16","operator":"like"}]
-Note: available operators are: 
+Note: available operators are:
 in, not in, like, =, <, >, <=, >=, !=
 
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter=[{"field":"gtin","value":"test_fixture_item_16"}]
@@ -498,7 +498,7 @@ Input:none
                     [width] => 4.44
                     [height] => 5.44
                     [length] => 5.55
-                    [minFreshrealmCost] => 3.33 
+                    [minFreshrealmCost] => 3.33
                     [avgFreshrealmCost] => 3.44
                     [maxFreshrealmCost] => 3.55
                     [name] => Item 16
@@ -541,7 +541,7 @@ Array
 }
 
 ## Price by zipcode [/products/productId/key={token}&zip={zipcode}&fields=[{id},{name},{price}]
-### Price by Zipcode 
+### Price by Zipcode
 
 Call:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&zip=93001&fields=["id","name","price"]
@@ -727,16 +727,16 @@ Array
                 )
 
             [1] => Array( etc.)
-            
+
 }
 
 
 # Group Orders
 
 ## Place An Order [/orders]
-To create an order, you must pass either a `customerId` or a `customer` JSON object (see `Customer`).
+To create an order, you test must pass either a `customerId` or a `customer` JSON object (see `Customer`).
 If neither is provided, an error will be thrown. If both are provided, `customerId` takes precedence
-over customer array. If no customer id is provided, the FreshRealm API looks up the customer by 
+over customer array. If no customer id is provided, the FreshRealm API looks up the customer by
 email address and phone number. New customers are created on the fly.
 
 ### Attributes
@@ -762,7 +762,7 @@ email address and phone number. New customers are created on the fly.
 ### Place An Order [POST]
 
 + Request (application/json)
-    
+
     + Body
 
             {
@@ -848,9 +848,9 @@ Retrieve all the latest orders (default limit is 100 results)
 + Parameters
     + token (required, string)
     + limit (optional, number, `5`)
-    
+
 + Response 200 (application/json)
-    
+
         {
             "code": 200,
             "timestamp": 1377021331
@@ -925,9 +925,9 @@ Retrieve all the latest orders for a given `Customer ID` (default limit is 100 r
     + customerId (required, number, `1001`)
     + token (required, string)
     + limit (optional, number, `5`)
-    
+
 + Response 200 (application/json)
-    
+
         {
             "code": 200,
             "timestamp": 1377021331
@@ -1003,7 +1003,7 @@ Retrieve all the latest orders for a given `Customer ID` (default limit is 100 r
     + token (required, string)
 
 + Response 200 (application/json)
-        
+
         {
             "code": 200,
             "timestamp": 1402706999
@@ -1058,7 +1058,7 @@ The input `id` must match the `orderId` in the URL.
         {
             "id": 109
         }
-    
+
 + Response 200 (application/json)
 
         {
@@ -1090,14 +1090,14 @@ Note: either customerId or customer array are required. If neither is provided, 
 shoppingCart [required] - array of arrays where each sub-array has the following format:
 sku
 itemId
-qty 
+qty
 itemPrice (optional)
 
 totalPrice (optional and needed for FreshRealm to provide invoice in shipping container)
 salesTax  (optional and needed for FreshRealm to provide invoice in shipping container)
 totalShipping  (optional and needed for FreshRealm to provide invoice in shipping container)
 deliveryDate (optional for orders not on the earliest delivery date)
-specialInstructions (optional as will not always be provided) 
+specialInstructions (optional as will not always be provided)
 
 
 Note: either itemId or sku must be provided. If both are provided, we first search for the item by itemId. The parameter ‘qty’  represents the quantity of items bought and is also required. The parameter ‘itemPrice’ is optional.
@@ -1253,19 +1253,19 @@ Url:http://api2.freshrealm.co/orders?key=myaccesstoken
 <TD>customer</TD>
 <TD><BR></TD>
 <TD>X</TD>
-<TD>Customer’s information: includes array consisting of first name, last name, email, phone, external customer id and Address array</TD>    
+<TD>Customer’s information: includes array consisting of first name, last name, email, phone, external customer id and Address array</TD>
 
 </TABLE>
 
 ### Get All Orders
-Use Case Scenario: 
+Use Case Scenario:
 Retrieve a list of the latest orders. This operation can be used to get the order id, which is needed for the order details call and the cancel order call. See ‘Orders ‘  resource table for more information.
 HTTP Method : GET
 Url:http://api2.freshrealm.co/orders?key=myaccesstoken
 
 
 ### Get Order Details
-Use Case Scenario:   This call is used to find the status of the order and get the tracking number.  For example, if a customer clicks on a page on your website, you can make an on-the-fly request for the tracking number and/or order status using this call. You can also use it to obtain orders for a specific customer. 
+Use Case Scenario:   This call is used to find the status of the order and get the tracking number.  For example, if a customer clicks on a page on your website, you can make an on-the-fly request for the tracking number and/or order status using this call. You can also use it to obtain orders for a specific customer.
 
 Input:
 orderId (to obtain details of the individual order), or
@@ -1358,16 +1358,16 @@ Array
             [status] => PENDING
             [totalCost] => 84.604
             [shippingAndHandling] => 47.24
-            [specialInstructions] => 
-            [codropId] => 
+            [specialInstructions] =>
+            [codropId] =>
             [createTime] => 2013-08-20 17:10:59
             [updateTime] => 2013-08-20 17:10:59
             [deliveryDate] => 2013-08-22
             [orderNumber] => 54u34702
             [trackingInfo] => Array
                 (
-                    [carrier] => 
-                    [trackingNumThere] => 
+                    [carrier] =>
+                    [trackingNumThere] =>
                 )
 
             [shippingAddress] => Array
@@ -1446,22 +1446,22 @@ Array
                     [status] => PENDING
                     [totalCost] => 72.140
                     [shippingAndHandling] => 45.640
-                    [specialInstructions] => 
-                    [codropId] => 
+                    [specialInstructions] =>
+                    [codropId] =>
                     [createTime] => 2013-08-20 17:47:37
                     [updateTime] => 2013-08-20 17:47:37
                     [deliveryDate] => 2013-08-22
-                    [orderNumber] => 
+                    [orderNumber] =>
                     [trackingInfo] => Array
                         (
-                            [carrier] => 
-                            [trackingNumThere] => 
+                            [carrier] =>
+                            [trackingNumThere] =>
                         )
 
                     [shippingAddress] => Array
                         (
                             [streetAndNumber] => 200 E Main St
-                            [aptSuite] => 
+                            [aptSuite] =>
                             [city] => Ventura
                             [state] => CA
                             [zipcode] => 93001
@@ -1473,13 +1473,13 @@ Array
                             [lastName] => Smith
                             [phone] => 8051234567
                             [email] => numberonebob@bob.com
-                            [customerNumber] => 
+                            [customerNumber] =>
                         )
 
                 )
 
             [1] => Array( etc.)
-            
+
 }
 
 ### Retrieve all orders for the customer with an id 1001:
@@ -1500,22 +1500,22 @@ Array
                     [status] => PENDING
                     [totalCost] => 72.140
                     [shippingAndHandling] => 45.640
-                    [specialInstructions] => 
-                    [codropId] => 
+                    [specialInstructions] =>
+                    [codropId] =>
                     [createTime] => 2013-08-20 17:47:37
                     [updateTime] => 2013-08-20 17:47:37
                     [deliveryDate] => 2013-08-22
-                    [orderNumber] => 
+                    [orderNumber] =>
                     [trackingInfo] => Array
                         (
-                            [carrier] => 
-                            [trackingNumThere] => 
+                            [carrier] =>
+                            [trackingNumThere] =>
                         )
 
                     [shippingAddress] => Array
                         (
                             [streetAndNumber] => 200 E Main St
-                            [aptSuite] => 
+                            [aptSuite] =>
                             [city] => Ventura
                             [state] => CA
                             [zipcode] => 93001
@@ -1527,7 +1527,7 @@ Array
                             [lastName] => Smith
                             [phone] => 8051234567
                             [email] => numberonebob@bob.com
-                            [customerNumber] => 
+                            [customerNumber] =>
                         )
                 )
         {[1] => Array( etc...
@@ -1557,22 +1557,22 @@ Array
             [status] => PENDING
             [totalCost] => 84.604
             [shippingAndHandling] => 47.240
-            [specialInstructions] => 
-            [codropId] => 
+            [specialInstructions] =>
+            [codropId] =>
             [createTime] => 2013-08-20 17:37:21
             [updateTime] => 2013-08-20 17:37:21
             [deliveryDate] => 2013-08-22
             [orderNumber] => 555
             [trackingInfo] => Array
                 (
-                    [carrier] => 
-                    [trackingNumThere] => 
+                    [carrier] =>
+                    [trackingNumThere] =>
                 )
 
             [shippingAddress] => Array
                 (
                     [streetAndNumber] => 200 E Main St
-                    [aptSuite] => 
+                    [aptSuite] =>
                     [city] => Ventura
                     [state] => CA
                     [zipcode] => 93001
@@ -1584,7 +1584,7 @@ Array
                     [lastName] => Smith
                     [phone] => 8051234567
                     [email] => numberone@one.com
-                    [customerNumber] => 
+                    [customerNumber] =>
                 )
 
             [shoppingCart] => Array
@@ -1617,12 +1617,12 @@ Array
 )
 
 
-### Cancel Order 
+### Cancel Order
 This call uses PUT method.
 
 Call:http://api2.freshrealm.co/cancelOrder/orderId?key=myaccesstoken
 
-Sample input: 
+Sample input:
 Array
 (
     [id] => 230
@@ -1644,7 +1644,7 @@ Array
 )
 
 #Group Customers
-Use Case Scenario: 
+Use Case Scenario:
 This operation can be used to find a customer and get all the orders from the customer.  Get customers will give you the ids for those requested customers to allow you to then get orders for them.  See the ‘Customers ‘  resource table for more information.
 HTTP Method: GET
 Url:http://api2.freshrealm.co/customers?key=myaccesstoken
@@ -1717,19 +1717,19 @@ Call:http://api2.freshrealm.co/customers/?key=myaccesstoken
 
 Input:None
 {
-Output: 
+Output:
 Array
 (
     [code] => 200
     [timestamp] => 1377021942
-    [data] => Array (        
+    [data] => Array (
         [0] => Array(
             [id] => 228
             [firstName] => Bob
             [lastName] => Smith
             [email] => numberonebob@bob.com
             [phone] => 8051234567
-            [customerId] => 
+            [customerId] =>
         )
             [1]=>Array(etc.
 )}
@@ -1774,7 +1774,7 @@ Url: http://api2.freshrealm.co/addresses?key=myaccesstoken
 </TABLE>
 
 # Group Categories
-Use Case Scenario: 
+Use Case Scenario:
 This operation can be used to find available categories to which products belong.  See the ‘Categories’  resource table for more information.
 
 HTTP Method: GET
@@ -1843,7 +1843,7 @@ http://api2.freshrealm.co/categories/categoryId?key=myaccesstoken
 
 Input:None
 
-Output: 
+Output:
 Retrieve all categories
 {
 Array
@@ -1884,7 +1884,7 @@ Array
     [data] => Array
         (
             [id] => 293
-            [parentId] => 
+            [parentId] =>
             [name] => Category 1
             [published] => 1
         )
@@ -1896,11 +1896,11 @@ Array
 Use Case Scenario:
 This operation can be used to retrieve a list of all the transactions.  Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.  See the ‘transactions ‘  resource table for more information.
 
-HTTP Method: GET 
+HTTP Method: GET
 Url: http://api2.freshrealm.co/transactions?key=myaccesstoken
 
 #Group Codrops
-Use Case Scenario: 
+Use Case Scenario:
 To obtain information about codrop, request individual codrop information, get list of customers belonging to a codrop, or create a codrop.
 
 Codrops allow multiple customers to have food delivered to one location. Codrops can be public or private. Codrops could be open to all or by invite only. FreshRealm API allows retrieving information about all codrops or individual codrop, as well as creation of a new codrop.
@@ -2039,7 +2039,7 @@ Array
             [notes] => public drop
             [active] => 1
             [timestamp] => 2013-08-20 19:38:23
-            [inviteRequired] => 
+            [inviteRequired] =>
             [public] => 1
             [chargePerOrder] => 0.00
         )
@@ -2056,8 +2056,8 @@ Input:
 Array
 (
     [name] => API_TestCodrop
-    [inviteRequired] => 
-    [active] => 
+    [inviteRequired] =>
+    [active] =>
     [notes] => Test codrop created through API
     [addressFields] => Array
         (
@@ -2082,9 +2082,9 @@ Array
             [id] => 79
             [name] => API_TestCodrop
             [notes] => Test codrop created through API
-            [active] => 
+            [active] =>
             [timestamp] => 2013-08-20 20:10:05
-            [inviteRequired] => 
+            [inviteRequired] =>
             [public] => 0
             [chargePerOrder] => 0.00
         )
@@ -2129,9 +2129,9 @@ Array
 
 #Group Shipping
 
-###Get Shipping Details 
+###Get Shipping Details
 ***Use Case Scenario:***
-This operation is used at the checkout page to get the shipping cost and earliest delivery date based on the items and address that the food is being delivered to without placing the actual order.  Input and Output is the same as the ‘Place Order ‘call below. 
+This operation is used at the checkout page to get the shipping cost and earliest delivery date based on the items and address that the food is being delivered to without placing the actual order.  Input and Output is the same as the ‘Place Order ‘call below.
 
 HTTP Method: POST
 Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
@@ -2199,7 +2199,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 </TABLE>
 
 
-###Download Shipments Information 
+###Download Shipments Information
 Method:GET
 
 Call:
@@ -2302,14 +2302,14 @@ Array
 
 )
 
-###Get Shipping Details 
+###Get Shipping Details
 
 Call:
 http://api2.freshrealm.co/getShippingDetails/key=myaccesstoken
 
 
 Input:
-$inputData = array( 
+$inputData = array(
     [customer] => Array
         (
             [firstName] => Joe
