@@ -372,7 +372,10 @@ Ouput:
         )
 )
 }
-### Retrieve id, costs, prices
+
+
+## Retrieve id, costs, prices [/products/productId/key={token}&fields=[{id},{costs},{prices}
+### Get retrieve id, costs and prices 
 Call:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","costs","prices"]
 
@@ -459,7 +462,12 @@ Array
         )
 )
 }
-### Filter example|filter by gtin
+## Filter example [/products/productId/key={token}&filter={"gtin":"test_fixture_item_16"}
+## Filter example [/products/productId/key={token}&filter={"field":"gtin":"test_fixture_item_16"}
+## Filter example [/products/productId/key={token}&filter={"field":"gtin":"test_fixture_item_16","operator:"like"}]
+
+
+### Filter by gtin [GET]
 
 Call examples:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter={"gtin":"test_fixture_item_16"}
@@ -499,7 +507,8 @@ Input:none
 )
 }
 
-### Use limit and offset
+## Use limit and offset [products/productId/key={token}&limit={limit}&offset={offset}
+### Use limit & offset [POST]
 Call:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&limit=1&offset=1
 
@@ -531,7 +540,7 @@ Array
 )
 }
 
-
+## Price by zipcode [/products/productId/key={token}&zip={zipcode}&fields=[{id},{name},{price}]
 ### Price by Zipcode 
 
 Call:
@@ -553,12 +562,14 @@ Array
 )
 
 
-### Get a list of ingredients
+## Get a list of ingredients [/products/productId/key={token}&fields[{id},{ingredients}]
+### Obtain a list of ingredents [GET]
+
 Call:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","ingredients"]
 
 Input:none
-{
+
 Ouput:
 Array
 (
@@ -579,8 +590,9 @@ Array
                 )
         )
 )
-}
 
+
+## Get Category for the product [/products/productId/categories/key={token}]
 ### Retrieve categories to which product belongs
 
 Call:
@@ -606,7 +618,8 @@ Array
 )
 }
 
-### Get nutrition information
+## Nutritional Information [products/key={token}&fields=[{id},{gtin},{nutrition},{ingredients}]
+### Get nutrition information [/GET]
 Call:
 http://api2.freshrealm.co/products/key=myaccesstoken&fields=["id","gtin","nutrition","ingredients"]
 Input:none
@@ -721,12 +734,9 @@ Array
 # Group Orders
 
 ## Place An Order [/orders]
-To create an order, you must pass either a `customerId` or a `customer` JSON object (see `Customer`).
-If neither is provided, an error will be thrown. If both are provided, `customerId` takes precedence
-over customer array. If no customer id is provided, the FreshRealm API looks up the customer by 
-email address and phone number. New customers are created on the fly.
 
 ### Attributes
+
 | field          | required | type      | example                               | description |
 |-----------------------|:-:|-----------|---------------------------------------|-------------|
 | customerId            |   | int       | `1`                                   | Customer Id |
@@ -739,6 +749,7 @@ email address and phone number. New customers are created on the fly.
 | specialInstructions   |   | string    |  | Optional |
 
 #### Shopping Cart Attributes
+
 | field | required  | type      | example                           | description |
 |---------------|:-:|-----------|-----------------------------------|-------------|
 | sku           | * | string    | `111111`                          | Product SKU |
@@ -749,6 +760,11 @@ email address and phone number. New customers are created on the fly.
 ### Place An Order [POST]
 
 + Request (application/json)
+
+    To create an order, you must pass either a `customerId` or a `customer` JSON object (see customer).
+    If neither is provided, an error will be thrown. If both are provided, customerId takes precedence
+    over customer array. If no customer id is provided, the FreshRealm API looks up the customer by 
+    email address and phone number. New customers are created on the fly.
     
     + Body
 
@@ -827,164 +843,9 @@ email address and phone number. New customers are created on the fly.
             }
         }
 
-## Get All Orders [/orders?key={token}&limit={limit}]
+## Single Order [/order/{orderId}?key={token}]
 
-Retrieve all the latest orders (default limit is 100 results)
-
-### Get All Orders [GET]
-+ Parameters
-    + token (required, string)
-    + limit (optional, number, `5`)
-    
-+ Response 200 (application/json)
-    
-        {
-            "code": 200,
-            "timestamp": 1377021331
-            "data": [{
-                "id": "576",
-                "customerId": "228",
-                "status": "PENDING",
-                "totalCost": "72.140",
-                "shippingAndHandling": "45.640",
-                "specialInstructions": "",
-                "codropId": "",
-                "createTime": "2013-08-20 17:47:37",
-                "updateTime": "2013-08-20 17:47:37",
-                "deliveryDate": "2013-08-22",
-                "orderNumber": "",
-                "trackingInfo": {
-                    "carrier":" ",
-                    "trackingNumThere":" "
-                },
-                "shippingAddress": {
-                    "streetAndNumber": "200 E Main St",
-                    "aptSuite": "",
-                    "city": "Ventura",
-                    "state": "CA",
-                    "zipcode": "93001"
-                },
-                "customer": {
-                    "firstName": "Bob",
-                    "lastName": "Smith",
-                    "phone": "8051234567",
-                    "email": "numberonebob@bob.com",
-                    "customerNumber":" "
-                }
-            }, {
-                "id": "576",
-                "customerId": "228",
-                "status": "PENDING",
-                "totalCost": "72.140",
-                "shippingAndHandling": "45.640",
-                "specialInstructions": "",
-                "codropId": "",
-                "createTime": "2013-08-20 17:47:37",
-                "updateTime": "2013-08-20 17:47:37",
-                "deliveryDate": "2013-08-22",
-                "orderNumber": "",
-                "trackingInfo": {
-                    "carrier":" ",
-                    "trackingNumThere":" "
-                },
-                "shippingAddress": {
-                    "streetAndNumber": "200 E Main St",
-                    "aptSuite": "",
-                    "city": "Ventura",
-                    "state": "CA",
-                    "zipcode": "93001"
-                },
-                "customer": {
-                    "firstName": "Bob",
-                    "lastName": "Smith",
-                    "phone": "8051234567",
-                    "email": "numberonebob@bob.com",
-                    "customerNumber":" "
-                }
-            }]
-        }
-
-## Get Orders By Customer [/customers/{customerId}/orders?key={token}&limit={limit}]
-Retrieve all the latest orders for a given `Customer ID` (default limit is 100 results)
-
-### Get Orders By Customer [GET]
-+ Parameters
-    + customerId (required, number, `1001`)
-    + token (required, string)
-    + limit (optional, number, `5`)
-    
-+ Response 200 (application/json)
-    
-        {
-            "code": 200,
-            "timestamp": 1377021331
-            "data": [{
-                "id": "576",
-                "customerId": "228",
-                "status": "PENDING",
-                "totalCost": "72.140",
-                "shippingAndHandling": "45.640",
-                "specialInstructions": "",
-                "codropId": "",
-                "createTime": "2013-08-20 17:47:37",
-                "updateTime": "2013-08-20 17:47:37",
-                "deliveryDate": "2013-08-22",
-                "orderNumber": "",
-                "trackingInfo": {
-                    "carrier":" ",
-                    "trackingNumThere":" "
-                },
-                "shippingAddress": {
-                    "streetAndNumber": "200 E Main St",
-                    "aptSuite": "",
-                    "city": "Ventura",
-                    "state": "CA",
-                    "zipcode": "93001"
-                },
-                "customer": {
-                    "firstName": "Bob",
-                    "lastName": "Smith",
-                    "phone": "8051234567",
-                    "email": "numberonebob@bob.com",
-                    "customerNumber":" "
-                }
-            }, {
-                "id": "576",
-                "customerId": "228",
-                "status": "PENDING",
-                "totalCost": "72.140",
-                "shippingAndHandling": "45.640",
-                "specialInstructions": "",
-                "codropId": "",
-                "createTime": "2013-08-20 17:47:37",
-                "updateTime": "2013-08-20 17:47:37",
-                "deliveryDate": "2013-08-22",
-                "orderNumber": "",
-                "trackingInfo": {
-                    "carrier":" ",
-                    "trackingNumThere":" "
-                },
-                "shippingAddress": {
-                    "streetAndNumber": "200 E Main St",
-                    "aptSuite": "",
-                    "city": "Ventura",
-                    "state": "CA",
-                    "zipcode": "93001"
-                },
-                "customer": {
-                    "firstName": "Bob",
-                    "lastName": "Smith",
-                    "phone": "8051234567",
-                    "email": "numberonebob@bob.com",
-                    "customerNumber":" "
-                }
-            }]
-        }
-
-
-## Get Order Details [/order/{orderId}?key={token}]
-
-### Get Order Details [GET]
+### Get an order [GET]
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
@@ -1032,30 +893,15 @@ Retrieve all the latest orders for a given `Customer ID` (default limit is 100 r
         }
 
 ## Cancel an Order [/cancelOrder/{orderId}?key={token}]
-The input `id` must match the `orderId` in the URL.
 
-### Cancel An Order [PUT]
+### Cancel an order [PUT]
 
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
 
 + Request (application/json)
-
-        {
-            "id": 109
-        }
     
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1377020859,
-            "data": {
-                "id":109,
-                "status": "CANCELLED"
-            }
-        }
 
 
 
