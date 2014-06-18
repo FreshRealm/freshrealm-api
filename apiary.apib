@@ -724,6 +724,20 @@ Use Case Scenario:  This call is used to place the order with FreshRealm after t
 
 ## Orders Collection [/notes]
 ### Place an order [POST]
++ Request (application/json)
+    
+    Data about user being created. With following attributes are:
+
+    + `customerId` (optional) ... Customer ID
+    + `age` (optional) ... age of the user
+
+    + Body
+
+            {
+                 "name": "A name",
+                 "age": 30
+            }
+
 + Response 200 (application/json)
         
         [{
