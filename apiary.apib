@@ -3,19 +3,19 @@ HOST: http://www.api2.freshrealm.co
 
 # Freshrealm REST API 2.0 Documentation
 
-This document describes the calls needed to FreshRealm’s API operations.  The following calls are currently available and ready for testing:
+This document describes the calls needed to FreshRealm’s API operations.
 
 # General Information
-Authentication
-FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your ‘secret code’ that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.
+## Authentication
+FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your "secret code" that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.
 
 # Output Format and Structure
 The REST API supports the response to be in JSON format. The response has the following structure:
-{
+`{
     "code": 200,
     "timestamp": 1367975121,
     "data": {“id”: 5}
-}
+}`
 
 Code is one of the following standard HTTP status codes:
 200 = OK
