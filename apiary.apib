@@ -68,22 +68,24 @@ Retrieving a large list of resources in one request will degrade performance. Us
 # Filter
 Some fields can be used for filtering a list of resources. Filter is a JSON encoded GET attribute that can be defined by a key value pair or as a JSON object with an operator.
 
-### Find customer by email
+### Allowed Operators
+`in`, `not in`, `like`, `=`, `<`, `>`, `<=`, `>=`, `!=`
+
+#### Ex: Find customer by email
 `http://api2.freshrealm.co/customers?filter={‘email’:‘mycustomer@freshrealm.co’}`
 
-### List all orders with a total price higher than $50
+#### Ex: List all orders with a total price higher than $50
 `http://api2.freshrealm.co/orders?filter=[{‘field’:’totalPrice,’operator’:’>’,’value’:’50’}]`
-
-##### Allowed Operators
-`in`, `not in`, `like`, `=`, `<`, `>`, `<=`, `>=`, `!=`
 
 ### Timestamp Filter
 This filter allows retrieval of only records created or modified after this time. For example, it can be used for database synchronization of products between FreshRealm and your shopping cart application. Every request returns a timestamp, which can be used for this filter.
-http://api2.freshrealm.co/orders?timestamp=1367975121
 
-### Object - Identifier - Object Pattern
+`http://api2.freshrealm.co/orders?timestamp=1367975121`
+
+# Object - Identifier - Object Pattern
 The FreshRealm RESTful API uses best practices including the object, identifier, object pattern.  For example, to get the orders from customer 4412, you would use this operation:
-http://api2.freshrealm.co/customers/4412/orders/
+
+`http://api2.freshrealm.co/customers/4412/orders/`
 
 # Group Products
 Use Case Scenario:
