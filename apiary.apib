@@ -1,0 +1,2208 @@
+FORMAT: 1A
+HOST: http://www.api2.freshrealm.co
+
+# Freshrealm REST API 2.0 Documentation
+
+This document describes the calls needed to FreshRealm’s API operations.  The following calls are currently available and ready for testing:
+
+# General Information
+Authentication
+FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your ‘secret code’ that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.  
+
+# Output Format and Structure
+The REST API supports the response to be in JSON format. The response has the following structure:
+{
+    "code": 200,
+    "timestamp": 1367975121,
+    "data": {“id”: 5}
+}
+
+Code is one of the following standard HTTP status codes:
+200 = OK
+400 = Bad Request
+401 = Access Denied
+403 = Token key is not valid
+404 = Resource Not Found
+500 = Internal Server Error
+501 = Not Implemented
+
+Timestamp is UNIX timestamp of the request in UTC format.
+Data contains attributes of a single resource or array of resources.
+
+# Service Endpoints 
+An endpoint provides the URL of the server that handles your request.  The API endpoint for all requests in this document is as follows:
+http://api2.freshrealm.co/
+
+# Example
+In the case where you want to retrieve recent order information, you would use the GET HTTP method.
+http://api2.freshrealm.co/orders?key=myaccesstoken
+
+A key is a required attribute for each call. See the authentication diagram at the bottom of this document for more information.
+Request specific fields
+For performance reasons, FreshRealm recommends retrieving the minimum amount of fields.  In addition, not all fields are retrieved by default, so additional fields may be requested (details of the attributes of the resources are described in the Resource Description section).  To retrieve less (or more) fields use fields attribute in the GET request in JSON format.  
+http://api2.freshrealm.co/orders?fields=[‘totalPrice’]
+
+To obtain multiple fields, separate the fields by commas, such as below:
+http://api2.freshrealm.co/products/1918?fields=["id","costs","prices”]
+
+Some calls retrieve nested arrays.  When this is the case you must use the key of the array to retrieve a subset of the fields.  For example to retrieve customer information for order 678 (e.g. email, phone...) you could use this call:  
+http://api2.freshrealm.co/orders/678?fields=[‘customer’]
+
+# Limit and Offset
+Retrieving a large list of resources in one request will degrade performance. Use limit and offset GET attributes to divide you request into multiple queries. The default value for limit is 100.  The default ordering for the orders output is most recent first, and this level of detail is provided in the documentation for specific operations.  For example, if we want to get the next 50 orders starting from position 150 (150th most recent order).
+http://api2.freshrealm.co/orders?offset=150,limit=50
+
+# Filter
+Some fields can be used for filtering a list of resources. Filter is a JSON encoded GET attribute that can be defined by a key value pair or as a JSON object with an operator.
+http://api2.freshrealm.co/customers?filter={‘email’:‘mycustomer@freshrealm.co’}
+- Find customer by email
+http://api2.freshrealm.co/orders?filter=[{‘field’:’totalPrice,’operator’:’>’,’value’:’50’}]
+ - List all orders with a total price higher than $50
+
+#####Allowed operators: in, not in, like, =, <, >, <=, >=, !=
+
+### Timestamp Filter
+This filter allows retrieval of only records created or modified after this time. For example, it can be used for database synchronization of products between FreshRealm and your shopping cart application. Every request returns a timestamp, which can be used for this filter.
+http://api2.freshrealm.co/orders?timestamp=1367975121
+
+### Object - Identifier - Object Pattern
+The FreshRealm RESTful API uses best practices including the object, identifier, object pattern.  For example, to get the orders from customer 4412, you would use this operation:
+http://api2.freshrealm.co/customers/4412/orders/ 
+
+# Group Products 
+Use Case Scenario: 
+This operation can be used for testing purposes and also to get the IDs of products that you can submit in the ‘Place Order’ operation. See the ‘Products ‘  resource table for more information.
+HTTP Method Used:GET
+Url:http://api2.freshrealm.co/products?key=myaccesstoken
+
+This table describes which attributes are provided by default, and which can be used as a filter.  For specific examples, and to see the data types that are passed, refer to the Example section of this document.
+Product is an active item available to your customer.
+
+<TABLE>
+<TR VALIGN=TOP>
+<TD>Field</TD>
+<TD>Default</TD>
+<TD>Filter</TD>
+<TD>Description</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>id</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>FreshRealm item id</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>sku</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Retailer defined item SKU</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>gtin</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>Global gtin identification number</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>published</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Prepare your shopping cart before publishing the product. Customers should see only published products.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>description</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD><BR></TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>weight</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Item’s weight</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>weightUnit</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Unit of weight used e.g. lb, oz etc</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>width</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>In inches</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>height</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>In inches</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>length</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>In inches</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>minFreshrealmCost</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Minimum FreshRealm Cost</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>avgFreshrealmCost</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Average FreshRealm Cost</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>maxFreshrealmCost</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Maximum FreshRealm Cost</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>name</TD>
+<TD>X</TD>
+<TD><BR></TD>
+<TD>Name of the product - can be customized</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>url</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>URL resource</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>categories</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>List of categories</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>costs</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Product cost</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>prices</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Product Prices</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>ingredients</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>ingredients of the products</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>nutrition</TD>
+<TD>X</TD>
+<TD><BR></TD>
+<TD>Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested</TD>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>imageURL</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Default image url in the full resolution</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>images</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Array of product images. Each image has ‘default’, ‘large’(1024x768), ‘medium’(800x600) and ‘small’(160x120) keys pointing to the image url.</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>price</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Zipcode dependent price function. Zipcode must be provided in order to obtain the result</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>cost</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Zipcode dependent cost function. Zipcode must be provided in order to obtain the result</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>margin</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Zipcode dependent margin function. Zipcode must be provided in order to obtain the result</TD>
+</TR>
+</TABLE>
+
+Call:
+http://api2.freshrealm.co/products?key=myaccesstoken
+
+Input:
+none
+
+Ouput:
+{Array
+(
+    [code] => 200
+    [timestamp] => 1376935398
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 2158
+                    [sku] => XDDWW3
+                    [published] => 1
+                    [weight] => 0.400
+                    [weightUnit] => lb
+                    [width] => 5.000
+                    [height] => 1.000
+                    [length] => 5.000
+                    [minFreshrealmCost] => 2.1
+                    [avgFreshrealmCost] => 2.3
+                    [maxFreshrealmCost] => 2.5
+                    [name] => Item 1
+                )
+
+            [1] => Array
+            etc.
+}            
+
+## Retrieve details for individual product [/products]
+
+Call:http://api2.freshrealm.co/products/productId/key=myaccesstoken
+
+Input:none
+
+Ouput: 
+{Array
+(
+    [code] => 200
+    [timestamp] => 1376936492
+    [data] => Array
+        (
+            [id] => 2158
+            [sku] => ITEM2134
+            [gtin] => gtin_1
+            [published] => 1
+            [description] => Snack Box
+            [weight] => 0.400
+            [weightUnit] => lb
+            [width] => 5.000
+            [height] => 1.000
+            [length] => 5.000
+            [minFreshrealmCost] => 3.22
+            [avgFreshrealmCost] => 3.55
+            [maxFreshrealmCost] => 4.55
+            [nutrition] => Array
+                (
+                    [Calories] => Array
+                        (
+                            [amount] => 193.75
+                            [unit] => KCal
+                        )
+
+                    [Fat] => Array
+                        (
+                            [amount] => 0
+                            [unit] => g
+                        )
+
+                    [Saturated Fat] => Array
+                        (
+                            [amount] => 0.05
+                            [unit] => g
+                        )
+
+                    [Cholesterol] => Array
+                        (
+                            [amount] => 5
+                            [unit] => mg
+                        )
+
+                    [Carbohydrates] => Array
+                        (
+                            [amount] => 44.43
+                            [unit] => g
+                        )
+
+                    [Fiber] => Array
+                        (
+                            [amount] => 4.42
+                            [unit] => g
+                        )
+
+                    [Sugar] => Array
+                        (
+                            [amount] => 32.13
+                            [unit] => g
+                        )
+
+                    [Protein] => Array
+                        (
+                            [amount] => 10.47
+                            [unit] => g
+                        )
+                )
+        )
+)
+}
+### Retrieve id, costs, prices
+Call:
+http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","costs","prices"]
+
+Input:none
+
+##Ouput
+
+Array
+(
+    [code] => 200
+    [timestamp] => 1376936864
+    [data] => Array
+        (
+            [id] => 2188
+            [costs] => Array
+                (
+                    [avg] => 5.23
+                    [min] => 4.55
+                    [max] => 6.03
+                )
+
+            [prices] => Array
+                (
+                    [avg] => 5.53
+                    [min] => 4.96
+                    [max] => 6.76
+                )
+
+        )
+
+)
+
+
+### Retrieve id, imageUrl, url, images
+Call:
+http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","imageUrl","url","images"]
+
+Input:none
+
+{
+Ouput:
+Array
+(
+    [code] => 200
+    [timestamp] => 1376937382
+    [data] => Array
+        (
+            [id] => 2192
+            [url] => api2./products/2192?key=pXUMjWnDRmx5bAIDn8L8NecTGWKcAsa
+            [imageUrl] => http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
+            [images] => Array
+                (
+                    [0] => Array
+                        (
+                            [default] => http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
+                            [large] => http://src1.sencha.io/1024/768/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
+                            [medium] => http://src4.sencha.io/800/600/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
+                            [small] => http://src2.sencha.io/160/120/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
+                        )
+                )
+        )
+)
+}
+
+Retrieve id, margin
+Call: http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","margin"]
+
+Input: none
+{
+Ouput:
+Array
+(
+    [code] => 200
+    [timestamp] => 1376937442
+    [data] => Array
+        (
+            [id] => 2188
+            [margin] => Array
+                (
+                    [type] => default
+                    [value] => 15.00
+                    [unit] => percents
+                )
+        )
+)
+}
+### Filter example|filter by gtin
+
+Call examples:
+http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter={"gtin":"test_fixture_item_16"}
+
+http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter=[{"field":"gtin","value":"test_fixture_item_16","operator":"like"}]
+Note: available operators are: 
+in, not in, like, =, <, >, <=, >=, !=
+
+http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter=[{"field":"gtin","value":"test_fixture_item_16"}]
+
+Input:none
+
+{Ouput
+
+ Array
+(
+    [code] => 200
+    [timestamp] => 1376957888
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 2203
+                    [sku] => RREIIRT
+                    [published] => 1
+                    [weight] => 1.000
+                    [weightUnit] => lb
+                    [width] => 4.44
+                    [height] => 5.44
+                    [length] => 5.55
+                    [minFreshrealmCost] => 3.33 
+                    [avgFreshrealmCost] => 3.44
+                    [maxFreshrealmCost] => 3.55
+                    [name] => Item 16
+                )
+        )
+)
+}
+
+### Use limit and offset
+Call:
+http://api2.freshrealm.co/products/productId/key=myaccesstoken&limit=1&offset=1
+
+Input:none
+{
+Ouput:
+Array
+(
+    [code] => 200
+    [timestamp] => 1376939046
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 2189
+                    [sku] => SKUTOTEST1
+                    [published] => 1
+                    [weight] => 12.000
+                    [weightUnit] => oz
+                    [width] => 4.000
+                    [height] => 1.000
+                    [length] => 3.000
+                    [minFreshrealmCost] => 3.22
+                    [avgFreshrealmCost] => 3.33
+                    [maxFreshrealmCost] => 3.55
+                    [name] => Item 2
+                )
+        )
+)
+}
+
+
+### Price by Zipcode 
+
+Call:
+http://api2.freshrealm.co/products/productId/key=myaccesstoken&zip=93001&fields=["id","name","price"]
+
+Input:none
+
+Ouput:
+Array
+(
+    [code] => 200
+    [timestamp] => 1376939257
+    [data] => Array
+        (
+            [id] => 2189
+            [name] => Item 2
+            [price] => 2.34
+        )
+)
+
+
+### Get a list of ingredients
+Call:
+http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","ingredients"]
+
+Input:none
+{
+Ouput:
+Array
+(
+    [code] => 200
+    [timestamp] => 1376939408
+    [data] => Array
+        (
+            [id] => 2203
+            [ingredients] => Array
+                (
+                    [0] => Array
+                        (
+                            [url] => api2./items/2201?key=FgDqgXUUP7dh38zb2CSCmcyookXnTgM
+                            [id] => 2201
+                            [amount] => 0.5
+                            [unit] => ft
+                        )
+                )
+        )
+)
+}
+
+### Retrieve categories to which product belongs
+
+Call:
+http://api2.freshrealm.co/products/productId/categories/key=myaccesstoken
+
+Input:none
+Ouput:
+
+{
+Array
+(
+    [code] => 200
+    [timestamp] => 1376939873
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 283
+                    [name] => Category 1
+                    [url] => api2./categories/283?key=DwnQZEAZZQCWrVT0UVdJg9WxEZq29S9
+                )
+        )
+)
+}
+
+### Get nutrition information
+Call:
+http://api2.freshrealm.co/products/key=myaccesstoken&fields=["id","gtin","nutrition","ingredients"]
+Input:none
+Ouput:
+
+{
+Array
+(
+    [code] => 200
+    [timestamp] => 1376939684
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 2188
+                    [gtin] => test_fixture_item_1
+                    [ingredients] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [url] => api2./items/2191?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ
+                                    [id] => 2191
+                                    [amount] => 20
+                                    [unit] => lb
+                                )
+
+                            [1] => Array
+                                (
+                                    [url] => api2./items/2192?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ
+                                    [id] => 2192
+                                    [amount] => 20
+                                    [unit] => lb
+                                )
+
+                            [2] => Array
+                                (
+                                    [url] => api2./items/2201?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ
+                                    [id] => 2201
+                                    [amount] => 0.5
+                                    [unit] => ft
+                                )
+
+                            [3] => Array
+                                (
+                                    [url] => api2./items/2204?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ
+                                    [id] => 2204
+                                    [amount] => 1
+                                    [unit] => ea
+                                )
+
+                        )
+
+                    [nutrition] => Array
+                        (
+                            [Calories] => Array
+                                (
+                                    [amount] => 193.75
+                                    [unit] => KCal
+                                )
+
+                            [Fat] => Array
+                                (
+                                    [amount] => 0
+                                    [unit] => g
+                                )
+
+                            [Saturated Fat] => Array
+                                (
+                                    [amount] => 0.05
+                                    [unit] => g
+                                )
+
+                            [Cholesterol] => Array
+                                (
+                                    [amount] => 5
+                                    [unit] => mg
+                                )
+
+                            [Carbohydrates] => Array
+                                (
+                                    [amount] => 44.43
+                                    [unit] => g
+                                )
+
+                            [Fiber] => Array
+                                (
+                                    [amount] => 4.42
+                                    [unit] => g
+                                )
+
+                            [Sugar] => Array
+                                (
+                                    [amount] => 32.13
+                                    [unit] => g
+                                )
+
+                            [Protein] => Array
+                                (
+                                    [amount] => 10.47
+                                    [unit] => g
+                                )
+
+                        )
+
+                )
+
+            [1] => Array( etc.)
+            
+}
+
+
+# Group Orders 
+2.1 Place Order
+Use Case Scenario:  This call is used to place the order with FreshRealm after the customer has placed the order on your website.
+
+##Input Options
+Option1: customerId or
+Option2: customer -  array that contains at the minimum the fields below:
+firstName
+lastName
+email
+phone
+addressFields - array that contains the fields below:
+streetAndNumber
+aptSuite (optional)
+city
+state
+zipcode
+
+Note: either customerId or customer array are required. If neither is provided, an error will be thrown. If both are provided, customerId takes precedence over customer array. If no customer id is provided, the FreshRealm API looks up the customer by email address and phone number. New customers are created on the fly.
+
+shoppingCart [required] - array of arrays where each sub-array has the following format:
+sku
+itemId
+qty 
+itemPrice (optional)
+
+totalPrice (optional and needed for FreshRealm to provide invoice in shipping container)
+salesTax  (optional and needed for FreshRealm to provide invoice in shipping container)
+totalShipping  (optional and needed for FreshRealm to provide invoice in shipping container)
+deliveryDate (optional for orders not on the earliest delivery date)
+specialInstructions (optional as will not always be provided) 
+
+
+Note: either itemId or sku must be provided. If both are provided, we first search for the item by itemId. The parameter ‘qty’  represents the quantity of items bought and is also required. The parameter ‘itemPrice’ is optional.
+
+Output
+The following information is included in the output:
+customer data
+total cost, total price, sales tax, total shipping, special instructions and shipping cost
+list of items in the shopping cart with cost per item
+when the delivery has been scheduled (might be different from the requested delivery date)
+timestamps indicating when the order was created and updated
+See Order  resource table for all the available fields.
+
+HTTP Method: POST
+
+Url:http://api2.freshrealm.co/orders?key=myaccesstoken
+
+<TABLE>
+
+<TR VALIGN=TOP>
+<TD>Field</TD>
+<TD>Default</TD>
+<TD>Filter</TD>
+<TD>Description</TD>
+</TR>
+
+
+<TR VALIGN=TOP>
+<TD>id</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>FreshRealm order id</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>customerId</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Unique FreshRealm customer id</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>shoppingCart</TD>
+<TD>X</TD>
+<TD><BR></TD>
+<TD>Array of products, attributes, and quantity ordered. Shopping cart is returned by default if an individual order is placed or requested but not returned if the list of multiple orders has been requested</TD>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>totalPrice</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>Amount paid by customer</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>totalCost</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Amount owed to FreshRealm</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>totalShipping</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>Amount customer was charged for shipping</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>shippingAndHandling</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Amount FreshRealm paid for shipping and handling</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>specialInstructions</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Special instructions received from the customer</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>shippingAddress</TD>
+<TD>X</TD>
+<TD><BR></TD>
+<TD>Shipping address - array(streetAndNumber, aptSuite, city, state, zipcode)</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>createTime</TD>
+<TD>X</TD>
+<TD><BR></TD>
+<TD>When the order was sent to FreshRealm</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>updateTime</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>The most recent timestamp when any update was done to the order</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>status</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>pending, processed, in_transit, at_customer, cancelled, in_transit_back, vessel_returned</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>deliveryDate</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>When the order should be delivered (yyyy-mm-dd format)</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>salesTax</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>The amount of sales tax paid</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>codropId</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>The id of a codrop if codrop was used</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>orderNumber</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>The external order number (order number set by customers of FreshRealm)</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>trackingInfo</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>Tracking information includes tracking number and which carrier was used for shipping. Tracking information is only available when status is processed, in_transit, at_customer.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>customer</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>Customer’s information: includes array consisting of first name, last name, email, phone, external customer id and Address array</TD>    
+
+</TABLE>
+
+### Get All Orders
+Use Case Scenario: 
+Retrieve a list of the latest orders. This operation can be used to get the order id, which is needed for the order details call and the cancel order call. See ‘Orders ‘  resource table for more information.
+HTTP Method : GET
+Url:http://api2.freshrealm.co/orders?key=myaccesstoken
+
+
+### Get Order Details
+Use Case Scenario:   This call is used to find the status of the order and get the tracking number.  For example, if a customer clicks on a page on your website, you can make an on-the-fly request for the tracking number and/or order status using this call. You can also use it to obtain orders for a specific customer. 
+
+Input:
+orderId (to obtain details of the individual order), or
+customerId (to obtain all orders for the specific customer)
+
+Output:The provided output will be in the form of an array if the individual order details have been requested or an array of arrays where each array represents an individual order (e.g. in case all orders for a particular customer have been requested), where code indicates success or failure, timestamp indicates the time the API call occurred, and the data array contains the query result. The following information is included in the query result:
+customer data
+total cost, total price, sales tax, total shipping, special instructions and shipping cost
+list of items in the shopping cart with cost per item
+when the delivery has been scheduled
+timestamps indicating when the order was created and updated
+
+HTTP Method:GET
+
+Url:http://api2.freshrealm.co/orders/orderId?key=myaccesstoken
+or http://api2.freshrealm.co/customers/customerId/orders?key=myaccesstoken
+where the highlighted parameters above are replaced by their corresponding ids.
+
+### Cancel Order
+Use Case Scenario:  This call allows you to cancel existing orders that have not been started yet. Order can be cancelled any time before the food is being made (order status is ‘PENDING’).
+
+Input: orderId (required)
+
+Output:
+
+**The provided output will be in the form of an array consisting of order id, status and the response code (see example at the end of the document)**
+HTTP Method: PUT
+
+
+
+### Place Order
+This call uses POST method.
+
+Typical Place Order Call
+Call:
+http://api2.freshrealm.co/orders/key=myaccesstoken
+
+{Place Order Input}
+{Array
+(
+    [customer] => Array
+        (
+            [firstName] => Jim
+            [lastName] => Smith
+            [email] => joesmith70@yahoo.com
+            [phone] => 8181234567
+            [customerNumber] => 350l17078
+            [addressFields] => Array
+                (
+                    [streetAndNumber] => 476 E Main Street
+                    [aptSuite] => 200
+                    [city] => Ventura
+                    [state] => CA
+                    [zipcode] => 93001
+                )
+
+        )
+
+    [shoppingCart] => Array
+        (
+            [0] => Array
+                (
+                    [sku] => XFEG8228
+                    [itemId] => 2189
+                    [qty] => 2
+                )
+
+            [1] => Array
+                (
+                    [sku] => FGSXBSNW
+                    [itemId] => 2192
+                    [qty] => 7
+                )
+
+        )
+
+    [orderNumber] => 54u34702
+)}
+
+### Place Order output:
+
+Array
+(
+    [code] => 200
+    [timestamp] => 1377018659
+    [data] => Array
+        (
+            [id] => 573
+            [customerId] => 227
+            [status] => PENDING
+            [totalCost] => 84.604
+            [shippingAndHandling] => 47.24
+            [specialInstructions] => 
+            [codropId] => 
+            [createTime] => 2013-08-20 17:10:59
+            [updateTime] => 2013-08-20 17:10:59
+            [deliveryDate] => 2013-08-22
+            [orderNumber] => 54u34702
+            [trackingInfo] => Array
+                (
+                    [carrier] => 
+                    [trackingNumThere] => 
+                )
+
+            [shippingAddress] => Array
+                (
+                    [streetAndNumber] => 476 E Main Street
+                    [aptSuite] => 200
+                    [city] => Ventura
+                    [state] => CA
+                    [zipcode] => 93001
+                )
+
+            [customer] => Array
+                (
+                    [firstName] => Jim
+                    [lastName] => Smith
+                    [phone] => 8181234567
+                    [email] => joesmith70@yahoo.com
+                    [customerNumber] => 350l17078
+                )
+
+            [shoppingCart] => Array
+                (
+                    [0] => Array
+                        (
+                            [itemId] => 2189
+                            [qty] => 2
+                            [costPerItem] => 0.132
+                        )
+
+                    [1] => Array
+                        (
+                            [itemId] => 2192
+                            [qty] => 7
+                            [costPerItem] => 5.300
+                        )
+                )
+        )
+)
+}
+
+***How to only return selected fields***
+Call:
+http://api2.freshrealm.co/orders/key=myaccesstoken&fields=["id","totalPrice","totalShipping","salesTax","shoppingCart.itemPrice"]
+This call would place the order and return id, totalPrice, totalShipping, salesTax and itemPrice in shoppingCart fields, in addition to all the default shoppingCart fields.
+
+### List Orders
+This call uses GET method.
+
+Sample requests:
+Retrieve all latest orders (default limit is 100 results):
+http://api2.freshrealm.co/orders/?key=myaccesstoken
+
+Retrieve all orders for the customer with an id 1001:
+http://api2.freshrealm.co/customers/1001/orders/?key=myaccesstoken
+
+***Limit number of results***
+http://api2.freshrealm.co/customers/1001/orders/?key=myaccesstoken&limit=5
+(limit number of results in the output to 5)
+
+Sample output:
+Retrieve all latest orders (default limit is 100 results):
+http://api2.freshrealm.co/orders/?key=myaccesstoken
+
+{
+
+Array
+(
+    [code] => 200
+    [timestamp] => 1377021331
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 576
+                    [customerId] => 228
+                    [status] => PENDING
+                    [totalCost] => 72.140
+                    [shippingAndHandling] => 45.640
+                    [specialInstructions] => 
+                    [codropId] => 
+                    [createTime] => 2013-08-20 17:47:37
+                    [updateTime] => 2013-08-20 17:47:37
+                    [deliveryDate] => 2013-08-22
+                    [orderNumber] => 
+                    [trackingInfo] => Array
+                        (
+                            [carrier] => 
+                            [trackingNumThere] => 
+                        )
+
+                    [shippingAddress] => Array
+                        (
+                            [streetAndNumber] => 200 E Main St
+                            [aptSuite] => 
+                            [city] => Ventura
+                            [state] => CA
+                            [zipcode] => 93001
+                        )
+
+                    [customer] => Array
+                        (
+                            [firstName] => Bob
+                            [lastName] => Smith
+                            [phone] => 8051234567
+                            [email] => numberonebob@bob.com
+                            [customerNumber] => 
+                        )
+
+                )
+
+            [1] => Array( etc.)
+            
+}
+
+### Retrieve all orders for the customer with an id 1001:
+http://api2.freshrealm.co/customers/1001/orders/?key=myaccesstoken
+
+{
+
+Array
+(
+    [code] => 200
+    [timestamp] => 1377021148
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 576
+                    [customerId] => 1001
+                    [status] => PENDING
+                    [totalCost] => 72.140
+                    [shippingAndHandling] => 45.640
+                    [specialInstructions] => 
+                    [codropId] => 
+                    [createTime] => 2013-08-20 17:47:37
+                    [updateTime] => 2013-08-20 17:47:37
+                    [deliveryDate] => 2013-08-22
+                    [orderNumber] => 
+                    [trackingInfo] => Array
+                        (
+                            [carrier] => 
+                            [trackingNumThere] => 
+                        )
+
+                    [shippingAddress] => Array
+                        (
+                            [streetAndNumber] => 200 E Main St
+                            [aptSuite] => 
+                            [city] => Ventura
+                            [state] => CA
+                            [zipcode] => 93001
+                        )
+
+                    [customer] => Array
+                        (
+                            [firstName] => Bob
+                            [lastName] => Smith
+                            [phone] => 8051234567
+                            [email] => numberonebob@bob.com
+                            [customerNumber] => 
+                        )
+                )
+        {[1] => Array( etc...
+}
+
+### Get Order Details
+This call uses GET method.
+
+***Sample requests***
+Retrieve order with an id 3313:
+http://api2.freshrealm.co/orders/3313?key=myaccesstoken
+
+Retrieve individual field (only selects a status in this case):
+http://api2.freshrealm.co/orders/3313/status?key=myaccesstoken
+
+Sample output:
+Retrieve order with an id 3313:
+
+Array
+(
+    [code] => 200
+    [timestamp] => 1377020303
+    [data] => Array
+        (
+            [id] => 3313
+            [customerId] => 228
+            [status] => PENDING
+            [totalCost] => 84.604
+            [shippingAndHandling] => 47.240
+            [specialInstructions] => 
+            [codropId] => 
+            [createTime] => 2013-08-20 17:37:21
+            [updateTime] => 2013-08-20 17:37:21
+            [deliveryDate] => 2013-08-22
+            [orderNumber] => 555
+            [trackingInfo] => Array
+                (
+                    [carrier] => 
+                    [trackingNumThere] => 
+                )
+
+            [shippingAddress] => Array
+                (
+                    [streetAndNumber] => 200 E Main St
+                    [aptSuite] => 
+                    [city] => Ventura
+                    [state] => CA
+                    [zipcode] => 93001
+                )
+
+            [customer] => Array
+                (
+                    [firstName] => Bob
+                    [lastName] => Smith
+                    [phone] => 8051234567
+                    [email] => numberone@one.com
+                    [customerNumber] => 
+                )
+
+            [shoppingCart] => Array
+                (
+                    [0] => Array
+                        (
+                            [itemId] => 2189
+                            [qty] => 2.00
+                            [costPerItem] => 0.132
+                        )
+
+                    [1] => Array
+                        (
+                            [itemId] => 2192
+                            [qty] => 7.00
+                            [costPerItem] => 5.3
+                        )
+                )
+        )
+)
+}
+Retrieve individual field (only selects a status in this case):
+
+
+Array
+(
+    [code] => 200
+    [timestamp] => 1377020439
+    [data] => PENDING
+)
+
+
+### Cancel Order 
+This call uses PUT method.
+
+Call:http://api2.freshrealm.co/cancelOrder/orderId?key=myaccesstoken
+
+Sample input: 
+Array
+(
+    [id] => 230
+)
+
+Note:  The input id must match the id in the URL
+
+Sample output:
+Array
+(
+    [code] => 200
+    [timestamp] => 1377020859
+    [data] => Array
+        (
+            [id] => 230
+            [status] => CANCELLED
+        )
+
+)
+
+#Group Customers
+Use Case Scenario: 
+This operation can be used to find a customer and get all the orders from the customer.  Get customers will give you the ids for those requested customers to allow you to then get orders for them.  See the ‘Customers ‘  resource table for more information.
+HTTP Method: GET
+Url:http://api2.freshrealm.co/customers?key=myaccesstoken
+
+<TABLE>
+
+<TR VALIGN=TOP>
+<TD>Field</TD>
+<TD>Default</TD>
+<TD>Filter</TD>
+<TD>Description</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>id</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>FreshRealm customer id</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>firstName</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>First name of customer</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>lastName</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Last name of customer</TD>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>email</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Email Address</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>phone</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Phone Number</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>addresses</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>List of the latest shipping addresses</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>customerID</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>The external customer id (customer id set by customers of FreshRealm)</TD>
+</TR>
+
+</TABLE>
+
+This call uses GET method.
+
+Call:http://api2.freshrealm.co/customers/?key=myaccesstoken
+
+Input:None
+{
+Output: 
+Array
+(
+    [code] => 200
+    [timestamp] => 1377021942
+    [data] => Array (        
+        [0] => Array(
+            [id] => 228
+            [firstName] => Bob
+            [lastName] => Smith
+            [email] => numberonebob@bob.com
+            [phone] => 8051234567
+            [customerId] => 
+        )
+            [1]=>Array(etc.
+)}
+
+#Group Addresses
+Use Case Scenario:
+This operation can be used to find addresses and get all the addresses for a customer.  Get addresses will give you the ids for those requested addresses to allow you to then get orders for them.  See the ‘Customers ‘  resource table for more information.
+HTTP Method: GET
+Url: http://api2.freshrealm.co/addresses?key=myaccesstoken
+
+<TABLE>
+
+<TR VALIGN=TOP>
+<TD>Field</TD>
+<TD>Description</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>streetAndNumber</TD>
+<TD>Example: 476 Main St</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>aptSuite</TD>
+<TD>Apartment number, unit number or suite. Example: Unit A</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>city</TD>
+<TD>City name</TD>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>state</TD>
+<TD>State name - Example: CA or California</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>verify</TD>
+<TD>Set to 1 to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address.</TD>
+</TR>
+</TABLE>
+
+# Group Categories
+Use Case Scenario: 
+This operation can be used to find available categories to which products belong.  See the ‘Categories’  resource table for more information.
+
+HTTP Method: GET
+Url: http://api2.freshrealm.co/categories?key=myaccesstoken
+
+<TABLE>
+
+<TR VALIGN=TOP>
+<TD>Field</TD>
+<TD>Default</TD>
+<TD>Filter</TD>
+<TD>Description</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>id</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Category id</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>parentId</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Id of a parent category if category is a subcategory of another category</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>name</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Category name</TD>
+
+<TR VALIGN=TOP>
+<TD>published</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Whether a category is activated or not</TD>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>imageUrl</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Returns urls of images that are attached to category (optional)</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>parentUrl</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Url of a parent category if such category exists</TD>
+</TR>
+
+</TABLE>
+
+### Get Categories
+This call uses GET method.
+
+Call:Retrieve all categories
+http://api2.freshrealm.co/categories/?key=myaccesstoken
+
+Retrieve individual category
+http://api2.freshrealm.co/categories/categoryId?key=myaccesstoken
+
+Input:None
+
+Output: 
+Retrieve all categories
+{
+Array
+(
+    [code] => 200
+    [timestamp] => 1377023678
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 293
+                    [name] => Category 1
+                )
+
+            [1] => Array
+                (
+                    [id] => 294
+                    [name] => Category 2
+                )
+
+            [2] => Array
+                (
+                    [id] => 295
+                    [name] => Category 3
+                )
+[3] => Array (etc.)
+        )
+)
+}
+
+###Retrieve individual category
+
+{
+Array
+(
+    [code] => 200
+    [timestamp] => 1377023681
+    [data] => Array
+        (
+            [id] => 293
+            [parentId] => 
+            [name] => Category 1
+            [published] => 1
+        )
+)
+}
+
+
+#Group Transactions
+Use Case Scenario:
+This operation can be used to retrieve a list of all the transactions.  Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.  See the ‘transactions ‘  resource table for more information.
+
+HTTP Method: GET 
+Url: http://api2.freshrealm.co/transactions?key=myaccesstoken
+
+#Group Codrops
+Use Case Scenario: 
+To obtain information about codrop, request individual codrop information, get list of customers belonging to a codrop, or create a codrop.
+
+Codrops allow multiple customers to have food delivered to one location. Codrops can be public or private. Codrops could be open to all or by invite only. FreshRealm API allows retrieving information about all codrops or individual codrop, as well as creation of a new codrop.
+
+See the ‘Codrops’ resource table for more information, as well as examples below.
+
+HTTP Method Used: GET for getting information on codrop(s), POST to create a codrop
+Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
+
+<TABLE>
+<TR VALIGN=TOP>
+<TD>Field</TD>
+<TD>Default</TD>
+<TD>Filter</TD>
+<TD>Description</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>id</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>FreshRealm codrop id</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>name</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Codrop name</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>address</TD>
+<TD>X</TD>
+<TD><BR></TD>
+<TD>Address of a codrop</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>facilitator</TD>
+<TD><BR></TD>
+<TD><BR></TD>
+<TD>Information about codrop’s facilitator</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>notes</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Notes</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>active</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Flag whether codrop is active</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>timestamp</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>Latest timestamp when the codrop was updated</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>inviteRequired</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>Whether invite is required</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>chargePerOrder</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Charge per order</TD>
+</TR>
+
+</TABLE>
+
+
+### Get all codrops
+Method:GET
+
+Call:
+http://api2.freshrealm.co/codrops?key=myaccesstoken
+
+Input:none
+
+Output:
+
+{
+Array
+(
+    [code] => 200
+    [timestamp] => 1377027507
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 75
+                    [name] => TestDrop1
+                    [address] => 110 North 13th Street, Las Vegas, NV, 89101
+                    [facilitator] => Array
+                        (
+                            [firstName] => Facilitator
+                            [lastName] => User
+                            [email] => test_facilitator1@freshrealm.co
+                            [phone] => 9999999010
+                        )
+
+                )
+
+            [1] => etc.
+}
+
+### Get information about individual codrop
+Method:GET
+Call:
+http://api2.freshrealm.co/codrops/codropId?key=myaccesstoken
+
+Input:none
+
+Output:
+{
+Array
+(
+    [code] => 200
+    [timestamp] => 1377028620
+    [data] => Array
+        (
+            [id] => 75
+            [name] => TestDrop1
+            [notes] => public drop
+            [active] => 1
+            [timestamp] => 2013-08-20 19:38:23
+            [inviteRequired] => 
+            [public] => 1
+            [chargePerOrder] => 0.00
+        )
+)
+}
+
+### Create Codrop
+Method:POST
+Call:
+http://api2.freshrealm.co/codrops?key=myaccesstoken
+
+Input:
+{
+Array
+(
+    [name] => API_TestCodrop
+    [inviteRequired] => 
+    [active] => 
+    [notes] => Test codrop created through API
+    [addressFields] => Array
+        (
+            [streetAndNumber] => 500 Poli St
+            [aptSuite] => A
+            [city] => Ventura
+            [state] => CA
+            [zipcode] => 93001
+        )
+)
+}
+
+Output:
+
+{
+Array
+(
+    [code] => 200
+    [timestamp] => 1377029405
+    [data] => Array
+        (
+            [id] => 79
+            [name] => API_TestCodrop
+            [notes] => Test codrop created through API
+            [active] => 
+            [timestamp] => 2013-08-20 20:10:05
+            [inviteRequired] => 
+            [public] => 0
+            [chargePerOrder] => 0.00
+        )
+)
+}
+
+### Get list of customers belonging to a particular codrops
+Method: GET
+Call:
+http://api2.freshrealm.co/codrops/codropId/customers?key=myaccesstoken
+
+{
+Input:none
+Array
+(
+    [code] => 200
+    [timestamp] => 1377028963
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 233
+                    [firstName] => Bob
+                    [lastName] => Smith
+                    [email] => numberonebob@bob.com
+                    [phone] => 8051234567
+                    [address] => 200 E Main St, Ventura, CA, 93001
+                )
+
+            [1] => Array
+                (
+                    [id] => 234
+                    [firstName] => David
+                    [lastName] => Sobotka
+                    [email] => david@sobotka.com
+                    [phone] => 8131234567
+                    [address] => 3501 Interstate 275 Frontage Rd E, Tampa, FL, 33607
+                )
+        )
+)
+
+
+#Group Shipping
+
+###Get Shipping Details 
+***Use Case Scenario:***
+This operation is used at the checkout page to get the shipping cost and earliest delivery date based on the items and address that the food is being delivered to without placing the actual order.  Input and Output is the same as the ‘Place Order ‘call below. 
+
+HTTP Method: POST
+Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
+
+<TABLE>
+
+<TR VALIGN=TOP>
+<TD>Field</TD>
+<TD>Default</TD>
+<TD>Filter</TD>
+<TD>Description</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>id</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Shipment id</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>shipMethod</TD>
+<TD>X</TD>
+<TD>X</TD>
+<TD>Indicates what postal carrier was used to ship the shipment. Possible values are ‘fedex’, ‘usps’, ‘ups’ etc.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>updateTime</TD>
+<TD><BR></TD>
+<TD>X</TD>
+<TD>Latest timestamp when the shipment was updated</TD>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>shippingAddress</TD>
+<TD>X</TD>
+<TD><BR></TD>
+<TD>Address resource where shipment was delivered (see Address resource above for more info)</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>shipToName</TD>
+<TD>X</TD>
+<TD><BR></TD>
+<TD>Name of shipment recipient</TD>
+</TR>
+
+</TR>
+<TR VALIGN=TOP>
+<TD>shippingLines</TD>
+<TD>X</TD>
+<TD><BR></TD>
+<TD> Array of shipping lines. Every shipping line contains the following information:
++    productNumber (cartId-itemId, itemId, or “coolant”)
++    vesselNumber
++    customerName
++    slotNumber
++    vesselNotchNumber
++    unitPrice
++    labelInfo
++    vesselSize (‘Small’, ‘Medium’, ‘Large’)</TD>
+</TR>
+
+</TABLE>
+
+
+###Download Shipments Information 
+Method:GET
+
+Call:
+http://api2.freshrealm.co/shipments? key=myaccesstoken&timestamp=1372717334
+
+Input:It is highly recommended to use the timestamp parameter filter as example above indicates in order to only obtain the shipments shipped AFTER the supplied timestamp.
+
+Output:
+{
+Array
+(
+[code] => 200
+      [timestamp] => 1372879747
+      [data] => Array
+      (
+[0] => Array
+(
+      [id] => 19
+      [shipMethod] => fedex
+      [shippingAddress] => Array
+      (
+      [streetAndNumber] => 200 E Main St
+      [aptSuite] =>
+      [city] => Ventura
+      [state] => CA
+      [zipcode] => 93001
+      [country] => US
+      )
+      [shipToName] => Bob Smith
+      [shippingLines] => Array
+      (
+[0] => Array
+(
+      [productNumber] => coolant
+      [vesselNumber] => 0
+      [slotNumber] => 0
+      [vesselNotchNumber] => 0
+      [unitPrice] => N/A
+      [labelInfo] => N/A
+      [vesselSize] => Large
+      )
+      )
+      )
+      )
+)
+}
+
+### Update Shipping Information
+####Update shipping information for an individual customer
+Method:PUT
+
+Call:
+http://api2.freshrealm.co/shipments/shipmentId?key=myaccesstoken
+Input
+
+Array
+(
+    [id] => 45
+    [shipDate] => 2013-07-05
+    [actualFreightCost] => 23.33
+    [vessels] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 45
+                    [vesselNumber] => 1234567
+                    [trackingNumber] => 7423542523374
+                    [trackingNumberBack] => 7423542523374
+                    [actualWeight] => 5.34
+                    [drawers] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [slotNumber] => 2
+                                    [drawerNumber] => 4893rhjf487rt7484jviuref874
+                                )
+
+                            [1] => Array
+                                (
+                                    [slotNumber] => 3
+                                    [drawerNumber] => 474fhf375t76fh374984564j45gj
+                                )
+
+                        )
+
+                )
+
+            [1] => Array etc.
+
+Output:
+
+Array
+(
+    [code] => 200
+    [timestamp] => 1377032713
+    [data] => Array
+        (
+            [id] => 45
+        )
+
+)
+
+###Get Shipping Details 
+
+Call:
+http://api2.freshrealm.co/getShippingDetails/key=myaccesstoken
+
+
+Input:
+$inputData = array( 
+    [customer] => Array
+        (
+            [firstName] => Joe
+            [lastName] => Smith
+            [email] => joesgvggggmith@yahoo.com
+            [phone] => 8051234567
+        ***[customerNumber] => 555RTT***
+            [addressFields] => Array
+                (
+                    [streetAndNumber] => 476 E Main Street
+                    [aptSuite] => 200
+                    [city] => Ventura
+                    [state] => CA
+                    [zipcode] => 93001
+                )
+
+        )
+
+    [shoppingCart] => Array
+        (
+            [0] => Array
+                (
+                    [sku] => XFEG8228
+                    [itemId] => 2189
+                    [qty] => 2
+                )
+
+            [1] => Array
+                (
+                    [sku] => FGSXBSNW
+                    [itemId] => 2192
+                    [qty] => 7
+                )
+        )
+)
+}
+
+
+
+### Update shipping information for a codrop (single order)
+Method:PUT
+
+Call:
+http://api2.freshrealm.co/shipments/shipmentId?key=myaccesstoken
+**Input**
+{
+Array
+(
+    [id] => 46
+    [shipDate] => 2013-07-05
+    [actualFreightCost] => 23.33
+    [vessels] => Array
+        (
+            [0] => Array
+                (
+                    [vesselNumber] => 1234567
+                    [trackingNumber] => 9923542523374
+                    [trackingNumberBack] => 9923542523374
+                    [actualWeight] => 225.34
+                    [drawers] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [slotNumber] => 2
+                                    [drawerNumber] => 4893rhjf487rt7484jviuref874
+                                )
+
+                            [1] => Array
+                                (
+                                    [slotNumber] => 3
+                                    [drawerNumber] => 474fhf375t76fh374984564j45gj
+                                )
+
+                        )
+
+                )
+
+            [1] => etc.
+
+Output:
+Array
+(
+    [code] => 200
+    [timestamp] => 1377032720
+    [data] => Array
+        (
+            [id] => 46
+        )
+
+)
+}
+
+#Group Other API Calls
+
+
+Get Drawers
+This call uses GET method.
+
+Call:
+http://api2.freshrealm.co/drawers?key=myaccesstoken
+
+Input:none
+
+
+*Output*
+{
+Array
+(
+    [0] => Array
+        (
+            [id] => 76
+            [barcode] => 4893rhjf487rt7484jviuref874
+            [status] => clean
+            [updateTime] => 1377025877
+        )
+
+    [1] => Array
+        (
+            [id] => 77
+            [barcode] => 474fhf375t76fh374984564j45gj
+            [status] => clean
+            [updateTime] => 1377025878
+        )
+etc.
+}
+
+###Get Vessels
+This call uses GET method.
+
+Call:
+http://api2.freshrealm.co/vessels?key=myaccesstoken
+
+Input:none
+
+Output
+{
+Array
+(
+    [code] => 200
+    [timestamp] => 1377026573
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 29
+                    [vesselTypeId] => 2
+                    [vesselNumber] => 1234567
+                    [status] => ready
+                    [updateTime] => 1377026572
+                )
+
+            [1] => Array
+                (
+                    [id] => 30
+                    [vesselTypeId] => 3
+                    [vesselNumber] => 7654321
+                    [status] => in use
+                    [updateTime] => 1377026572
+                )
+etc.
+}
+
+###Get Vessel Load
+Method:POST
+
+Call:
+http://api2.freshrealm.co/vesselLoad?key=myaccesstoken
+
+Input
+{
+Array
+(
+    [0] => Array
+        (
+            [itemId] => 2252
+            [qty] => 2
+        )
+
+    [1] => Array
+        (
+            [itemId] => 2249
+            [qty] => 2
+        )
+
+)
+}
+
+Output
+
+Array
+(
+    [code] => 200
+    [timestamp] => 1377029658
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [size] => Large
+                    [load] => 27
+                    [itemsInside] => 4
+                    [freeSpace] => 11
+                    [shippingWeight] => 29.3
+                )
+        )
+)
+
+###Create Picknpack Product Receipt
+Method:POST
+
+Call:
+http://api2.freshrealm.co/pnpProductReceipts?key=myaccesstoken
+
+Input
+
+Note: receipt date is optional. If no receipt date is provided, receipt date will be pre-filled with the date when API request is initiated.
+Array
+(
+    [itemId] => 2248
+    [receiptDate] => 2013-06-01 04:00:00
+    [quantity] => 8
+    [location] => A1
+    [picknpackId] => 213
+)
+
+Output
+
+Array
+(
+    [code] => 200
+    [timestamp] => 1377031633
+    [data] => Array
+        (
+            [id] => 2
+            [itemId] => 2248
+            [receiptDate] => 2013-06-01 04:00:00
+            [quantity] => 8
+            [location] => A1
+            [picknpackId] => 213
+            [createTime] => 2013-08-20 20:47:13
+            [updateTime] => 2013-08-20 20:47:13
+        )
+
+)
+
+
