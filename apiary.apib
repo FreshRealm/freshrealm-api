@@ -722,8 +722,8 @@ Array
 
 ## Place An Order [/orders]
 
-To create an order, you must pass either a `customerId` or a `customer` JSON object (see customer).
-If neither is provided, an error will be thrown. If both are provided, customerId takes precedence
+To create an order, you must pass either a `customerId` or a `customer` JSON object (see `Customer`).
+If neither is provided, an error will be thrown. If both are provided, `customerId` takes precedence
 over customer array. If no customer id is provided, the FreshRealm API looks up the customer by 
 email address and phone number. New customers are created on the fly.
 
@@ -831,10 +831,10 @@ email address and phone number. New customers are created on the fly.
         }
 
 ## Get All Orders [/orders?key={token}&limit={limit}]
-### Get All Orders [GET]
 
 Retrieve all the latest orders (default limit is 100 results)
 
+### Get All Orders [GET]
 + Parameters
     + token (required, string)
     + limit (optional, number, `5`)
