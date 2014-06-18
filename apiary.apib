@@ -908,7 +908,7 @@ Retrieve all the latest orders (default limit is 100 results)
         }
 
 ## Get Orders By Customer [/customers/{customerId}/orders?key={token}&limit={limit}]
-Retrieve all the latest orders for a given Customer ID. (default limit is 100 results)
+Retrieve all the latest orders for a given `Customer ID` (default limit is 100 results)
 
 ### Get Orders By Customer [GET]
 + Parameters
@@ -985,9 +985,9 @@ Retrieve all the latest orders for a given Customer ID. (default limit is 100 re
         }
 
 
-## Single Order [/order/{orderId}?key={token}]
+## Get Order Details [/order/{orderId}?key={token}]
 
-### Get an order [GET]
+### Get Order Details [GET]
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
@@ -1035,15 +1035,30 @@ Retrieve all the latest orders for a given Customer ID. (default limit is 100 re
         }
 
 ## Cancel an Order [/cancelOrder/{orderId}?key={token}]
+The input `id` must match the `orderId` in the URL.
 
-### Cancel an order [PUT]
+### Cancel An Order [PUT]
 
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
 
 + Request (application/json)
+
+        {
+            "id": 109
+        }
     
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1377020859,
+            "data": {
+                "id":109,
+                "status": "CANCELLED"
+            }
+        }
 
 
 
