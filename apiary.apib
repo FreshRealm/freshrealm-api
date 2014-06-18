@@ -720,7 +720,7 @@ Array
 
 # Group Orders
 
-## Single Order [/orders]
+## Order Collection [/orders]
 
 ### Attributes
 
@@ -829,6 +829,54 @@ Array
                 "transactionTime": null,
             }
         }
+
+## Single Order [/order/{orderId}]
+
+### Get an order [GET]
+
++ Response 200 (application/json)
+        
+        {
+            "code": 200,
+            "timestamp": 1402706999
+            "data": {
+                "id": "109",
+                "succeeded": "1",
+                "message": "Succeeded!",
+                "subTotal": "50.43",
+                "shippingAndHandling": "15.00",
+                "salesTax": "ul",
+                "total": "65.43",
+                "shippingAddressId": "415",
+                "paymentMethodToken": "Kstpsl0EJ5iDvBg3IY3jnC6yTwB",
+                "deliveryDate": "2014-06-17",
+                "complete": "0",
+                "productLines": [{
+                    "name": "Product 1",
+                    "id": "1",
+                    "description": "",
+                    "quantity": 1,
+                    "price": "9.99"
+                },{
+                    "name": "Product 2",
+                    "id": "2",
+                    "description": "",
+                    "quantity": 1,
+                    "price": "5.99"
+                }],
+                "customerId": "1",
+                "externalId": null,
+                "createTime": 1402706948,
+                "updateTime": 1402706998,
+                "confirmationUri": null,
+                "redirectUri": null,
+                "authorizationToken": 'JCejaDc2awjFbMsCGMbLRlwu5qO',
+                "authorizeTime": '2014-06-14 00:49:58',
+                "transactionTime": null,
+            }
+        }
+
+
 
 
 # Group Input Options
