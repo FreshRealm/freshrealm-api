@@ -718,12 +718,22 @@ Array
 }
 
 
-# Group Orders 
+# Group Orders
 2.1 Place Order
 Use Case Scenario:  This call is used to place the order with FreshRealm after the customer has placed the order on your website.
 
-##Input Options
-Option1: customerId or
+## Orders Collection [/notes]
+### Place an order [POST]
++ Response 200 (application/json)
+        
+        [{
+          "id": 1, "title": "Jogging in park"
+        }, {
+          "id": 2, "title": "Pick-up posters from post-office"
+        }]
+
+# Group Input Options
+Oion1: customerId or
 Option2: customer -  array that contains at the minimum the fields below:
 firstName
 lastName
