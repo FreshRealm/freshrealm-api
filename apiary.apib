@@ -47,7 +47,7 @@ In the case where you want to retrieve recent order information, you would use t
 
 A `key` is a required attribute for each call. See the authentication diagram at the bottom of this document for more information.
 
-### Request specific fields
+# Request specific fields
 For performance reasons, FreshRealm recommends retrieving the minimum number of fields. In addition, not all fields are retrieved by default, so additional fields may be requested (details of the attributes of the resources are described in the Resource Description section).  To retrieve fewer (or more) fields, use the `fields` attribute in the GET request.
 
 `http://api2.freshrealm.co/orders?fields=[‘totalPrice’]`
