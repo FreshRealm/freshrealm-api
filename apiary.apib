@@ -722,6 +722,11 @@ Array
 
 ## Place An Order [/orders]
 
+To create an order, you must pass either a `customerId` or a `customer` JSON object (see customer).
+If neither is provided, an error will be thrown. If both are provided, customerId takes precedence
+over customer array. If no customer id is provided, the FreshRealm API looks up the customer by 
+email address and phone number. New customers are created on the fly.
+
 ### Attributes
 
 | field          | required | type      | example                               | description |
@@ -747,11 +752,6 @@ Array
 ### Place An Order [POST]
 
 + Request (application/json)
-
-    To create an order, you must pass either a `customerId` or a `customer` JSON object (see customer).
-    If neither is provided, an error will be thrown. If both are provided, customerId takes precedence
-    over customer array. If no customer id is provided, the FreshRealm API looks up the customer by 
-    email address and phone number. New customers are created on the fly.
     
     + Body
 
