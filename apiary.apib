@@ -34,26 +34,30 @@ The REST API supports the response to be in JSON format. The response has the fo
 7.  `501` Not Implemented
 
 `Timestamp` is UNIX timestamp of the request in UTC format.
+
 `Data` contains attributes of a single resource or array of resources.
 
 # Service Endpoints
-An endpoint provides the URL of the server that handles your request.  The API endpoint for all requests in this document is as follows:
-http://api2.freshrealm.co/
+An endpoint provides the URL of the server that handles your request.  The API endpoint for all requests in this document is http://api2.freshrealm.co/
 
 # Example
-In the case where you want to retrieve recent order information, you would use the GET HTTP method.
+In the case where you want to retrieve recent order information, you would use the `GET` HTTP method.
 http://api2.freshrealm.co/orders?key=myaccesstoken
 
-A key is a required attribute for each call. See the authentication diagram at the bottom of this document for more information.
-Request specific fields
-For performance reasons, FreshRealm recommends retrieving the minimum amount of fields.  In addition, not all fields are retrieved by default, so additional fields may be requested (details of the attributes of the resources are described in the Resource Description section).  To retrieve less (or more) fields use fields attribute in the GET request in JSON format.
-http://api2.freshrealm.co/orders?fields=[‘totalPrice’]
+A `key` is a required attribute for each call. See the authentication diagram at the bottom of this document for more information.
 
-To obtain multiple fields, separate the fields by commas, such as below:
-http://api2.freshrealm.co/products/1918?fields=["id","costs","prices”]
+### Request specific fields
+For performance reasons, FreshRealm recommends retrieving the minimum number of fields. In addition, not all fields are retrieved by default, so additional fields may be requested (details of the attributes of the resources are described in the Resource Description section).  To retrieve fewer (or more) fields, use the `fields` attribute in the `GET` request.
+
+`http://api2.freshrealm.co/orders?fields=[‘totalPrice’]`
+
+To obtain multiple fields, separate the fields by commas:
+
+`http://api2.freshrealm.co/products/1918?fields=["id","costs","prices”]`
 
 Some calls retrieve nested arrays.  When this is the case you must use the key of the array to retrieve a subset of the fields.  For example to retrieve customer information for order 678 (e.g. email, phone...) you could use this call:
-http://api2.freshrealm.co/orders/678?fields=[‘customer’]
+
+`http://api2.freshrealm.co/orders/678?fields=[‘customer’]`
 
 # Limit and Offset
 Retrieving a large list of resources in one request will degrade performance. Use limit and offset GET attributes to divide you request into multiple queries. The default value for limit is 100.  The default ordering for the orders output is most recent first, and this level of detail is provided in the documentation for specific operations.  For example, if we want to get the next 50 orders starting from position 150 (150th most recent order).
