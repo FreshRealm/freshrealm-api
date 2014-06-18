@@ -11,11 +11,18 @@ FreshRealm’s REST API currently uses a proprietary authentication system. Each
 
 # Output Format and Structure
 The REST API supports the response to be in JSON format. The response has the following structure:
-`{
+````
+{
     "code": 200,
     "timestamp": 1367975121,
-    "data": {“id”: 5}
-}`
+    "data": {
+        “id”: 5,
+        ...
+        ...
+        ...
+    }
+}
+````
 
 Code is one of the following standard HTTP status codes:
 200 = OK
