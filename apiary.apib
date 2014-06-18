@@ -722,20 +722,30 @@ Array
 2.1 Place Order
 Use Case Scenario:  This call is used to place the order with FreshRealm after the customer has placed the order on your website.
 
-## Orders Collection [/notes]
+## Orders Collection [/orders]
 ### Place an order [POST]
 + Request (application/json)
     
-    Data about user being created. With following attributes are:
+    Data about the order being created.
 
-    + `customerId` (optional) ... Customer ID
-    + `age` (optional) ... age of the user
+    Either pass a customerId *or* a customer object.
 
     + Body
 
             {
-                 "name": "A name",
-                 "age": 30
+                 "customerId": 1,
+                 "customer": {
+                    "firstName": "Aaron",
+                    "lastName": "Francis",
+                    "email": "aarondfrancis@gmail.com",
+                    "phone": "555-555-5555",
+                    "addressFields": {
+                        "streetAndNumber": "4431 Meadowview Ln",
+                        "aptSuite": "",
+                        "city": "Anytown",
+                        "state": "TX",
+                        "zipcode": "75321"
+                    }
             }
 
 + Response 200 (application/json)
