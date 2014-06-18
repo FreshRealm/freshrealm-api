@@ -725,6 +725,8 @@ Use Case Scenario:  This call is used to place the order with FreshRealm after t
 ## Orders Collection [/orders]
 ### Place an order [POST]
 
++ Request (application/json)
+
     To create an order, you must pass either a `customerId` or a `customer` JSON object (see customer).
     If neither is provided, an error will be thrown. If both are provided, customerId takes precedence
     over customer array. If no customer id is provided, the FreshRealm API looks up the customer by 
@@ -732,8 +734,6 @@ Use Case Scenario:  This call is used to place the order with FreshRealm after t
     
     ## Parameters
     + customerId: *optional*, _either customerId or customer is required_
-
-+ Request (application/json)
 
     + Body
 
