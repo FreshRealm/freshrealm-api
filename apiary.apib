@@ -5,8 +5,7 @@ HOST: http://www.api2.freshrealm.co
 
 This document describes the calls needed to FreshRealm’s API operations.
 
-# General Information
-## Authentication
+# Authentication
 FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your "secret code" that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.
 
 # Output Format and Structure
@@ -26,16 +25,16 @@ The REST API supports the response to be in JSON format. The response has the fo
 
 `Code` is one of the following standard HTTP status codes:
 
-1.  `200`: OK
-2.  `400`: Bad Request
-3.  `401`: Access Denied
-4.  `403`: Token key is not valid
-5.  `404`: Resource Not Found
-6.  `500`: Internal Server Error
-7.  `501`: Not Implemented
+1.  `200` OK
+2.  `400` Bad Request
+3.  `401` Access Denied
+4.  `403` Token key is not valid
+5.  `404` Resource Not Found
+6.  `500` Internal Server Error
+7.  `501` Not Implemented
 
-Timestamp is UNIX timestamp of the request in UTC format.
-Data contains attributes of a single resource or array of resources.
+`Timestamp` is UNIX timestamp of the request in UTC format.
+`Data` contains attributes of a single resource or array of resources.
 
 # Service Endpoints
 An endpoint provides the URL of the server that handles your request.  The API endpoint for all requests in this document is as follows:
