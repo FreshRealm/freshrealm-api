@@ -257,13 +257,13 @@ Fetch a product by its `id`.
 
 
 
-## Retrieve ID, Costs, Prices [/products/productId?key={token}&fields={fieldsList1}]
-This example shows how to limit the returned data to a specific set of fields.
+## Fetch Specific Fields [/products/productId?key={token}&fields={fieldsList}]
+These examples show how to limit the returned data to a specific set of fields.
 
-### GET
+### ID, Costs, & Prices [GET]
 + Parameters
     + token (required, string)
-    + fieldsList1 (optional, array, `["id","costs","prices"]`)
+    + fieldsList (optional, array, `["id","costs","prices"]`)
 
 + Response 200 (application/json)
 
@@ -286,10 +286,9 @@ This example shows how to limit the returned data to a specific set of fields.
             }
 
 ### Image Details [GET]
-
 + Parameters
     + token (required, string)
-    + fieldsList1 (optional, array, `["id","imageUrl","url","images"]`)
+    + fieldsList (optional, array, `["id","imageUrl","url","images"]`)
 
 + Response 200 (application/json)
 
@@ -298,7 +297,7 @@ This example shows how to limit the returned data to a specific set of fields.
             "timestamp": 1402706999,
             "data": {
                 "id": "2192",
-                "url": "api2./products/2192?key=pXUMjWnDRmx5bAIDn8L8NecTGWKcAsa",
+                "url": "http://api2.freshrealm.co/products/2192?key=pXUMjWnDRmx5bAIDn8L8NecTGWKcAsa",
                 "imageUrl": "http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
                 "images": {
                     "default": "http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
@@ -309,13 +308,10 @@ This example shows how to limit the returned data to a specific set of fields.
             }
         }
 
-## Retrieve ID, Margin [/products/productId?key={token}&fields={fieldsList3}]
-Another filtering example.
-
-### GET
+### ID, Margin [GET]
 + Parameters
     + token (required, string)
-    + fieldsList3 (optional, array, `["id","margin"]`)
+    + fieldsList (optional, array, `["id","margin"]`)
 
 
 + Response 200 (application/json)
