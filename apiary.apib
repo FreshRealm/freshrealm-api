@@ -254,7 +254,7 @@ Fetch a product by its `id`.
 
 
 
-## Retrieve ID, Costs, Prices [/products/productId/key={token}&fields={fieldsList1}]
+## Retrieve ID, Costs, Prices [/products/productId?key={token}&fields={fieldsList1}]
 This example shows how to limit the returned data to a specific set of fields.
 
 ### GET
@@ -282,7 +282,7 @@ This example shows how to limit the returned data to a specific set of fields.
                 }
             }
 
-## Retrieve Image Details [/products/productId/key={token}&fields={fieldsList2}]
+## Retrieve Image Details [/products/productId?key={token}&fields={fieldsList2}]
 This example shows how to receive only image related fields. Refer to the table above to see which fields are available.
 
 ### GET
@@ -309,7 +309,7 @@ This example shows how to receive only image related fields. Refer to the table 
             }
         }
 
-## Retrieve ID, Margin [/products/productId/key={token}&fields={fieldsList3}]
+## Retrieve ID, Margin [/products/productId?key={token}&fields={fieldsList3}]
 Another filtering example.
 
 ### GET
@@ -409,7 +409,7 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
             }]
         }
 
-## Price By Zipcode [/products/{id}/key={token}&zip={zipcode}&fields={fieldsList}]
+## Price By Zipcode [/products/{id}?key={token}&zip={zipcode}&fields={fieldsList}]
 Get the price of a product for a given zipcode.
 
 ### GET
@@ -432,11 +432,12 @@ Get the price of a product for a given zipcode.
         }
 
 
-## Get Ingredients [/products/productId/key={token}&fields={fieldsList}]
+## Get Ingredients [/products/{id}?key={token}&fields={fieldsList}]
 
 ### Obtain a list of ingredents [GET]
 + Parameters
     + token (required, string)
+    + id (required, number)
     + fieldsList (optional, array, `["id", "ingedients"]`)
 
 
@@ -480,7 +481,7 @@ Get the categories to which a particular product belongs.
             }]
         }
 
-## Nutritional Information [/products/key={token}&fields={fieldsList}]
+## Nutritional Information [/products?key={token}&fields={fieldsList}]
 
 + Paramters
     + token (required, string)
@@ -967,7 +968,7 @@ This operation can be used to find a customer and get all the orders from the cu
 </TABLE>
 
 
-## List of orders placed by the customer [/customers/key={token}]
+## List of orders placed by the customer [/customers?key={token}]
 
 ### List of orders placed by the customer [GET]
 
