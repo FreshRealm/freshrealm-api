@@ -764,29 +764,377 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
 ### GET
 + Parameters
     + token (required, string)
-    + filter (optional, array, `[{"field": "gtin", "value": "test_fixture_item_16", "operator:"like"}]`)
+    + filter (optional, array, `[{"field": "name", "value": "%Egg%", "operator:"like"}]`)
 
 
 + Response 200 (application/json)
 
-
         {
             "code": 200,
-            "timestamp": 1402706999,
-            "data": [{
-                "id": "2158",
-                "sku": "XDDWW3",
-                "published": "1",
-                "weight": "0.400",
-                "weightUnit": "lb",
-                "width": "5.000",
-                "height": "1.000",
-                "length": "5.000",
-                "minFreshrealmCost": "2.1",
-                "avgFreshrealmCost": "2.3",
-                "maxFreshrealmCost": "2.5",
-                "name": "Item 16"
-            }]
+            "timestamp": 1403221501,
+            "data": [
+                {
+                    "id": "1391",
+                    "itemName": "Turkey, Egg White & Sundried Tomato Breakfast",
+                    "customName": null,
+                    "sku": "",
+                    "gtin": "10826766900005",
+                    "published": "0",
+                    "description": null,
+                    "size": {
+                        "height": "2.26",
+                        "width": "3.71",
+                        "length": "7.61",
+                        "containerId": "1",
+                        "containerName": "Medium Container",
+                        "estimatedVesselLoad": "5"
+                    },
+                    "weight": "7.500",
+                    "weightUnit": "oz",
+                    "freshRealmCost": null,
+                    "updateTime": 1402509020,
+                    "categories": [],
+                    "imageUrl": null,
+                    "nutritionInfo": {
+                        "Calories": {
+                            "amount": "285.36",
+                            "unit": "KCal",
+                            "weightGrams": null,
+                            "percentDaily": 15
+                        },
+                        "Fat Calories": {
+                            "amount": "35.86",
+                            "unit": "KCal",
+                            "weightGrams": null,
+                            "percentDaily": 8
+                        },
+                        "Fat": {
+                            "amount": "3.98",
+                            "unit": "g",
+                            "weightGrams": "3.98",
+                            "percentDaily": 7
+                        },
+                        "Saturated Fat": {
+                            "amount": "1.49",
+                            "unit": "g",
+                            "weightGrams": "1.49",
+                            "percentDaily": 8
+                        },
+                        "Polyunsaturated Fat": {
+                            "amount": null,
+                            "unit": "g",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Monounsaturated Fat": {
+                            "amount": null,
+                            "unit": "g",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Trans Fat": {
+                            "amount": "0",
+                            "unit": "g",
+                            "weightGrams": "0",
+                            "percentDaily": 0
+                        },
+                        "Cholesterol": {
+                            "amount": "14.72",
+                            "unit": "mg",
+                            "weightGrams": 0.01472,
+                            "percentDaily": 5
+                        },
+                        "Carbohydrates": {
+                            "amount": "48.07",
+                            "unit": "g",
+                            "weightGrams": "48.07",
+                            "percentDaily": 17
+                        },
+                        "Fiber": {
+                            "amount": "4.12",
+                            "unit": "g",
+                            "weightGrams": "4.12",
+                            "percentDaily": 17
+                        },
+                        "Sugar": {
+                            "amount": "14",
+                            "unit": "g",
+                            "weightGrams": "14",
+                            "percentDaily": 16
+                        },
+                        "Protein": {
+                            "amount": "15.84",
+                            "unit": "g",
+                            "weightGrams": "15.84",
+                            "percentDaily": 32
+                        },
+                        "Vitamin A": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Thiamine B1": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Vitamin B6": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Folate B9": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Vitamin C": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Vitamin E": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Calcium": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Copper": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Iron": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Phosphorous": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Potassium": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Sodium": {
+                            "amount": "549.37",
+                            "unit": "mg",
+                            "weightGrams": 0.54937,
+                            "percentDaily": 23
+                        }
+                    },
+                    "isAvailable": 1,
+                    "shippingLocations": [],
+                    "ingredients": [
+                        "Grape 1.39/lb",
+                        "Organic Wheat Sandwich Thin 6/6 ea #3438",
+                        "Egg White Patty 3.5\" 160/1.75 oz #3675766",
+                        "Turkey Breast 2/9-lb 6109724",
+                        "Cheese Cream    10/3 lb #5406467",
+                        "Spinach 2.68/lb",
+                        "Sundried Tomato 5.49/lb"
+                    ],
+                    "alergens": []
+                },
+                {
+                    "id": "1400",
+                    "itemName": "Ham & Egg Breakfast Sandwich",
+                    "customName": null,
+                    "sku": "",
+                    "gtin": "10826766900012",
+                    "published": "0",
+                    "description": null,
+                    "size": {
+                        "height": "2.26",
+                        "width": "3.71",
+                        "length": "7.61",
+                        "containerId": "1",
+                        "containerName": "Medium Container",
+                        "estimatedVesselLoad": "5"
+                    },
+                    "weight": "8.750",
+                    "weightUnit": "oz",
+                    "freshRealmCost": null,
+                    "updateTime": 1402509020,
+                    "categories": [],
+                    "imageUrl": null,
+                    "nutritionInfo": {
+                        "Calories": {
+                            "amount": "231.67",
+                            "unit": "KCal",
+                            "weightGrams": null,
+                            "percentDaily": 12
+                        },
+                        "Fat Calories": {
+                            "amount": "19",
+                            "unit": "KCal",
+                            "weightGrams": null,
+                            "percentDaily": 4
+                        },
+                        "Fat": {
+                            "amount": "2.11",
+                            "unit": "g",
+                            "weightGrams": "2.11",
+                            "percentDaily": 4
+                        },
+                        "Saturated Fat": {
+                            "amount": "0.15",
+                            "unit": "g",
+                            "weightGrams": "0.15",
+                            "percentDaily": 1
+                        },
+                        "Polyunsaturated Fat": {
+                            "amount": null,
+                            "unit": "g",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Monounsaturated Fat": {
+                            "amount": null,
+                            "unit": "g",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Trans Fat": {
+                            "amount": null,
+                            "unit": "g",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Cholesterol": {
+                            "amount": "7.59",
+                            "unit": "mg",
+                            "weightGrams": 0.00759,
+                            "percentDaily": 3
+                        },
+                        "Carbohydrates": {
+                            "amount": "39.58",
+                            "unit": "g",
+                            "weightGrams": "39.58",
+                            "percentDaily": 14
+                        },
+                        "Fiber": {
+                            "amount": "5.44",
+                            "unit": "g",
+                            "weightGrams": "5.44",
+                            "percentDaily": 22
+                        },
+                        "Sugar": {
+                            "amount": "14.27",
+                            "unit": "g",
+                            "weightGrams": "14.27",
+                            "percentDaily": 16
+                        },
+                        "Protein": {
+                            "amount": "13.24",
+                            "unit": "g",
+                            "weightGrams": "13.24",
+                            "percentDaily": 27
+                        },
+                        "Vitamin A": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Thiamine B1": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Vitamin B6": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Folate B9": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Vitamin C": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Vitamin E": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Calcium": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Copper": {
+                            "amount": null,
+                            "unit": "mcg",
+                            "weightGrams": null,
+                            "percentDaily": 0
+                        },
+                        "Iron": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Phosphorous": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Potassium": {
+                            "amount": null,
+                            "unit": "mg",
+                            "weightGrams": 0,
+                            "percentDaily": 0
+                        },
+                        "Sodium": {
+                            "amount": "497.65",
+                            "unit": "mg",
+                            "weightGrams": 0.49765,
+                            "percentDaily": 21
+                        }
+                    },
+                    "isAvailable": 1,
+                    "shippingLocations": [],
+                    "ingredients": [
+                        "Orange 5-lb",
+                        "Red 88-xf ctn",
+                        "Muffin Whole Wheat English 8/12 oz #77793",
+                        "Egg White Patty 3.5\" 160/1.75 oz #3675766",
+                        "Red Bell",
+                        "Ham Hormel Low Sodium Presliced 6/2 lbs #3133"
+                    ],
+                    "alergens": []
+                }
+            ]
         }
 
 ## Limit and Offset Example [/products?key={token}&limit={limit}&offset={offset}]
