@@ -87,6 +87,29 @@ The FreshRealm RESTful API uses best practices including the object, identifier,
 
 `http://api2.freshrealm.co/customers/4412/orders/`
 
+# Group Authentication
+
+##Get Authentication Token [/authenticate]
+### Get Authentication Token [POST]
++ Request (application/json)
+Your FreshRealm secret must be obtained by contacting FreshRealm.
+
+
+    {
+        "secret": "myFreshRealmSecret"
+    }
+
++ Response 200 (application/json)
+
+    {
+        "code": 200,
+        "timestamp": 1465982944,
+        "data": {
+            "token": "myNewToken"
+        }
+    }
+
+
 # Group Products
 
 This operation can be used for testing purposes and also to get the IDs of products that you can submit in the ‘Place Order’ operation. See the ‘Products ‘  resource table for more information.
