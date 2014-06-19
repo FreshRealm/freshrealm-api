@@ -30,15 +30,15 @@ JSON will be returned in all responses from this API, with the following structu
 6.  `500` Internal Server Error
 7.  `501` Not Implemented
 
-`Timestamp` is a UNIX timestamp.
+`Timestamp` is a UNIX timestamp that indicates when the server started processing the request.
 
 `Data` contains attributes of a single resource or array of resources.
 
 # Service Endpoints
-An endpoint provides the URL of the server that handles your request.  The API endpoint for all requests in this document is http://api2.freshrealm.co/
+An endpoint is the URL of the server that handles your request.  The API endpoint for all requests in this document is http://api2.freshrealm.co/
 
 # Example
-In the case where you want to retrieve recent order information, you would use the GET HTTP method.
+In the case where you want to retrieve recent order information, you would use the GET HTTP method to the following URL:
 
 `http://api2.freshrealm.co/orders?key=myaccesstoken`
 
@@ -47,7 +47,7 @@ A `key` is a required attribute for each call. See the authentication diagram at
 # Requesting Specific Fields
 For performance reasons, FreshRealm recommends retrieving the minimum number of fields. In addition, not all fields are retrieved by default, so additional fields may be requested (details of the attributes of the resources are described in the Resource Description section).  To retrieve fewer (or more) fields, use the `fields` attribute in the GET request.
 
-`http://api2.freshrealm.co/orders?fields=[‘totalPrice’]`
+`http://api2.freshrealm.co/orders?fields=["totalPrice"]`
 
 To obtain multiple fields, separate the fields by commas:
 
@@ -55,10 +55,10 @@ To obtain multiple fields, separate the fields by commas:
 
 Some calls retrieve nested arrays.  When this is the case you must use the key of the array to retrieve a subset of the fields.  For example to retrieve customer information for order 678 (e.g. email, phone...) you could use this call:
 
-`http://api2.freshrealm.co/orders/678?fields=[‘customer’]`
+`http://api2.freshrealm.co/orders/678?fields=["customer"]`
 
 # Limit and Offset
-Retrieving a large list of resources in one request will degrade performance. Use `limit` and `offset` GET attributes to divide you request into multiple queries. The default value for `limit` is 100.  The default ordering for the orders output is most recent first, and this level of detail is provided in the documentation for specific operations.  For example, if we want to get the next 50 orders starting from position 150 (150th most recent order).
+Retrieving a large list of resources in one request will degrade performance. Use `limit` and `offset` GET attributes to divide your request into multiple queries. The default value for `limit` is 100.  The default ordering is most recent records first. For example, if we want to get the next 50 orders starting from, and including, position 150 (150th most recent order), use the following call:
 
 `http://api2.freshrealm.co/orders?offset=150&limit=50`
 
@@ -71,8 +71,8 @@ Some fields can be used for filtering a list of resources. Filter is a JSON enco
 #### Ex: Find customer by email
 `http://api2.freshrealm.co/customers?filter={‘email’:‘mycustomer@freshrealm.co’}`
 
-#### Ex: List all orders with a total price higher than $50
-`http://api2.freshrealm.co/orders?filter=[{‘field’:’totalPrice,’operator’:’>’,’value’:’50’}]`
+#### Ex: List all orders with a total price greater than $50
+`http://api2.freshrealm.co/orders?filter=[{"field":"total","operator":">","value":"50"}]`
 
 ### Timestamp Filter
 This filter allows retrieval of only records created or modified after this time. For example, it can be used for database synchronization of products between FreshRealm and your shopping cart application. Every request returns a timestamp, which can be used for this filter.
