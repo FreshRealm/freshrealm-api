@@ -1226,17 +1226,13 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ### Get all co-drops [GET]
 
 
-+ Request 200 (application/json)
++ Response 200 (application/json)
 
-<<<<<<< HEAD
+
 {
             "code": 200,
             "timestamp": 1402706999
             "data":
-            
-=======
-
->>>>>>> FETCH_HEAD
             {
                         "id": "75",
                         "name": "TestDrop1",
@@ -1249,13 +1245,17 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
                                     "phone": "9999999010"
                                 }
             }
+}
 
 ## Get information about individual codrop [/codrops/codropId?key?{token}]
 ### Get information about individual codrop [GET]
 
-+ Request 200 (application/json)
++ Response 200 (application/json)
 
-                {
+            {
+            "code": 200,
+            "timestamp": 1402706999
+            "data":{
                             "id": "75",
                             "name": "TestDrop1",
                             "notes": "public drop",
@@ -1264,7 +1264,8 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
                             "inviteRequired":
                             "public": "1",
                             "chargePerOrder": "0.00"
-                }
+                    }
+            }
 
 ## Create Co-drop [/codrops?key={token}]
 ### Create Co-drops [POST]
@@ -1308,9 +1309,10 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 
 + Response 200 (application/json)
 
-
-            [
-                   {
+            {
+            "code": 200,
+            "timestamp": 1402706999
+            "data":[{
                           "id":"233",
                           "firstName":"Bob",
                           "lastName":"Smith",
@@ -1325,16 +1327,13 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
                           "phone":"8131234567",
                           "address":"3501 Interstate 275 Frontage Rd E, Tampa, FL, 33607"
                    }
-            ]
+            ]}
 
 #Group Shipping
 
 ###Get Shipping Details
 ***Use Case Scenario:***
 This operation is used at the checkout page to get the shipping cost and earliest delivery date based on the items and address that the food is being delivered to without placing the actual order.  Input and Output is the same as the ‘Place Order ‘call below.
-
-HTTP Method: POST
-Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 <TABLE>
 
@@ -1410,6 +1409,9 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 
                 {
+                    "code": 200,
+                    "timestamp": 1402706999
+                    "data":{
                           "streetAndNumber": "200 E Main St",
                           "aptSuite": "",
                           "city": "Ventura",
@@ -1426,15 +1428,15 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
                           "unitPrice": "N/A",
                           "labelInfo": "N/A",
                           "vesselSize": "Large"
-                }
-                          }]
+                        }
+                            }]
                 }
 
 ## Update Shipping Information [/shipments/shipmentId?key={token}]
 
 ###Update shipping information for an individual customer [POST]
 
-+ Response 204
++ Request
 
                 {
                     "id": "45",
@@ -1475,73 +1477,78 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 ###Get Shipping Details [GET]
 
 + Response 200 (application/json)
-
-        {
-              "customer":
-                   {
-                    "firstName": "Joe",
-                    "lastName": "Smith",
-                    "email": "joesgvggggmith@yahoo.com",
-                    "phone": "8051234567",
-                    "customerNumber": "555RTT",
-                    "addressFields":
-                            {
-                            "streetAndNumber": "476 E Main Street",
-                            "aptSuite": "200",
-                            "city": "Ventura",
-                            "state": "CA",
-                            "zipcode": "93001"
-                            },"shoppingCart":
-                            [{
-                            "sku": "XFEG8228",
-                            "itemId": "2189",
-                            "qty": "2"
-                            },{
-                            "sku": "FGSXBSNW",
-                            "itemId": "2192",
-                            "qty": "7"
-                            }]
-                   }
-        }
+                {
+                    "code": 200,
+                    "timestamp": 1402706999
+                    "data":
+                    {
+                          "customer":
+                               {
+                                "firstName": "Joe",
+                                "lastName": "Smith",
+                                "email": "joesgvggggmith@yahoo.com",
+                                "phone": "8051234567",
+                                "customerNumber": "555RTT",
+                                "addressFields":
+                                        {
+                                        "streetAndNumber": "476 E Main Street",
+                                        "aptSuite": "200",
+                                        "city": "Ventura",
+                                        "state": "CA",
+                                        "zipcode": "93001"
+                                        },"shoppingCart":
+                                        [{
+                                        "sku": "XFEG8228",
+                                        "itemId": "2189",
+                                        "qty": "2"
+                                        },{
+                                        "sku": "FGSXBSNW",
+                                        "itemId": "2192",
+                                        "qty": "7"
+                                        }]
+                               }
+                    }
+                }
 
 ## Update shipping information for a codrop [/shipments/shipmentId?key={token}]
 
 ### Update shipping information for a codrop [PUT]
 
-+ Response 204
-
++ Response 200
+{
+        "code": 200,
+        "timestamp": 1402706999
+        "data":
+            {
+               "id":"46",
+               "shipDate":"2013-07-05",
+               "actualFreightCost":"23.33",
+               "vessels":
                     {
-                       "id":"46",
-                       "shipDate":"2013-07-05",
-                       "actualFreightCost":"23.33",
-                       "vessels":
-                            {
-                                  "vesselNumber":"1234567",
-                                  "trackingNumber":"9923542523374",
-                                  "trackingNumberBack":"9923542523374",
-                                  "actualWeight":"225.34",
-                              {
-                                        [
-                                           {
-                                              "itemId":"2252",
-                                              "qty":"2"
-                                           },
-                                           {
-                                              "itemId":"2249",
-                                              "qty":"2"
-                                           }
-                                        ]
-                                        }    "drawers":
-                                        [{
-                                            "slotNumber":"2",
-                                            "drawerNumber":"4893rhjf487rt7484jviuref874"
-                                         },
-                                         {
-                                            "slotNumber":"3",
-                                            "drawerNumber":"474fhf375t76fh374984564j45gj"
-                                         }]
-                            }
+                          "vesselNumber":"1234567",
+                          "trackingNumber":"9923542523374",
+                          "trackingNumberBack":"9923542523374",
+                          "actualWeight":"225.34",
+                      {[
+                           {
+                              "itemId":"2252",
+                              "qty":"2"
+                           },{
+                              "itemId":"2249",
+                              "qty":"2"
+                           }]
+                        {"drawers":
+                        [{
+                            "slotNumber":"2",
+                            "drawerNumber":"4893rhjf487rt7484jviuref874"
+                         },
+                         {
+                            "slotNumber":"3",
+                            "drawerNumber":"474fhf375t76fh374984564j45gj"
+                         }]
                     }
+            }
+}     
 
 #Group Other API Calls
 
@@ -1549,29 +1556,31 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 ###All drawers [GET]
 
-+ Response 200 (application/json)
++ Request 200 (application/json)
 
 
-            {[
-               {
+        {
+            "code": 200,
+            "timestamp": 1402706999
+            "data":[{
                   "id":"76",
                   "barcode":"4893rhjf487rt7484jviuref874",
                   "status":"clean",
                   "updateTime":"1377025877"
-               },
-               {
+               },{
                   "id":"77",
                   "barcode":"474fhf375t76fh374984564j45gj",
                   "status":"clean",
                   "updateTime":"1377025878"
                }
             ]}
+        }
 
 ##Get Vessels [/vessels?key={token}]
 
 ###Get Vessels[GET]
 
-+ Response 200 (application/json)
++ Request 200 (application/json)
 
                 {
                     "code": "200",
@@ -1597,9 +1606,9 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 ### Get Vessel Load [POST]
 + Parameters 
-    + Token (required, string)
+    + token (required, string)
 
-+ Response 200 (application/json)
++ Response  
 
                 {
                    "code":"200",
@@ -1617,8 +1626,11 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 ###Create Picknpack Product Receipt [POST]
 Note: receipt date is optional. If no receipt date is provided, receipt date will be pre-filled with the date when API request is initiated.
 
++ Parameters 
+    + token (required, string)
 
-+ Request 204 (application/json)
+
++ Request (application/json)
 
                 {
                 "itemId" : "2248",
@@ -1626,9 +1638,11 @@ Note: receipt date is optional. If no receipt date is provided, receipt date wil
                 "quantity": "8",
                 "location": "A1",
                 "picknpackId": "213"
-                 }
+                }
 
 + Response 200 (application/json)
+
+    + Body
 
                 {
                    "code":"200",
