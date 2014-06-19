@@ -145,7 +145,7 @@ The following table describes which attributes are provided by default, and whic
 | `margin`                |           |           | Zipcode dependent margin function. Zipcode must be provided in order to obtain the result |
 
 
-##List of all the products [/products?key={token}]
+## List Products [/products?key={token}]
 Return all of the products. This operation can be used for testing purposes and also to get the `id`s of products that you can submit in the `Place Order` operation. See the `Products` resource table for more information.
 
 ### GET
@@ -188,8 +188,9 @@ Return all of the products. This operation can be used for testing purposes and 
                 }
 
 
-## Get An Individual Product [/products/{id}?key={token}]
+## Get A Product [/products/{id}?key={token}]
 Fetch a product by its `id`.
+
 ### GET
 
 + Parameters
@@ -339,48 +340,74 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
 ### GET
 + Parameters
     + token (required, string)
-    + filter (optional, object, `{"field":"gtin":"test_fixture_item_16","operator:"like"}`)
+    + filter (optional, array, `[{"field":"gtin", "value":"test_fixture_item_16", "operator:"like"}]`)
 
 
 + Response 200 (application/json)
 
 
-               {
-                    "id": "2158",
-                    "sku": "XDDWW3",
-                    "published": "1",
-                    "weight": "0.400",
-                    "weightUnit": "lb",
-                    "width": "5.000",
-                    "height": "1.000",
-                    "length": "5.000",
-                    "minFreshrealmCost": "2.1",
-                    "avgFreshrealmCost": "2.3",
-                    "maxFreshrealmCost": "2.5",
-                    "name": "Item 16"
-                }
+        {
+            "code": 200,
+            "timestamp": 1402706999,
+            "data": {
+                "id": "2158",
+                "sku": "XDDWW3",
+                "published": "1",
+                "weight": "0.400",
+                "weightUnit": "lb",
+                "width": "5.000",
+                "height": "1.000",
+                "length": "5.000",
+                "minFreshrealmCost": "2.1",
+                "avgFreshrealmCost": "2.3",
+                "maxFreshrealmCost": "2.5",
+                "name": "Item 16"
+            }
+        }
 
-## Use limit and offset [/products/productId/key={token}&limit={limit}&offset={offset}]
+## Limit and Offset Example [/products/productId/key={token}&limit={limit}&offset={offset}]
 
-### Use limit & offset [POST]
+### POST
+
++ Parameters
+    + token (required, string)
+    + limit (optional, number, 2)
+    + offset (optional, number, 1)
 
 + Response 200 (application/json)
 
 
-                {
-                    "id": "2158",
-                    "sku": "XDDWW3",
-                    "published": "1",
-                    "weight": "0.400",
-                    "weightUnit": "lb",
-                    "width": "5.000",
-                    "height": "1.000",
-                    "length": "5.000",
-                    "minFreshrealmCost": "2.1",
-                    "avgFreshrealmCost": "2.3",
-                    "maxFreshrealmCost": "2.5",
-                    "name": "Item 1"
-                }
+        {
+            "code": 200,
+            "timestamp": 1402706999,
+            "data": [{
+                "id": "2158",
+                "sku": "XDDWW3",
+                "published": "1",
+                "weight": "0.400",
+                "weightUnit": "lb",
+                "width": "5.000",
+                "height": "1.000",
+                "length": "5.000",
+                "minFreshrealmCost": "2.1",
+                "avgFreshrealmCost": "2.3",
+                "maxFreshrealmCost": "2.5",
+                "name": "Item 1"
+            },{
+                "id": "2159",
+                "sku": "XDDWW4",
+                "published": "1",
+                "weight": "0.400",
+                "weightUnit": "lb",
+                "width": "5.000",
+                "height": "1.000",
+                "length": "5.000",
+                "minFreshrealmCost": "2.1",
+                "avgFreshrealmCost": "2.3",
+                "maxFreshrealmCost": "2.5",
+                "name": "Item 2"
+            }]
+        }
 
 ## Price by zipcode [/products/productId/key={token}&zip={zipcode}&fields={fieldsList}]
 
