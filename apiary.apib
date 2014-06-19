@@ -69,13 +69,13 @@ Some fields can be used for filtering a list of resources. Filter is a JSON enco
 `in`, `not in`, `like`, `=`, `<`, `>`, `<=`, `>=`, `!=`
 
 #### Ex: Find customer by email
-`http://api2.freshrealm.co/customers?filter={‘email’:‘mycustomer@freshrealm.co’}`
+`http://api2.freshrealm.co/customers?filter={"email":"mycustomer@freshrealm.co"}`
 
 #### Ex: List all orders with a total price greater than $50
 `http://api2.freshrealm.co/orders?filter=[{"field":"total","operator":">","value":"50"}]`
 
 ### Timestamp Filter
-This filter allows retrieval of only records created or modified after this time. For example, it can be used for database synchronization of products between FreshRealm and your shopping cart application. Every request returns a timestamp, which can be used for this filter.
+This filter allows retrieval of records created or modified after this time. Every request returns a timestamp, which can be used for this filter. It can be used for database synchronization of products between FreshRealm and your application. The following call would return all orders modified or created after `1367975121`.
 
 `http://api2.freshrealm.co/orders?timestamp=1367975121`
 
