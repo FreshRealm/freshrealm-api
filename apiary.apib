@@ -972,17 +972,17 @@ This operation can be used to find a customer and get all the orders from the cu
 </TABLE>
 
 
-## List of orders placed by the customer [/customers?key={token}]
+## List of orders placed by the customer [/customers/key={token}]
 
 ### List of orders placed by the customer [GET]
 
 + Parameters
     + Token (required, string)
     + CustomerId (required)
-
+  
 
 + Response 200 (application/json)
-
+       
         {
            "id": "228",
            "firstName": "Bob",
@@ -1125,7 +1125,7 @@ This call uses GET method.
                "name":"Category 1",
                "published":"1"
             }
-
+            
 
 #Group Transactions
 Use Case Scenario:
@@ -1219,19 +1219,14 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 </TABLE>
 
 
-### Get all codrops
-
-
-Method:GET
-
 ## Retrieve all codrop information [/codrops?key={token}]
-### Get all co-drops
+### Get all co-drops [GET]
 
 
 + Response 200 (application/json)
 
 
-
+            
             {
                         "id": "75",
                         "name": "TestDrop1",
@@ -1244,7 +1239,7 @@ Method:GET
                                     "phone": "9999999010"
                                 }
             }
-
+            
 ## Get information about individual codrop [/codrops/codropId?key?{token}]
 ### Get information about individual codrop [GET]
 
@@ -1264,7 +1259,7 @@ Method:GET
 ## Create Co-drop [/codrops?key={token}]
 ### Create Co-drops [POST]
 
-+ Body
++ Response 204
 
         {
                        "name":"API_TestCodrop",
@@ -1281,7 +1276,6 @@ Method:GET
                                    }
         }
 
-### Create Co-Drops [GET]
 
 + Response 200 (application/json)
 
@@ -1295,7 +1289,7 @@ Method:GET
                         "inviteRequired": "",
                         "public": "",
                         "chargePerOrder": "0.00"
-
+        
         }
 
 ## Get list of customers belonging to a particular codrops [/codrops/codropId/customrs?key={token}]
@@ -1322,7 +1316,7 @@ Method:GET
                               "address":"3501 Interstate 275 Frontage Rd E, Tampa, FL, 33607"
                        }
                 ]
-            }
+            }    
 
 #Group Shipping
 
@@ -1397,15 +1391,16 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 
 ##Download Shipments Information [/shipments?key={token}&timestamp={value}]
+
 ### Shipment Information [GET]
-+ Parameters
-    +Token (required, string)
-    +Timestamp (value, optional)
++ Parameters 
+    + Token (required, string)
+    + Timestamp (value, optional)
 
 + Response 200 (application/json)
 
 
-                {
+                {    
                           "streetAndNumber": "200 E Main St",
                           "aptSuite": "",
                           "city": "Ventura",
@@ -1430,35 +1425,38 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 ###Update shipping information for an individual customer [POST]
 
++ Response 204 
 
-{
-                "id": "45",
-                "shipDate": "2013-07-05",
-                "actualFreightCost": "23.33",
-                "vessels":
-                    {
-                        "id": "45",
-                        "vesselNumber": "1234567",
-                        "trackingNumber": "7423542523374",
-                        "trackingNumberBack": "7423542523374",
-                        "actualWeight": "5.34",
-                        "drawers":
-                        [{
-                            "slotNumber": "2",
-                            "drawerNumber": "4893rhjf487rt7484jviuref874"
-                        },{
-                            "slotNumber": "3",
-                            "drawerNumber": "474fhf375t76fh374984564j45gj"
-                        }]
-                    }
-    }
+                {
+                    "id": "45",
+                    "shipDate": "2013-07-05",
+                    "actualFreightCost": "23.33",
+                    "vessels":
+                        {
+                            "id": "45",
+                            "vesselNumber": "1234567",
+                            "trackingNumber": "7423542523374",
+                            "trackingNumberBack": "7423542523374",
+                            "actualWeight": "5.34",
+                            "drawers": 
+                            [{
+                                "slotNumber": "2",
+                                "drawerNumber": "4893rhjf487rt7484jviuref874"
+                            },{
+                                "slotNumber": "3",
+                                "drawerNumber": "474fhf375t76fh374984564j45gj"
+                            }]
+                        }
+                }
 
 ###Update shipping information for an individual customer [GET]
+
++ Response 200 (application/json)
 
                        {
                             "code": "200",
                             "timestamp": "1377032713",
-                            "data":
+                            "data": 
                                 {
                                     "id": "45"
                                 }
@@ -1467,10 +1465,10 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 ##Get Shipping Details [/getshippingdetails?key={token}]
 ###Get Shipping Details [GET]
 
++ Response 200 (application/json)
 
-
-{
-    "customer":
+        {
+              "customer":
                    {
                     "firstName": "Joe",
                     "lastName": "Smith",
@@ -1495,198 +1493,145 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
                             "qty": "7"
                             }]
                    }
-}
+        }
 
-### Update shipping information for a codrop (single order)
-Method:PUT
+## Update shipping information for a codrop [/shipments/shipmentId?key={token}]
 
-Call:
-http://api2.freshrealm.co/shipments/shipmentId?key=myaccesstoken
-**Input**
-{
-   "id":"46",
-   "shipDate":"2013-07-05",
-   "actualFreightCost":"23.33",
-   "vessels":{
-      "vesselNumber":"1234567",
-      "trackingNumber":"9923542523374",
-      "trackingNumberBack":"9923542523374",
-      "actualWeight":"225.34",
-      "drawers":[
-         {
-            "slotNumber":"2",
-            "drawerNumber":"4893rhjf487rt7484jviuref874"
-         },
-         {
-            "slotNumber":"3",
-            "drawerNumber":"474fhf375t76fh374984564j45gj"
-         }
-      ]
-   }
-}
-Output:
-Array
-(
-    [code] => 200
-    [timestamp] => 1377032720
-    [data] => Array
-        (
-            [id] => 46
-        )
+### Update shipping information for a codrop [PUT]
 
-)
-}
++ Response 204 
+
+                    {
+                       "id":"46",
+                       "shipDate":"2013-07-05",
+                       "actualFreightCost":"23.33",
+                       "vessels":
+                            {
+                                  "vesselNumber":"1234567",
+                                  "trackingNumber":"9923542523374",
+                                  "trackingNumberBack":"9923542523374",
+                                  "actualWeight":"225.34",
+                              {
+                                        [
+                                           {
+                                              "itemId":"2252",
+                                              "qty":"2"
+                                           },
+                                           {
+                                              "itemId":"2249",
+                                              "qty":"2"
+                                           }
+                                        ]
+                                        }    "drawers":
+                                        [{
+                                            "slotNumber":"2",
+                                            "drawerNumber":"4893rhjf487rt7484jviuref874"
+                                         },
+                                         {
+                                            "slotNumber":"3",
+                                            "drawerNumber":"474fhf375t76fh374984564j45gj"
+                                         }]
+                            }
+                    }
 
 #Group Other API Calls
 
+## Get Drawers [/drawers?key={token}]
 
-Get Drawers
-This call uses GET method.
+###All drawers [GET]
 
-Call:
-http://api2.freshrealm.co/drawers?key=myaccesstoken
-
-Input:none
++ Response 200 (application/json)
 
 
-*Output*
-{
-Array
-(
-    [0] => Array
-        (
-            [id] => 76
-            [barcode] => 4893rhjf487rt7484jviuref874
-            [status] => clean
-            [updateTime] => 1377025877
-        )
+            {[
+               {
+                  "id":"76",
+                  "barcode":"4893rhjf487rt7484jviuref874",
+                  "status":"clean",
+                  "updateTime":"1377025877"
+               },
+               {
+                  "id":"77",
+                  "barcode":"474fhf375t76fh374984564j45gj",
+                  "status":"clean",
+                  "updateTime":"1377025878"
+               }
+            ]}
 
-    [1] => Array
-        (
-            [id] => 77
-            [barcode] => 474fhf375t76fh374984564j45gj
-            [status] => clean
-            [updateTime] => 1377025878
-        )
-etc.
-}
+##Get Vessels [/vessels?key={token}]
 
-###Get Vessels
-This call uses GET method.
+###Get Vessels[GET]
 
-Call:
-http://api2.freshrealm.co/vessels?key=myaccesstoken
++ Response 200 (application/json)
 
-Input:none
+                {
+                    "code": "200",
+                    "timestamp": "1377026573",
+                    "data": 
+                    [{
+               
+                        "id": "29",
+                        "vesselTypeId": "2",
+                        "vesselNumber": "1234567",
+                        "status": "ready",
+                        "updateTime": "1377026572"
+                    },{
+                        "id": "30",
+                        "vesselTypeId": "3",
+                        "vesselNumber": "7654321",
+                        "status":  "in use",
+                        "updateTime": "1377026572"
+                    }]
+                }
 
-Output
-{
-Array
-(
-    [code] => 200
-    [timestamp] => 1377026573
-    [data] => Array
-        (
-            [0] => Array
-                (
-                    [id] => 29
-                    [vesselTypeId] => 2
-                    [vesselNumber] => 1234567
-                    [status] => ready
-                    [updateTime] => 1377026572
-                )
+##Get Vessel Load [/vesselload?key={token}]
 
-            [1] => Array
-                (
-                    [id] => 30
-                    [vesselTypeId] => 3
-                    [vesselNumber] => 7654321
-                    [status] => in use
-                    [updateTime] => 1377026572
-                )
-etc.
-}
+### Get Vessel Load [POST]
 
-###Get Vessel Load
-Method:POST
++ Response 200 (application/json)
 
-Call:
-http://api2.freshrealm.co/vesselLoad?key=myaccesstoken
+                {
+                   "code":"200",
+                   "timestamp":"1377029658",
+                   "data":{
+                      "size":"Large",
+                      "load":"27",
+                      "itemsInside":"4",
+                      "freeSpace":"11",
+                      "shippingWeight":"29.3"
+                   }
+                }
 
-Input
-{
-Array
-(
-    [0] => Array
-        (
-            [itemId] => 2252
-            [qty] => 2
-        )
-
-    [1] => Array
-        (
-            [itemId] => 2249
-            [qty] => 2
-        )
-
-)
-}
-
-Output
-
-Array
-(
-    [code] => 200
-    [timestamp] => 1377029658
-    [data] => Array
-        (
-            [0] => Array
-                (
-                    [size] => Large
-                    [load] => 27
-                    [itemsInside] => 4
-                    [freeSpace] => 11
-                    [shippingWeight] => 29.3
-                )
-        )
-)
-
-###Create Picknpack Product Receipt
-Method:POST
-
-Call:
-http://api2.freshrealm.co/pnpProductReceipts?key=myaccesstoken
-
-Input
-
+##Create Picknpack Product Receipt [/pnpproductreceipts?key={token}]
+###Create Picknpack Product Receipt [POST]
 Note: receipt date is optional. If no receipt date is provided, receipt date will be pre-filled with the date when API request is initiated.
-Array
-(
-    [itemId] => 2248
-    [receiptDate] => 2013-06-01 04:00:00
-    [quantity] => 8
-    [location] => A1
-    [picknpackId] => 213
-)
 
-Output
 
-Array
-(
-    [code] => 200
-    [timestamp] => 1377031633
-    [data] => Array
-        (
-            [id] => 2
-            [itemId] => 2248
-            [receiptDate] => 2013-06-01 04:00:00
-            [quantity] => 8
-            [location] => A1
-            [picknpackId] => 213
-            [createTime] => 2013-08-20 20:47:13
-            [updateTime] => 2013-08-20 20:47:13
-        )
++ Request 204 (application/json)
 
-)
+                {
+                "itemId" : "2248",
+                "receiptDate": "2013-06-01 04:00:00",
+                "quantity": "8",
+                "location": "A1",
+                "picknpackId": "213"
+                 }
+
++ Response 200 (application/json)
+
+                {
+                   "code":"200",
+                   "timestamp":"13031633",
+                   "data":{
+                      "id": "2",
+                      "itemId": "2248",
+                      "receiptDate": "2013-06-01 04:00:00",
+                      "quantity": "8",
+                      "location": "A1",
+                      "picknpackId": "213",
+                      "createTime": "2013-08-20 20:47:13",
+                      "updateTime": "2013-08-20 20:47:13"
+                   }
+                }
 
 
