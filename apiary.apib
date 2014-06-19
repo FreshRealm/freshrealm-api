@@ -970,8 +970,8 @@ This operation can be used to find available categories to which products belong
 | `parentUrl` |  |  | Url of a parent category if such category exists |
 
 
-## Retrieve individual category [/categories?key={token}]
-### Retrieve individual category [GET]
+## List Categories [/categories?key={token}]
+### GET
 + Parameters
     + token (required, string)
 
@@ -992,10 +992,11 @@ This operation can be used to find available categories to which products belong
                 }]
             }
 
-##Retrieve individual category [/categories/categoryId?key={token}]
-###Retrieve individual category [GET]
+##Retrieve An Individual Category [/categories/{categoryId}?key={token}]
+### GET
 + Parameters
     + token (required, string)
+    + categoryId (required, number)
 
 + Response 200 (application/json)
 
