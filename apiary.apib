@@ -1259,21 +1259,20 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ## Create Co-drop [/codrops?key={token}]
 ### Create Co-drops [POST]
 
-+ Body
++ Request
 
         {
-                       "name":"API_TestCodrop",
-                       "inviteRequired":"",
-                       "active":"",
-                       "notes":"Test codrop created through API",
-                       "addressFields":
-                                   {
-                                          "streetAndNumber":"500 Poli St",
-                                          "aptSuite":"A",
-                                          "city":"Ventura",
-                                          "state":"CA",
-                                          "zipcode":"93001"
-                                   }
+                "name":"API_TestCodrop",
+                "inviteRequired":"",
+                "active":"",
+                "notes":"Test codrop created through API",
+                "addressFields": {
+                    "streetAndNumber":"500 Poli St",
+                    "aptSuite":"A",
+                    "city":"Ventura",
+                    "state":"CA",
+                    "zipcode":"93001"
+                }
         }
 
 
