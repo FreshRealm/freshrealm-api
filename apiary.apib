@@ -285,14 +285,11 @@ This example shows how to limit the returned data to a specific set of fields.
                 }
             }
 
-## Retrieve Image Details [/products/productId?key={token}&fields={fieldsList2}]
-This example shows how to receive only image related fields. Refer to the table above to see which fields are available.
-
-### GET
+### Image Details [GET]
 
 + Parameters
     + token (required, string)
-    + fieldsList2 (optional, array, `["id","imageUrl","url","images"]`)
+    + fieldsList1 (optional, array, `["id","imageUrl","url","images"]`)
 
 + Response 200 (application/json)
 
@@ -1168,7 +1165,7 @@ This operation is used at the checkout page to get the shipping cost and earlies
 | updateTime |  | X | Latest timestamp when the shipment was updated |
 | shippingAddress | X |  | Address resource where shipment was delivered (see Address resource above for more info |
 | shipToName | X |  | Name of shipment recipient |
-| shippingLines | X |  |  Array of shipping lines. Every shipping line contains the following information: `productNumber`,`vesselNumber`,`customerName`,`slotNumber`,`vesselNotchNumber`,`unitPrice`,`labelInfo`,`vesselSize` |
+| shippingLines | X |  |  Array of shipping lines. Every shipping line contains the following information: `productNumber`, `vesselNumber`, `customerName`, `slotNumber`, `vesselNotchNumber`, `unitPrice`, `labelInfo`, `vesselSize` |
 
 ##Download Shipments Information [/shipments?key={token}&timestamp={value}]
 
