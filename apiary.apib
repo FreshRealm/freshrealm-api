@@ -295,9 +295,9 @@ Product is an active item available to your customer.
                     "minFreshrealmCost": "2.1",
                     "avgFreshrealmCost": "2.3",
                     "maxFreshrealmCost": "2.5",
-                    "name": "Item 1"       
-                }           
-          
+                    "name": "Item 1"
+                }
+
 
 ## Retrieve details for individual product [/products/productsId/key={token}]
 ### Details for individual products [GET]
@@ -327,14 +327,14 @@ Product is an active item available to your customer.
                         {
                         "amount": "0",
                         "unit": "g"
-                        },  
+                        },
                      "Saturated Fat":
                         {
                         "amount": "0.05",
                         "unit": "g"
                         },
 
-                    "Cholesterol": 
+                    "Cholesterol":
                         {
                         "amount": "5",
                         "unit": "mg"
@@ -361,7 +361,7 @@ Product is an active item available to your customer.
                     "Protein":
                         {
                             "amount": "10.47",
-                            "unit": "g"             
+                            "unit": "g"
                         }
 
 
@@ -387,7 +387,12 @@ Product is an active item available to your customer.
                     "min": "4.96",
                     "max" : "6.76"
                 }
+<<<<<<< HEAD
             }
+=======
+}
+
+>>>>>>> FETCH_HEAD
 
 ## Retrieve Image Details [/products/productId/key={token}&fields={fieldsList2}]
 
@@ -454,10 +459,14 @@ Product is an active item available to your customer.
                     "minFreshrealmCost": "2.1",
                     "avgFreshrealmCost": "2.3",
                     "maxFreshrealmCost": "2.5",
-                    "name": "Item 16"       
+                    "name": "Item 16"
                 }
 
+<<<<<<< HEAD
 ## Use limit and offset [/products/productId/key={token}&limit={limit}&offset={offset}]
+=======
+## Use limit and offset [products/productId/key={token}&limit={limit}&offset={offset}
+>>>>>>> FETCH_HEAD
 
 ### Use limit & offset [POST]
 
@@ -479,8 +488,8 @@ http://api2.freshrealm.co/products/productId/key=myaccesstoken&limit=1&offset=1
                     "minFreshrealmCost": "2.1",
                     "avgFreshrealmCost": "2.3",
                     "maxFreshrealmCost": "2.5",
-                    "name": "Item 1"       
-                } 
+                    "name": "Item 1"
+                }
 
 ## Price by zipcode [/products/productId/key={token}&zip={zipcode}&fields={fieldsList}]
 
@@ -919,10 +928,10 @@ Retrieve all the latest orders for a given `Customer ID` (default limit is 100 r
         }
 
 ## Cancel an Order [/cancelOrder/{orderId}?key={token}]
-The input `id` must match the `orderId` in the URL.
+This call allows you to cancel existing orders that have not been started yet. An order can be cancelled any time before the food is being made (while order status is `PENDING`).
 
 ### Cancel An Order [PUT]
-
+The input `id` must match the `orderId` in the URL.
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
