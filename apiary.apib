@@ -146,32 +146,8 @@ The following table describes which attributes are provided by default, and whic
 
 
 ##List of all the products [/products?key={token}]
-This operation can be used for testing purposes and also to get the `id`s of products that you can submit in the `Place Order` operation. See the `Products` resource table for more information.
+Return all of the products. This operation can be used for testing purposes and also to get the `id`s of products that you can submit in the `Place Order` operation. See the `Products` resource table for more information.
 
-### GET
-
-+ Parameters
-    + token (required, string)
-
-+ Response 200 (application/json)
-
-                {
-                    "id": "2158",
-                    "sku": "XDDWW3",
-                    "published": "1",
-                    "weight": "0.400",
-                    "weightUnit": "lb",
-                    "width": "5.000",
-                    "height": "1.000",
-                    "length": "5.000",
-                    "minFreshrealmCost": "2.1",
-                    "avgFreshrealmCost": "2.3",
-                    "maxFreshrealmCost": "2.5",
-                    "name": "Item 1"
-                }
-
-
-## Get An Individual Product [/products/productsId/key={token}]
 ### GET
 
 + Parameters
@@ -181,8 +157,51 @@ This operation can be used for testing purposes and also to get the `id`s of pro
 
                 {
                     "code": 200,
+                    "timestamp": 1402706999,
+                    "data": [{
+                        "id": "2158",
+                        "sku": "XDDWW3",
+                        "published": "1",
+                        "weight": "0.400",
+                        "weightUnit": "lb",
+                        "width": "5.000",
+                        "height": "1.000",
+                        "length": "5.000",
+                        "minFreshrealmCost": "2.1",
+                        "avgFreshrealmCost": "2.3",
+                        "maxFreshrealmCost": "2.5",
+                        "name": "Item 1"
+                    },{
+                        "id": "2159",
+                        "sku": "XDDWW3",
+                        "published": "1",
+                        "weight": "0.400",
+                        "weightUnit": "lb",
+                        "width": "5.000",
+                        "height": "1.000",
+                        "length": "5.000",
+                        "minFreshrealmCost": "2.1",
+                        "avgFreshrealmCost": "2.3",
+                        "maxFreshrealmCost": "2.5",
+                        "name": "Item 2"
+                    }]
+                }
+
+
+## Get An Individual Product [/products/{id}?key={token}]
+Fetch a product by its `id`.
+### GET
+
++ Parameters
+    + id (required, number, 1)
+    + token (required, string)
+
++ Response 200 (application/json)
+
+                {
+                    "code": 200,
                     "timestamp": 184653225,
-                    "data":{
+                    "data": {
                         "id": "2158",
                         "sku": "XDDWW3",
                         "published": "1",
@@ -314,10 +333,7 @@ Another filtering example.
         }
 
 
-
-## Filter example [/products/productId/key={token}&filter={"gtin":"test_fixture_item_16"}]
-## Filter example [/products/productId/key={token}&filter={"field":"gtin":"test_fixture_item_16"}]
-## Filter example [/products/productId/key={token}&filter={"field":"gtin":"test_fixture_item_16","operator:"like"}]
+## Filter Example [/products/productId/key={token}&filter={"field":"gtin":"test_fixture_item_16","operator:"like"}]
 
 
 ### Filter by gtin [GET]
