@@ -88,7 +88,7 @@ The FreshRealm RESTful API uses best practices including the object, identifier,
 FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your "secret code" that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.
 
 ##Get Authentication Token [/authenticate]
-### Get Authentication Token [POST]
+### POST
 + Request (application/json)
 Your FreshRealm secret must be obtained by contacting FreshRealm.
 
@@ -111,10 +111,10 @@ Your FreshRealm secret must be obtained by contacting FreshRealm.
 
 # Group Products
 
-This operation can be used for testing purposes and also to get the IDs of products that you can submit in the ‘Place Order’ operation. See the ‘Products ‘  resource table for more information.
+A **product** is an active item available to your customer.
 
-This table describes which attributes are provided by default, and which can be used as a filter.  For specific examples, and to see the data types that are passed, refer to the Example section of this document.
-Product is an active item available to your customer.
+The following table describes which attributes are provided by default, and which can be used as a filter.
+
 
 | Field                 | Default   | Filter    | Description |
 |-----------------------|-----------|-----------|-------------|
@@ -146,6 +146,8 @@ Product is an active item available to your customer.
 
 
 ##List of all the products [/products?key={token}]
+This operation can be used for testing purposes and also to get the `id`s of products that you can submit in the `Place Order` operation. See the `Products` resource table for more information.
+
 ### GET
 
 + Parameters
