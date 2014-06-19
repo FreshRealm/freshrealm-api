@@ -409,11 +409,13 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
             }]
         }
 
-## Price By Zipcode [/products/productId/key={token}&zip={zipcode}&fields={fieldsList}]
+## Price By Zipcode [/products/{id}/key={token}&zip={zipcode}&fields={fieldsList}]
+Get the price of a product for a given zipcode.
 
 ### GET
 + Parameters
     + token (required, string)
+    + id (required, number)
     + zipcode (required, string, `95660`)
     + fieldsList (optional, array, `["id", "name", "price"]`)
 
@@ -430,7 +432,7 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
         }
 
 
-## Get a list of ingredients [/products/productId/key={token}&fields={fieldsList}]
+## Get Ingredients [/products/productId/key={token}&fields={fieldsList}]
 
 ### Obtain a list of ingredents [GET]
 + Parameters
