@@ -257,12 +257,13 @@ Fetch a product by its `id`.
 
 
 
-## Fetch Specific Fields [/products/productId?key={token}&fields={fieldsList}]
+## Fetch Specific Fields [/products/{productId}?key={token}&fields={fieldsList}]
 These examples show how to limit the returned data to a specific set of fields.
 
 ### ID, Costs, & Prices [GET]
 + Parameters
     + token (required, string)
+    + productId (required, number, `1`)
     + fieldsList (optional, array, `["id","costs","prices"]`)
 
 + Response 200 (application/json)
@@ -288,6 +289,7 @@ These examples show how to limit the returned data to a specific set of fields.
 ### Image Details [GET]
 + Parameters
     + token (required, string)
+    + productId (required, number, `1`)
     + fieldsList (optional, array, `["id","imageUrl","url","images"]`)
 
 + Response 200 (application/json)
@@ -311,6 +313,7 @@ These examples show how to limit the returned data to a specific set of fields.
 ### ID, Margin [GET]
 + Parameters
     + token (required, string)
+    + productId (required, number, `1`)
     + fieldsList (optional, array, `["id","margin"]`)
 
 
@@ -973,31 +976,32 @@ Url: http://api2.freshrealm.co/categories?key=myaccesstoken
 ### Get Categories
 This call uses GET method.
 
-##Retrieve individual category[/categories?key={token}]
+##Retrieve individual category [/categories?key={token}]
 ###Retrieve individual category [GET]
++ Parameters
+    + token (required, string)
 
 + Response 200 (application/json)
 
             {
-            "code": 200,
-            "timestamp": 1402706999
-            "data":[
-               {
-                  "id": "293",
-                  "name": "Category 1"
-               },
-               {
-                  "id": "294",
-                  "name": "Category 2"
-               },
-               {
-                  "id": "295",
-                  "name": "Category 3"
-               }
-            ]}
+                "code": 200,
+                "timestamp": 1402706999
+                "data":[{
+                    "id": "293",
+                    "name": "Category 1"
+                },{
+                    "id": "294",
+                    "name": "Category 2"
+                },{
+                    "id": "295",
+                    "name": "Category 3"
+                }]
+            }
 
-##Retrieve individual category[/categories/categoryId?key={token}]
+##Retrieve individual category [/categories/categoryId?key={token}]
 ###Retrieve individual category [GET]
++ Parameters
+    + token (required, string)
 
 + Response 200 (application/json)
 
@@ -1011,16 +1015,15 @@ This call uses GET method.
 
 #Group Transactions
 Use Case Scenario:
-This operation can be used to retrieve a list of all the transactions.  Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.  See the ‘transactions ‘  resource table for more information.
+This operation can be used to retrieve a list of all the transactions. Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.
 
-HTTP Method: GET
-Url: http://api2.freshrealm.co/transactions?key=myaccesstoken
+[TBD]
+
 
 #Group Codrops
-Use Case Scenario:
-To obtain information about codrop, request individual codrop information, get list of customers belonging to a codrop, or create a codrop.
+Use these methods to obtain information about codrop, request individual codrop information, get list of customers belonging to a codrop, or create a codrop.
 
-Codrops allow multiple customers to have food delivered to one location. Codrops can be public or private. Codrops could be open to all or by invite only. FreshRealm API allows retrieving information about all codrops or individual codrop, as well as creation of a new codrop.
+Codrops allow multiple customers to have food delivered to one location. Codrops can be public or private, and can be open to all or by invite only. The FreshRealm API allows retrieving information about all codrops or individual codrop, as well as creation of a new codrop.
 
 
 | Field | Default | Filter | Description |
@@ -1060,7 +1063,7 @@ Codrops allow multiple customers to have food delivered to one location. Codrops
             }
         }
 
-## Get information about individual codrop [/codrops/codropId?key?{token}]
+## Get information about individual codrop [/codrops/codropId?key={token}]
 ### Get information about individual codrop [GET]
 
 + Parameters
@@ -1152,7 +1155,7 @@ Codrops allow multiple customers to have food delivered to one location. Codrops
 #Group Shipping
 
 ###Get Shipping Details
-This operation is used at the checkout page to get the shipping cost and earliest delivery date based on the items and address that the food is being delivered to without placing the actual order.  Input and Output are the same as the `Place Order` call below.
+This operation is used at the checkout page to get the shipping cost and earliest delivery date based on the items and address that the food is being delivered to without placing the actual order.
 
 | Field | Default | Filter | Description |
 |-------|---------|--------|-------------|
@@ -1163,7 +1166,7 @@ This operation is used at the checkout page to get the shipping cost and earlies
 | shipToName | X |  | Name of shipment recipient |
 | shippingLines | X |  |  Array of shipping lines. Every shipping line contains the following information: `productNumber`, `vesselNumber`, `customerName`, `slotNumber`, `vesselNotchNumber`, `unitPrice`, `labelInfo`, `vesselSize` |
 
-##Download Shipments Information [/shipments?key={token}&timestamp={value}]
+##Download Shipments Information [/shipments?key={token}&timestamp={timestamp}]
 
 ### Shipment Information [GET]
 + Parameters
@@ -1171,7 +1174,6 @@ This operation is used at the checkout page to get the shipping cost and earlies
     + timestamp (optional, number)
 
 + Response 200 (application/json)
-
 
         {
             "code": 200,
@@ -1367,6 +1369,16 @@ This operation is used at the checkout page to get the shipping cost and earlies
 
 + Parameters
     + token (required, string)
+
++ Request (application/json)
+
+        [{
+            "itemId": 2252,
+            "qty": 2
+        },{
+            "itemId": 2249,
+            "qty": 2
+        }]
 
 + Response 200 (application/json)
 
