@@ -334,7 +334,7 @@ Another filtering example.
         }
 
 
-## Filter Example [/products/productId/key={token}&filter={filter}]
+## Filter Example [/products?key={token}&filter={filter}]
 Some fields can be used for filtering a list of resources. `Filter` is a JSON encoded GET attribute that can be defined by a key value pair or as a JSON object with an operator.
 
 ### GET
@@ -349,7 +349,7 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
         {
             "code": 200,
             "timestamp": 1402706999,
-            "data": {
+            "data": [{
                 "id": "2158",
                 "sku": "XDDWW3",
                 "published": "1",
@@ -362,12 +362,12 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
                 "avgFreshrealmCost": "2.3",
                 "maxFreshrealmCost": "2.5",
                 "name": "Item 16"
-            }
+            }]
         }
 
-## Limit and Offset Example [/products/productId/key={token}&limit={limit}&offset={offset}]
+## Limit and Offset Example [/products?key={token}&limit={limit}&offset={offset}]
 
-### POST
+### GET
 
 + Parameters
     + token (required, string)
@@ -409,13 +409,13 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
             }]
         }
 
-## Price by zipcode [/products/productId/key={token}&zip={zipcode}&fields={fieldsList}]
+## Price By Zipcode [/products/productId/key={token}&zip={zipcode}&fields={fieldsList}]
 
-### Price by Zipcode [GET]
+### GET
 + Parameters
     + token (required, string)
     + zipcode (required, string, `95660`)
-    + fieldsList (optional, array, `["id","name", "price"]`)
+    + fieldsList (optional, array, `["id", "name", "price"]`)
 
 + Response 200 (application/json)
 
@@ -423,10 +423,10 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
             "code": "200",
             "timestamp": "1376939257",
             "data": {
-                    "id": "2189",
-                    "name": "Item 2",
-                    "price": "2.34"
-                }
+                "id": "2189",
+                "name": "Item 2",
+                "price": "2.34"
+            }
         }
 
 
@@ -435,33 +435,47 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
 ### Obtain a list of ingredents [GET]
 + Parameters
     + token (required, string)
-    + fieldsList (optional, array, `["id","name", "price"]`)
+    + fieldsList (optional, array, `["id", "ingedients"]`)
 
 
 + Response 200 (application/json)
 
         {
-           "id":"2203",
-           "ingredients":{
-                "url":"api2.freshrealm.co/items/2201?key=FgDqgXUUP7dh38zb2CSCmcyookXnTgM",
-                "id":"2201",
-                "amount":"0.5",
-                "unit":"ft"
-           }
+            "code": "200",
+            "timestamp": "1376939257",
+            "data": {
+                "id":"2203",
+                "ingredients": [{
+                    "url":"api2.freshrealm.co/items/2201?key=FgDqgXUUP7dh38zb2CSCmcyookXnTgM",
+                    "id":"2201",
+                    "amount":"0.5",
+                    "unit":"ft"
+                }]
+            }
         }
 
-## Get Category for the product [/products/productId/categories/key={token}]
+## Get Categories [/products/{id}/categories?key={token}]
+Get the categories to which a particular product belongs.
 
-### Retrieve categories to which product belongs [GET]
+### GET
 + Parameters
     + token (required, string)
+    + id (required, number, `1`)
 
 + Response 200 (application/json)
 
         {
-            "id":"283",
-            "name":"Category 1",
-            "url":"api2.freshrealm.co/categories/283?key=DwnQZEAZZQCWrVT0UVdJg9WxEZq29S9"
+            "code": "200",
+            "timestamp": "1376939257",
+            "data": [{
+                "id":"283",
+                "name":"Category 1",
+                "url":"api2.freshrealm.co/categories/283?key=DwnQZEAZZQCWrVT0UVdJg9WxEZq29S9"
+            },{
+                "id":"284",
+                "name":"Category 2",
+                "url":"api2.freshrealm.co/categories/284?key=DwnQZEAZZQCWrVT0UVdJg9WxEZq29S9"
+            }]
         }
 
 ## Nutritional Information [/products/key={token}&fields={fieldsList}]
