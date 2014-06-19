@@ -485,72 +485,78 @@ Get the categories to which a particular product belongs.
             }]
         }
 
-## Nutritional Information [/products?key={token}&fields={fieldsList}]
+## Nutritional Information [/products/{id}?key={token}&fields={fieldsList}]
+Retrieve the nutritional information for a specific product.
+
+### GET
 
 + Parameters
     + token (required, string)
-    + fieldslist (optional, array, `["id","gtin","nutrition","ingredients"]`)
-
-### Get nutrition information [/GET]
+    + id (required, number)
+    + fieldsList (optional, array, `["id","gtin","nutrition","ingredients"]`)
 
 + Response 200 (application/json)
 
         {
-            "id": "2188",
-            "gtin": "test_fixture_item_1",
-            "ingredients": [{
-                "url": "api2.freshrealm.co/items/2191?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
-                "id": "2191",
-                "amount": "20",
-                "unit": "lb"
-            },{
-                "url": "api2.freshrealm.co/items/2192?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
-                "id": "2192",
-                "amount": "20",
-                "unit": "lb"
-            },{
-                "url": "api2.freshrealm.co/items/2201?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
-                "id": "2201",
-                "amount": "0.5",
-                "unit": "ft"
-            },{
-                "url": "api2.freshrealm.co/items/2204?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
-                "id": "2204",
-                "amount": "1",
-                "unit": "ft"
-            }],
-            "nutrition": {
-                "calories": {
-                    "amount": "193.75",
-                    "unit": "KCal"
-                },
-                "Fat": {
-                "amount": "0",
-                "unit": "g"
-                },
-                "Saturated Fat": {
-                "amount": "0.05",
-                "unit": "g"
-                },
-                "Cholesterol": {
-                "amount": "5",
-                "unit": "mg"
-                },
-                "Carbohydrates": {
-                    "amount": "44.43",
-                    "unit": "g"
-                },
-                "Fiber": {
-                    "amount": "4.42",
-                    "unit": "g"
-                },
-                "Sugar": {
-                    "amount": "32.13",
-                    "unit": "g"
-                },
-                "Protein": {
-                    "amount": "10.47",
-                    "unit": "g"
+            "code": 200,
+            "timestamp": "1376939257",
+            "data": {
+                "id": "2188",
+                "gtin": "test_fixture_item_1",
+                "ingredients": [{
+                    "url": "api2.freshrealm.co/items/2191?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
+                    "id": "2191",
+                    "amount": "20",
+                    "unit": "lb"
+                },{
+                    "url": "api2.freshrealm.co/items/2192?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
+                    "id": "2192",
+                    "amount": "20",
+                    "unit": "lb"
+                },{
+                    "url": "api2.freshrealm.co/items/2201?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
+                    "id": "2201",
+                    "amount": "0.5",
+                    "unit": "ft"
+                },{
+                    "url": "api2.freshrealm.co/items/2204?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
+                    "id": "2204",
+                    "amount": "1",
+                    "unit": "ft"
+                }],
+                "nutrition": {
+                    "calories": {
+                        "amount": "193.75",
+                        "unit": "KCal"
+                    },
+                    "Fat": {
+                        "amount": "0",
+                        "unit": "g"
+                    },
+                    "Saturated Fat": {
+                        "amount": "0.05",
+                        "unit": "g"
+                    },
+                    "Cholesterol": {
+                        "amount": "5",
+                        "unit": "mg"
+                    },
+                    "Carbohydrates": {
+                        "amount": "44.43",
+                        "unit": "g"
+                    },
+                    "Fiber": {
+                        "amount": "4.42",
+                        "unit": "g"
+                    },
+                    "Sugar": {
+                        "amount": "32.13",
+                        "unit": "g"
+                    },
+                    "Protein": {
+                        "amount": "10.47",
+                        "unit": "g"
+                    }
                 }
             }
         }
@@ -599,7 +605,7 @@ email address and phone number. New customers are created on the fly.
                     "email": "aarondfrancis@gmail.com",
                     "phone": "555-555-5555",
                     "addressFields": {
-                        "streetAndNumber": "4431 Meadowview Ln",
+                        "streetAndNumber": "4431 Meadow Ln",
                         "aptSuite": "",
                         "city": "Anytown",
                         "state": "TX",
@@ -746,7 +752,7 @@ Retrieve all the latest orders (default limit is 100 results)
 ## Get Orders By Customer [/customers/{customerId}/orders?key={token}&limit={limit}]
 Retrieve all the latest orders for a given `Customer ID` (default limit is 100 results)
 
-### Get Orders By Customer [GET]
+### GET
 + Parameters
     + customerId (required, number, `1001`)
     + token (required, string)
@@ -822,8 +828,8 @@ Retrieve all the latest orders for a given `Customer ID` (default limit is 100 r
 
 
 ## Get Order Details [/order/{orderId}?key={token}]
-
-### Get Order Details [GET]
+Get the details of a particular order, given an `orderId`.
+### GET
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
@@ -874,9 +880,7 @@ Retrieve all the latest orders for a given `Customer ID` (default limit is 100 r
 
 This call allows you to cancel existing orders that have not been started yet. An order can be cancelled any time before the food is being made (while order status is `PENDING`).
 
-
 ### Cancel An Order [PUT]
-
 
 + Parameters
     + orderId (required, number, `109`)
@@ -904,133 +908,57 @@ The input `id` must match the `orderId` in the URL.
         }
 
 
+# Group Customers
 
-#Group Customers
+This operation can be used to find a customer and to get all the orders for the customer.
 
-This operation can be used to find a customer and get all the orders from the customer.  Get customers will give you the ids for those requested customers to allow you to then get orders for them.  See the ‘Customers ‘  resource table for more information.
-
-<TABLE>
-
-<TR VALIGN=TOP>
-<TD>Field</TD>
-<TD>Default</TD>
-<TD>Filter</TD>
-<TD>Description</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>id</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>FreshRealm customer id</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>firstName</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>First name of customer</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>lastName</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Last name of customer</TD>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>email</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Email Address</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>phone</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Phone Number</TD>
-</TR>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>addresses</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>List of the latest shipping addresses</TD>
-</TR>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>customerID</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>The external customer id (customer id set by customers of FreshRealm)</TD>
-</TR>
-
-</TABLE>
+|Field                      |Default        |Filter                 |Description |
+|---------------------------|---------------|-----------------------|------------|
+|id                         |X              |X                      |FreshRealm customer id |
+|firstName                  |X              |X                      |First name of customer |
+|lastName                   |X              |X                      |Last name of customer |
+|email                      |X              |X                      |Email Address |
+|phone                      |X              |X                      |Phone Number |
+|addresses                  |X              |X                      |List of the latest shipping addresses |
+|customerID                 |X              |X                      |The external customer id (customer id set by customers of FreshRealm) |
 
 
-## List of orders placed by the customer [/customers/key={token}]
+## List of orders placed by the customer [/customers/{customerId}?key={token}]
 
-### List of orders placed by the customer [GET]
+### GET
 
 + Parameters
-    + Token (required, string)
-    + CustomerId (required)
+    + token (required, string)
+    + customerId (required, number)
 
 
 + Response 200 (application/json)
 
         {
-           "id": "228",
-           "firstName": "Bob",
-           "lastName": "Smith",
-           "email": "numberonebob@bob.com",
-           "phone": "8051234567",
-           "customerId": ""
+            "code": 200,
+            "timestamp": 1377020859,
+            "data": {
+                "id": "228",
+                "firstName": "Bob",
+                "lastName": "Smith",
+                "email": "numberonebob@bob.com",
+                "phone": "8051234567",
+                "customerId": ""
+            }
         }
 
 
 #Group Addresses
 
-This operation can be used to find addresses and get all the addresses for a customer.  Get addresses will give you the ids for those requested addresses to allow you to then get orders for them.  See the ‘Customers ‘  resource table for more information.
-HTTP Method: GET
-Url: http://api2.freshrealm.co/addresses?key=myaccesstoken
+This operation can be used to find addresses and get all the addresses for a customer.
 
-<TABLE>
-
-<TR VALIGN=TOP>
-<TD>Field</TD>
-<TD>Description</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>streetAndNumber</TD>
-<TD>Example: 476 Main St</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>aptSuite</TD>
-<TD>Apartment number, unit number or suite. Example: Unit A</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>city</TD>
-<TD>City name</TD>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>state</TD>
-<TD>State name - Example: CA or California</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>verify</TD>
-<TD>Set to 1 to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address.</TD>
-</TR>
-</TABLE>
+|Field              |Description        |
+|-------------------|-------------------|
+|streetAndNumber    |Example: 476 Main St       |
+|aptSuite           |Apartment number, unit number or suite. Example: Unit A        |
+|city               |City name      |
+|state              |State name - Example: CA or California     |
+|verify             |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
 
 # Group Categories
 
@@ -1233,7 +1161,7 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
             "code": 200,
             "timestamp": 1402706999
             "data":
-            
+
 =======
 
 >>>>>>> FETCH_HEAD
@@ -1596,7 +1524,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 ##Get Vessel Load [/vesselload?key={token}]
 
 ### Get Vessel Load [POST]
-+ Parameters 
++ Parameters
     + Token (required, string)
 
 + Response 200 (application/json)
