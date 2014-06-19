@@ -487,7 +487,7 @@ Get the categories to which a particular product belongs.
 
 ## Nutritional Information [/products?key={token}&fields={fieldsList}]
 
-+ Paramters
++ Parameters
     + token (required, string)
     + fieldslist (optional, array, `["id","gtin","nutrition","ingredients"]`)
 
@@ -979,10 +979,10 @@ This operation can be used to find a customer and get all the orders from the cu
 + Parameters
     + Token (required, string)
     + CustomerId (required)
-  
+
 
 + Response 200 (application/json)
-       
+
         {
            "id": "228",
            "firstName": "Bob",
@@ -1128,7 +1128,7 @@ This call uses GET method.
                "name":"Category 1",
                "published":"1"
             }
-            
+
 
 #Group Transactions
 Use Case Scenario:
@@ -1228,11 +1228,15 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 
 + Request 200 (application/json)
 
+<<<<<<< HEAD
 {
             "code": 200,
             "timestamp": 1402706999
             "data":
             
+=======
+
+>>>>>>> FETCH_HEAD
             {
                         "id": "75",
                         "name": "TestDrop1",
@@ -1245,7 +1249,7 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
                                     "phone": "9999999010"
                                 }
             }
-            
+
 ## Get information about individual codrop [/codrops/codropId?key?{token}]
 ### Get information about individual codrop [GET]
 
@@ -1265,21 +1269,20 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ## Create Co-drop [/codrops?key={token}]
 ### Create Co-drops [POST]
 
-+ Response 204
++ Request
 
         {
-                       "name":"API_TestCodrop",
-                       "inviteRequired":"",
-                       "active":"",
-                       "notes":"Test codrop created through API",
-                       "addressFields":
-                                   {
-                                          "streetAndNumber":"500 Poli St",
-                                          "aptSuite":"A",
-                                          "city":"Ventura",
-                                          "state":"CA",
-                                          "zipcode":"93001"
-                                   }
+                "name":"API_TestCodrop",
+                "inviteRequired":"",
+                "active":"",
+                "notes":"Test codrop created through API",
+                "addressFields": {
+                    "streetAndNumber":"500 Poli St",
+                    "aptSuite":"A",
+                    "city":"Ventura",
+                    "state":"CA",
+                    "zipcode":"93001"
+                }
         }
 
 
@@ -1287,42 +1290,42 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 
 
         {
-                        "id": "79"
-                        "name": "API_TestCodrop"
-                        "notes": "Test codrop created through API"
-                        "active": "",
-                        "timestamp": "2013-08-20 20:10:05"
-                        "inviteRequired": "",
-                        "public": "",
-                        "chargePerOrder": "0.00"
-        
+            "id": "79"
+            "name": "API_TestCodrop"
+            "notes": "Test codrop created through API"
+            "active": "",
+            "timestamp": "2013-08-20 20:10:05"
+            "inviteRequired": "",
+            "public": "",
+            "chargePerOrder": "0.00"
         }
 
 ## Get list of customers belonging to a particular codrops [/codrops/codropId/customrs?key={token}]
 ### Get list of customers belonging to a particular codrops [GET]
 
++ Parameters
+    + token (required, string)
+
 + Response 200 (application/json)
 
 
-           {
-                [
-                       {
-                              "id":"233",
-                              "firstName":"Bob",
-                              "lastName":"Smith",
-                              "email":"numberonebob@bob.com",
-                              "phone":"8051234567",
-                              "address":"200 E Main St, Ventura, CA, 93001"
-                       },{
-                              "id":"234",
-                              "firstName":"David",
-                              "lastName":"Sobotka",
-                              "email":"david@sobotka.com",
-                              "phone":"8131234567",
-                              "address":"3501 Interstate 275 Frontage Rd E, Tampa, FL, 33607"
-                       }
-                ]
-            }    
+            [
+                   {
+                          "id":"233",
+                          "firstName":"Bob",
+                          "lastName":"Smith",
+                          "email":"numberonebob@bob.com",
+                          "phone":"8051234567",
+                          "address":"200 E Main St, Ventura, CA, 93001"
+                   },{
+                          "id":"234",
+                          "firstName":"David",
+                          "lastName":"Sobotka",
+                          "email":"david@sobotka.com",
+                          "phone":"8131234567",
+                          "address":"3501 Interstate 275 Frontage Rd E, Tampa, FL, 33607"
+                   }
+            ]
 
 #Group Shipping
 
@@ -1399,14 +1402,14 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 ##Download Shipments Information [/shipments?key={token}&timestamp={value}]
 
 ### Shipment Information [GET]
-+ Parameters 
++ Parameters
     + Token (required, string)
     + Timestamp (value, optional)
 
 + Response 200 (application/json)
 
 
-                {    
+                {
                           "streetAndNumber": "200 E Main St",
                           "aptSuite": "",
                           "city": "Ventura",
@@ -1431,7 +1434,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 ###Update shipping information for an individual customer [POST]
 
-+ Response 204 
++ Response 204
 
                 {
                     "id": "45",
@@ -1444,7 +1447,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
                             "trackingNumber": "7423542523374",
                             "trackingNumberBack": "7423542523374",
                             "actualWeight": "5.34",
-                            "drawers": 
+                            "drawers":
                             [{
                                 "slotNumber": "2",
                                 "drawerNumber": "4893rhjf487rt7484jviuref874"
@@ -1462,7 +1465,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
                        {
                             "code": "200",
                             "timestamp": "1377032713",
-                            "data": 
+                            "data":
                                 {
                                     "id": "45"
                                 }
@@ -1505,7 +1508,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 ### Update shipping information for a codrop [PUT]
 
-+ Response 204 
++ Response 204
 
                     {
                        "id":"46",
@@ -1573,9 +1576,9 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
                 {
                     "code": "200",
                     "timestamp": "1377026573",
-                    "data": 
+                    "data":
                     [{
-               
+
                         "id": "29",
                         "vesselTypeId": "2",
                         "vesselNumber": "1234567",
