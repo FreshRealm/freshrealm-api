@@ -979,10 +979,10 @@ This operation can be used to find a customer and get all the orders from the cu
 + Parameters
     + Token (required, string)
     + CustomerId (required)
-  
+
 
 + Response 200 (application/json)
-       
+
         {
            "id": "228",
            "firstName": "Bob",
@@ -1125,7 +1125,7 @@ This call uses GET method.
                "name":"Category 1",
                "published":"1"
             }
-            
+
 
 #Group Transactions
 Use Case Scenario:
@@ -1226,7 +1226,7 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 + Response 200 (application/json)
 
 
-            
+
             {
                         "id": "75",
                         "name": "TestDrop1",
@@ -1239,7 +1239,7 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
                                     "phone": "9999999010"
                                 }
             }
-            
+
 ## Get information about individual codrop [/codrops/codropId?key?{token}]
 ### Get information about individual codrop [GET]
 
@@ -1259,7 +1259,7 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ## Create Co-drop [/codrops?key={token}]
 ### Create Co-drops [POST]
 
-+ Response 204
++ Body
 
         {
                        "name":"API_TestCodrop",
@@ -1289,7 +1289,7 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
                         "inviteRequired": "",
                         "public": "",
                         "chargePerOrder": "0.00"
-        
+
         }
 
 ## Get list of customers belonging to a particular codrops [/codrops/codropId/customrs?key={token}]
@@ -1316,7 +1316,7 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
                               "address":"3501 Interstate 275 Frontage Rd E, Tampa, FL, 33607"
                        }
                 ]
-            }    
+            }
 
 #Group Shipping
 
@@ -1393,14 +1393,14 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 ##Download Shipments Information [/shipments?key={token}&timestamp={value}]
 
 ### Shipment Information [GET]
-+ Parameters 
++ Parameters
     + Token (required, string)
     + Timestamp (value, optional)
 
 + Response 200 (application/json)
 
 
-                {    
+                {
                           "streetAndNumber": "200 E Main St",
                           "aptSuite": "",
                           "city": "Ventura",
@@ -1425,7 +1425,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 ###Update shipping information for an individual customer [POST]
 
-+ Response 204 
++ Response 204
 
                 {
                     "id": "45",
@@ -1438,7 +1438,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
                             "trackingNumber": "7423542523374",
                             "trackingNumberBack": "7423542523374",
                             "actualWeight": "5.34",
-                            "drawers": 
+                            "drawers":
                             [{
                                 "slotNumber": "2",
                                 "drawerNumber": "4893rhjf487rt7484jviuref874"
@@ -1456,7 +1456,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
                        {
                             "code": "200",
                             "timestamp": "1377032713",
-                            "data": 
+                            "data":
                                 {
                                     "id": "45"
                                 }
@@ -1499,7 +1499,7 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 
 ### Update shipping information for a codrop [PUT]
 
-+ Response 204 
++ Response 204
 
                     {
                        "id":"46",
@@ -1567,9 +1567,9 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
                 {
                     "code": "200",
                     "timestamp": "1377026573",
-                    "data": 
+                    "data":
                     [{
-               
+
                         "id": "29",
                         "vesselTypeId": "2",
                         "vesselNumber": "1234567",
