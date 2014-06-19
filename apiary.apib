@@ -1138,7 +1138,7 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
         }
 
 ## Limit and Offset Example [/products?key={token}&limit={limit}&offset={offset}]
-Retrieving a large list of resources in one request will degrade performance. Use `limit` and `offset` GET attributes to divide your request into multiple queries. The default value for limit is 100.
+Retrieving a large list of resources in one request will degrade performance. Use the `limit` and `offset` GET attributes to divide your request into multiple queries. The default value for limit is 100.
 
 ### GET
 
@@ -1151,35 +1151,7 @@ Retrieving a large list of resources in one request will degrade performance. Us
 
 
         {
-            "code": 200,
-            "timestamp": 1402706999,
-            "data": [{
-                "id": "2158",
-                "sku": "XDDWW3",
-                "published": "1",
-                "weight": "0.400",
-                "weightUnit": "lb",
-                "width": "5.000",
-                "height": "1.000",
-                "length": "5.000",
-                "minFreshrealmCost": "2.1",
-                "avgFreshrealmCost": "2.3",
-                "maxFreshrealmCost": "2.5",
-                "name": "Item 1"
-            },{
-                "id": "2159",
-                "sku": "XDDWW4",
-                "published": "1",
-                "weight": "0.400",
-                "weightUnit": "lb",
-                "width": "5.000",
-                "height": "1.000",
-                "length": "5.000",
-                "minFreshrealmCost": "2.1",
-                "avgFreshrealmCost": "2.3",
-                "maxFreshrealmCost": "2.5",
-                "name": "Item 2"
-            }]
+            ...
         }
 
 ## Price By Zipcode [/products/{id}?key={token}&zip={zipcode}&fields={fieldsList}]
