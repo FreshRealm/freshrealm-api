@@ -116,187 +116,34 @@ This operation can be used for testing purposes and also to get the IDs of produ
 This table describes which attributes are provided by default, and which can be used as a filter.  For specific examples, and to see the data types that are passed, refer to the Example section of this document.
 Product is an active item available to your customer.
 
-<TABLE>
-<TR VALIGN=TOP>
-<TD>Field</TD>
-<TD>Default</TD>
-<TD>Filter</TD>
-<TD>Description</TD>
-</TR>
-<TR VALIGN=TOP>
-<TD>id</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>FreshRealm item id</TD>
-</TR>
-<TR VALIGN=TOP>
-<TD>sku</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Retailer defined item SKU</TD>
-</TR>
-<TR VALIGN=TOP>
-<TD>gtin</TD>
-<TD><BR></TD>
-<TD>X</TD>
-<TD>Global gtin identification number</TD>
-</TR>
-<TR VALIGN=TOP>
-<TD>published</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Prepare your shopping cart before publishing the product. Customers should see only published products.</TD>
-</TR>
-<TR VALIGN=TOP>
-<TD>description</TD>
-<TD><BR></TD>
-<TD>X</TD>
-<TD><BR></TD>
-</TR>
+| Field                 | Default   | Filter    | Description |
+|-----------------------|-----------|-----------|-------------|
+| id                    | X         | X         | FreshRealm item id |
+| sku                   | X         | X         | Retailer defined item SKU |
+| gtin                  |           | X         | Global gtin identification number |
+| published             | X         | X         | Prepare your shopping cart before publishing the product. Customers should see only published products |
+| description           |           | X         |  |
+| weight                | X         | X         | Item’s weight |
+| weightUnit            | X         | X         | Unit of weight used e.g. lb, oz etc |
+| width                 | X         | X         | In inches |
+| height                | X         | X         | In inches |
+| length                | X         | X         | In inches |
+| minFreshrealmCost     | X         | X         | Minimum FreshRealm Cost |
+| avgFreshrealmCost     | X         | X         | Average FreshRealm Cost |
+| maxFreshrealmCost     | X         | X         | Maximum FreshRealm Cost |
+| name                  | X         |           | Name of the product - can be customized |
+| url                   |           |           | URL resource |
+| categories            |           |           | List of categories |
+| costs                 |           |           | Product cost |
+| prices                |           |           | Product Prices |
+| ingredients           |           |           | ingredients of the products |
+| nutrition             | X         |           | Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested |
+| imageURL              |           |           | Default image url in the full resolution |
+| images                |           |           | Array of product images. Each image has ‘default’, ‘large’(1024x768), ‘medium’(800x600) and ‘small’(160x120) keys pointing to the image url |
+| price                 |           |           | Zipcode dependent price function. Zipcode must be provided in order to obtain the result |
+| cost                  |           |           | Zipcode dependent cost function. Zipcode must be provided in order to obtain the result |
+| margin                |           |           | Zipcode dependent margin function. Zipcode must be provided in order to obtain the result |
 
-<TR VALIGN=TOP>
-<TD>weight</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Item’s weight</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>weightUnit</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Unit of weight used e.g. lb, oz etc</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>width</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>In inches</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>height</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>In inches</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>length</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>In inches</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>minFreshrealmCost</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Minimum FreshRealm Cost</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>avgFreshrealmCost</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Average FreshRealm Cost</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>maxFreshrealmCost</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Maximum FreshRealm Cost</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>name</TD>
-<TD>X</TD>
-<TD><BR></TD>
-<TD>Name of the product - can be customized</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>url</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>URL resource</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>categories</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>List of categories</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>costs</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Product cost</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>prices</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Product Prices</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>ingredients</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>ingredients of the products</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>nutrition</TD>
-<TD>X</TD>
-<TD><BR></TD>
-<TD>Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested</TD>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>imageURL</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Default image url in the full resolution</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>images</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Array of product images. Each image has ‘default’, ‘large’(1024x768), ‘medium’(800x600) and ‘small’(160x120) keys pointing to the image url.</TD>
-</TR>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>price</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Zipcode dependent price function. Zipcode must be provided in order to obtain the result</TD>
-</TR>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>cost</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Zipcode dependent cost function. Zipcode must be provided in order to obtain the result</TD>
-</TR>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>margin</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Zipcode dependent margin function. Zipcode must be provided in order to obtain the result</TD>
-</TR>
-</TABLE>
 
 ##List of all the products [/products?key={token}]
 ### List of all products [GET]
