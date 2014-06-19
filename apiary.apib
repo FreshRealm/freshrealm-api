@@ -1099,7 +1099,10 @@ This call uses GET method.
 
 + Response 200 (application/json)
 
-            [
+            {
+            "code": 200,
+            "timestamp": 1402706999
+            "data":[
                {
                   "id":"293",
                   "name":"Category 1"
@@ -1112,7 +1115,7 @@ This call uses GET method.
                   "id":"295",
                   "name":"Category 3"
                }
-            ]
+            ]}
 
 ##Retrieve individual category[/categories/categoryId?key={token}]
 ###Retrieve individual category [GET]
@@ -1223,9 +1226,12 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ### Get all co-drops [GET]
 
 
-+ Response 200 (application/json)
++ Request 200 (application/json)
 
-
+{
+            "code": 200,
+            "timestamp": 1402706999
+            "data":
             
             {
                         "id": "75",
@@ -1243,7 +1249,7 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ## Get information about individual codrop [/codrops/codropId?key?{token}]
 ### Get information about individual codrop [GET]
 
-+ Response 200 (application/json)
++ Request 200 (application/json)
 
                 {
                             "id": "75",
@@ -1587,6 +1593,8 @@ Url: http://api2.freshrealm.co/getShippingDetails?key=myaccesstoken
 ##Get Vessel Load [/vesselload?key={token}]
 
 ### Get Vessel Load [POST]
++ Parameters 
+    + Token (required, string)
 
 + Response 200 (application/json)
 
