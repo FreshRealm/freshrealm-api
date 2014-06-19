@@ -967,57 +967,15 @@ This operation can be used to find available categories to which products belong
 HTTP Method: GET
 Url: http://api2.freshrealm.co/categories?key=myaccesstoken
 
-<TABLE>
+| Field | Default | Filter | Description |
+|-------|---------|--------|-------------|
+| id | X | X | Category id |
+| parentId | X | X | Id of a parent category if category is a subcategory of another category |
+| name | X | X | Category name |
+| published | X | X | Whether a category is activated or not |
+| imageUrl |  |  | Returns urls of images that are attached to category (optional |
+| parentUrl |  |  | Url of a parent category if such category exists |
 
-<TR VALIGN=TOP>
-<TD>Field</TD>
-<TD>Default</TD>
-<TD>Filter</TD>
-<TD>Description</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>id</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Category id</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>parentId</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Id of a parent category if category is a subcategory of another category</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>name</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Category name</TD>
-
-<TR VALIGN=TOP>
-<TD>published</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Whether a category is activated or not</TD>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>imageUrl</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Returns urls of images that are attached to category (optional)</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>parentUrl</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Url of a parent category if such category exists</TD>
-</TR>
-
-</TABLE>
 
 ### Get Categories
 This call uses GET method.
@@ -1071,88 +1029,25 @@ To obtain information about codrop, request individual codrop information, get l
 
 Codrops allow multiple customers to have food delivered to one location. Codrops can be public or private. Codrops could be open to all or by invite only. FreshRealm API allows retrieving information about all codrops or individual codrop, as well as creation of a new codrop.
 
-See the ‘Codrops’ resource table for more information, as well as examples below.
 
-HTTP Method Used: GET for getting information on codrop(s), POST to create a codrop
-Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
-
-<TABLE>
-<TR VALIGN=TOP>
-<TD>Field</TD>
-<TD>Default</TD>
-<TD>Filter</TD>
-<TD>Description</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>id</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>FreshRealm codrop id</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>name</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Codrop name</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>address</TD>
-<TD>X</TD>
-<TD><BR></TD>
-<TD>Address of a codrop</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>facilitator</TD>
-<TD><BR></TD>
-<TD><BR></TD>
-<TD>Information about codrop’s facilitator</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>notes</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Notes</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>active</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Flag whether codrop is active</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>timestamp</TD>
-<TD><BR></TD>
-<TD>X</TD>
-<TD>Latest timestamp when the codrop was updated</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>inviteRequired</TD>
-<TD><BR></TD>
-<TD>X</TD>
-<TD>Whether invite is required</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>chargePerOrder</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Charge per order</TD>
-</TR>
-
-</TABLE>
+| Field | Default | Filter | Description |
+|-------|---------|--------|-------------|
+| id | X | X | FreshRealm codrop id |
+| name | X | X | Codrop name |
+| address | X |  | Address of a codrop |
+| facilitator |  |  | Information about codrop’s facilitator |
+| notes | X | X | Notes |
+| active | X | X | Flag whether codrop is active |
+| timestamp |  | X | Latest timestamp when the codrop was updated |
+| inviteRequired |  | X | Whether invite is required |
+| chargePerOrder | X | X | Charge per order |
 
 
 ## Retrieve all codrop information [/codrops?key={token}]
 ### Get all co-drops [GET]
 
++ Parameters
+    + token (required, string)
 
 + Response 200 (application/json)
 
@@ -1175,6 +1070,9 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ## Get information about individual codrop [/codrops/codropId?key?{token}]
 ### Get information about individual codrop [GET]
 
++ Parameters
+    + token (required, string)
+
 + Response 200 (application/json)
 
             {
@@ -1195,6 +1093,9 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ## Create Co-drop [/codrops?key={token}]
 ### Create Co-drops [POST]
 
++ Parameters
+    + token (required, string)
+
 + Request
 
         {
@@ -1214,7 +1115,6 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 
 + Response 200 (application/json)
 
-
         {
             "id": "79"
             "name": "API_TestCodrop"
@@ -1226,10 +1126,11 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
             "chargePerOrder": "0.00"
         }
 
-## Get list of customers belonging to a particular codrops [/codrops/codropId/customrs?key={token}]
+## Get list of customers belonging to a particular codrops [/codrops/{codropId}/customrs?key={token}]
 ### Get list of customers belonging to a particular codrops [GET]
 
 + Parameters
+    + codropId (required, number)
     + token (required, string)
 
 + Response 200 (application/json)
@@ -1258,59 +1159,16 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 #Group Shipping
 
 ###Get Shipping Details
-***Use Case Scenario:***
-This operation is used at the checkout page to get the shipping cost and earliest delivery date based on the items and address that the food is being delivered to without placing the actual order.  Input and Output is the same as the ‘Place Order ‘call below.
+This operation is used at the checkout page to get the shipping cost and earliest delivery date based on the items and address that the food is being delivered to without placing the actual order.  Input and Output are the same as the `Place Order` call below.
 
-<TABLE>
-
-<TR VALIGN=TOP>
-<TD>Field</TD>
-<TD>Default</TD>
-<TD>Filter</TD>
-<TD>Description</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>id</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Shipment id</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>shipMethod</TD>
-<TD>X</TD>
-<TD>X</TD>
-<TD>Indicates what postal carrier was used to ship the shipment. Possible values are ‘fedex’, ‘usps’, ‘ups’ etc.</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>updateTime</TD>
-<TD><BR></TD>
-<TD>X</TD>
-<TD>Latest timestamp when the shipment was updated</TD>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>shippingAddress</TD>
-<TD>X</TD>
-<TD><BR></TD>
-<TD>Address resource where shipment was delivered (see Address resource above for more info)</TD>
-</TR>
-
-<TR VALIGN=TOP>
-<TD>shipToName</TD>
-<TD>X</TD>
-<TD><BR></TD>
-<TD>Name of shipment recipient</TD>
-</TR>
-
-</TR>
-<TR VALIGN=TOP>
-<TD>shippingLines</TD>
-<TD>X</TD>
-<TD><BR></TD>
-<TD> Array of shipping lines. Every shipping line contains the following information:
+| Field | Default | Filter | Description |
+|-------|---------|--------|-------------|
+| id | X | X | Shipment id |
+| shipMethod | X | X | Indicates what postal carrier was used to ship the shipment. Possible values are ‘fedex’, ‘usps’, ‘ups’ etc |
+| updateTime |  | X | Latest timestamp when the shipment was updated |
+| shippingAddress | X |  | Address resource where shipment was delivered (see Address resource above for more info |
+| shipToName | X |  | Name of shipment recipient |
+| shippingLines | X |  |  Array of shipping lines. Every shipping line contains the following information:
 +    productNumber (cartId-itemId, itemId, or “coolant”)
 +    vesselNumber
 +    customerName
@@ -1318,10 +1176,7 @@ This operation is used at the checkout page to get the shipping cost and earlies
 +    vesselNotchNumber
 +    unitPrice
 +    labelInfo
-+    vesselSize (‘Small’, ‘Medium’, ‘Large’)</TD>
-</TR>
-
-</TABLE>
++    vesselSize (‘Small’, ‘Medium’, ‘Large’) |
 
 
 ##Download Shipments Information [/shipments?key={token}&timestamp={value}]
