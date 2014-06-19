@@ -83,7 +83,7 @@ This filter allows retrieval of records created or modified after this time. Eve
 This API documentation lives on Github. If you see an error or a typo, please submit a pull request at [https://github.com/trooprr/freshrealm-api](https://github.com/trooprr/freshrealm-api). We're always happy to have contributions.
 
 # Group Authentication
-FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your "secret code" that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.
+FreshRealm’s REST API currently uses a proprietary authentication system. Each client gets its own API access key, which must be a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your secret, which we will provide to you.  At the end of this document a brief diagram is provided to explain our initial authentication system.
 
 ##Get Authentication Token [/authenticate]
 ### POST
@@ -109,7 +109,7 @@ Your FreshRealm secret must be obtained by contacting FreshRealm.
 
 # Group Products
 
-A **product** is an active item available to your customer.
+A **product** is an active item available for you to purchase.
 
 The following table describes which attributes are provided by default, and which can be used as a filter.
 
