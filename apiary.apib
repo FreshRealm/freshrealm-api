@@ -1045,7 +1045,7 @@ Codrops allow multiple customers to have food delivered to one location. Co-Drop
         {
             "code": 200,
             "timestamp": 1402706999
-            "data": {
+            "data": [{
                 "id": "75",
                 "name": "TestDrop1",
                 "address": "110 North 13th Street, Las Vegas, NV, 89101",
@@ -1055,7 +1055,7 @@ Codrops allow multiple customers to have food delivered to one location. Co-Drop
                     "email": "test_facilitator1@freshrealm.co",
                     "phone": "9999999010"
                 }
-            }
+            }]
         }
 
 ### Create Co-Drop [POST]
@@ -1093,8 +1093,8 @@ Codrops allow multiple customers to have food delivered to one location. Co-Drop
             "chargePerOrder": "0.00"
         }
 
-## Get information about individual codrop [/codrops/{codropId}?key={token}]
-### Get information about individual codrop [GET]
+## Get Information About Individual Co-Drop [/codrops/{codropId}?key={token}]
+### GET
 
 + Parameters
     + token (required, string)
@@ -1117,8 +1117,8 @@ Codrops allow multiple customers to have food delivered to one location. Co-Drop
                 }
             }
 
-## Get list of customers belonging to a particular codrops [/codrops/{codropId}/customrs?key={token}]
-### Get list of customers belonging to a particular codrops [GET]
+## Get List of Customers Belonging To a Particular Co-Drop [/codrops/{codropId}/customrs?key={token}]
+### GET
 
 + Parameters
     + codropId (required, number)
