@@ -94,10 +94,11 @@ The FreshRealm RESTful API uses best practices including the object, identifier,
 + Request (application/json)
 Your FreshRealm secret must be obtained by contacting FreshRealm.
 
+    + Body
 
-    {
-        "secret": "myFreshRealmSecret"
-    }
+        {
+            "secret": "myFreshRealmSecret"
+        }
 
 + Response 200 (application/json)
 
@@ -655,6 +656,8 @@ email address and phone number. New customers are created on the fly.
 | qty           | * | int       | `1`                               | Quantity |
 | itemPrice     |   | string    | `9.99`                            | Optional. Item Price |
 
+**Note**: either `itemId` or `sku` must be provided. If both are provided, we first search for the item by `itemId`.
+
 ### Place An Order [POST]
 
 + Request (application/json)
@@ -941,15 +944,22 @@ Retrieve all the latest orders for a given `Customer ID` (default limit is 100 r
         }
 
 ## Cancel an Order [/cancelOrder/{orderId}?key={token}]
-The input `id` must match the `orderId` in the URL.
+
+This call allows you to cancel existing orders that have not been started yet. An order can be cancelled any time before the food is being made (while order status is `PENDING`).
+
 
 ### Cancel An Order [PUT]
+
 
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
 
+
 + Request (application/json)
+The input `id` must match the `orderId` in the URL.
+
+    + Body
 
         {
             "id": 109
@@ -965,6 +975,8 @@ The input `id` must match the `orderId` in the URL.
                 "status": "CANCELLED"
             }
         }
+
+
 
 #Group Customers
 
