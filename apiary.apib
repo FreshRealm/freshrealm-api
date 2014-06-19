@@ -1154,28 +1154,22 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ### Get all co-drops [GET]
 
 
-+ Request 200 (application/json)
++ Response 200 (application/json)
 
-<<<<<<< HEAD
-{
-            "code": 200,
-            "timestamp": 1402706999
-            "data":
-
-=======
-
->>>>>>> FETCH_HEAD
             {
-                        "id": "75",
-                        "name": "TestDrop1",
-                        "address": "110 North 13th Street, Las Vegas, NV, 89101",
-                        "facilitator":
-                                {
-                                    "firstName": "Facilitator",
-                                    "lastNameUser":"",
-                                    "email": "test_facilitator1@freshrealm.co",
-                                    "phone": "9999999010"
-                                }
+                "code": 200,
+                "timestamp": 1402706999
+                "data": {
+                    "id": "75",
+                    "name": "TestDrop1",
+                    "address": "110 North 13th Street, Las Vegas, NV, 89101",
+                    "facilitator": {
+                        "firstName": "Facilitator",
+                        "lastNameUser":"",
+                        "email": "test_facilitator1@freshrealm.co",
+                        "phone": "9999999010"
+                    }
+                }
             }
 
 ## Get information about individual codrop [/codrops/codropId?key?{token}]
