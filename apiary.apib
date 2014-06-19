@@ -278,208 +278,162 @@ Product is an active item available to your customer.
 </TR>
 </TABLE>
 
+##List of all the products[/products?key={token}]
+### List of all products [GET]
+
 Call:
 http://api2.freshrealm.co/products?key=myaccesstoken
 
-Input:
-none
++ Response 200 (application/json)
+                {
+                    "id": "2158",
+                    "sku": "XDDWW3",
+                    "published": "1",
+                    "weight": "0.400",
+                    "weightUnit": "lb",
+                    "width": "5.000",
+                    "height": "1.000",
+                    "length": "5.000",
+                    "minFreshrealmCost": "2.1",
+                    "avgFreshrealmCost": "2.3",
+                    "maxFreshrealmCost": "2.5",
+                    "name": "Item 1"       
+                }           
+          
 
-Ouput:
-{Array
-(
-    [code] => 200
-    [timestamp] => 1376935398
-    [data] => Array
-        (
-            [0] => Array
-                (
-                    [id] => 2158
-                    [sku] => XDDWW3
-                    [published] => 1
-                    [weight] => 0.400
-                    [weightUnit] => lb
-                    [width] => 5.000
-                    [height] => 1.000
-                    [length] => 5.000
-                    [minFreshrealmCost] => 2.1
-                    [avgFreshrealmCost] => 2.3
-                    [maxFreshrealmCost] => 2.5
-                    [name] => Item 1
-                )
-
-            [1] => Array
-            etc.
-}
-
-## Retrieve details for individual product [/products]
+## Retrieve details for individual product [/products/productsId/key={token}]
+### Details for individual products
 
 Call:http://api2.freshrealm.co/products/productId/key=myaccesstoken
 
-Input:none
++ Response 200 (application/json)
 
-Ouput:
-{Array
-(
-    [code] => 200
-    [timestamp] => 1376936492
-    [data] => Array
-        (
-            [id] => 2158
-            [sku] => ITEM2134
-            [gtin] => gtin_1
-            [published] => 1
-            [description] => Snack Box
-            [weight] => 0.400
-            [weightUnit] => lb
-            [width] => 5.000
-            [height] => 1.000
-            [length] => 5.000
-            [minFreshrealmCost] => 3.22
-            [avgFreshrealmCost] => 3.55
-            [maxFreshrealmCost] => 4.55
-            [nutrition] => Array
-                (
-                    [Calories] => Array
-                        (
-                            [amount] => 193.75
-                            [unit] => KCal
-                        )
+{
+                    "id": "2158",
+                    "sku": "XDDWW3",
+                    "published": "1",
+                    "weight": "0.400",
+                    "weightUnit": "lb",
+                    "width": "5.000",
+                    "height": "1.000",
+                    "length": "5.000",
+                    "minFreshrealmCost": "2.1",
+                    "avgFreshrealmCost": "2.3",
+                    "maxFreshrealmCost": "2.5",
+                    "nutrition":
+                    {
+                    "calories":
+                        {
+                        "amount": "193.75",
+                        "unit": "KCal"
+                        },
+                    "Fat":
+                        {
+                        "amount": "0",
+                        "unit": "g"
+                        },  
+                     "Saturated Fat":
+                        {
+                        "amount": "0.05",
+                        "unit": "g"
+                        },
 
-                    [Fat] => Array
-                        (
-                            [amount] => 0
-                            [unit] => g
-                        )
+                    "Cholesterol": 
+                        {
+                        "amount": "5",
+                        "unit": "mg"
+                        },
 
-                    [Saturated Fat] => Array
-                        (
-                            [amount] => 0.05
-                            [unit] => g
-                        )
+                    "Carbohydrates":
+                        {
+                        "amount": "44.43",
+                        "unit": "g"
+                        },
 
-                    [Cholesterol] => Array
-                        (
-                            [amount] => 5
-                            [unit] => mg
-                        )
+                    "Fiber":
+                        {
+                        "amount": "4.42",
+                        "unit": "g"
+                        },
 
-                    [Carbohydrates] => Array
-                        (
-                            [amount] => 44.43
-                            [unit] => g
-                        )
+                    "Sugar":
+                        {
+                        "amount": "32.13",
+                        "unit": "g"
+                        },
 
-                    [Fiber] => Array
-                        (
-                            [amount] => 4.42
-                            [unit] => g
-                        )
-
-                    [Sugar] => Array
-                        (
-                            [amount] => 32.13
-                            [unit] => g
-                        )
-
-                    [Protein] => Array
-                        (
-                            [amount] => 10.47
-                            [unit] => g
-                        )
-                )
-        )
-)
+                    "Protein":
+                        {
+                            "amount": "10.47",
+                            "unit": "g"             
+                        }
+}
 }
 
 
-## Retrieve id, costs, prices [/products/productId/key={token}&fields=[{id},{costs},{prices}
-### Get retrieve id, costs and prices
+## Retrieve id, costs, prices [/products/productId/key={token}&fields=[{id},{costs},{prices}]
+### Get retrieve id, costs and prices [GET]
+
+
+
 Call:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","costs","prices"]
 
 Input:none
 
-##Ouput
-
-Array
-(
-    [code] => 200
-    [timestamp] => 1376936864
-    [data] => Array
-        (
-            [id] => 2188
-            [costs] => Array
-                (
-                    [avg] => 5.23
-                    [min] => 4.55
-                    [max] => 6.03
-                )
-
-            [prices] => Array
-                (
-                    [avg] => 5.53
-                    [min] => 4.96
-                    [max] => 6.76
-                )
-
-        )
-
-)
-
-
-### Retrieve id, imageUrl, url, images
-Call:
-http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","imageUrl","url","images"]
-
-Input:none
++ Response 200 (application/json)
 
 {
-Ouput:
-Array
-(
-    [code] => 200
-    [timestamp] => 1376937382
-    [data] => Array
-        (
-            [id] => 2192
-            [url] => api2./products/2192?key=pXUMjWnDRmx5bAIDn8L8NecTGWKcAsa
-            [imageUrl] => http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
-            [images] => Array
-                (
-                    [0] => Array
-                        (
-                            [default] => http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
-                            [large] => http://src1.sencha.io/1024/768/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
-                            [medium] => http://src4.sencha.io/800/600/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
-                            [small] => http://src2.sencha.io/160/120/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg
-                        )
-                )
-        )
-)
+            "costs":
+                   {
+                    "avg": "5.23",
+                    "min": "4.55",
+                    "max": "6.03"
+                    },
+
+            "prices":
+                {
+                    "avg": "5.53",
+                    "min": "4.96",
+                    "max" : "6.76"
+                }
+}
+    
+
+## Retrieve Image details [products/productId/key={token}&fields=[{id},{imageUrl},{url},{images}]
+
+### Retrive image details [GET]
+
++ Response 200 (application/json)
+{
+   "id":"2192",
+   "url":"api2./products/2192?key=pXUMjWnDRmx5bAIDn8L8NecTGWKcAsa",
+   "imageUrl":"http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
+   "images":{
+      "default":"http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
+      "large":"http://src1.sencha.io/1024/768/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
+      "medium":"http://src4.sencha.io/800/600/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
+      "small":"http://src2.sencha.io/160/120/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg"
+   }
 }
 
-Retrieve id, margin
+##Retrieve id, margin [/products/productId/key={token}&fields=[{id},{margin}]
+
+### Product Margin information [GET]
+
 Call: http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","margin"]
++ Response 200 (application/json)
 
-Input: none
 {
-Ouput:
-Array
-(
-    [code] => 200
-    [timestamp] => 1376937442
-    [data] => Array
-        (
-            [id] => 2188
-            [margin] => Array
-                (
-                    [type] => default
-                    [value] => 15.00
-                    [unit] => percents
-                )
-        )
-)
+   "id":"2188",
+   "margin":{
+      "type":"default",
+      "value":"15.00",
+      "unit":"percents"
+   }
 }
+
+
 ## Filter example [/products/productId/key={token}&filter={"gtin":"test_fixture_item_16"}
 ## Filter example [/products/productId/key={token}&filter={"field":"gtin":"test_fixture_item_16"}
 ## Filter example [/products/productId/key={token}&filter={"field":"gtin":"test_fixture_item_16","operator:"like"}]
@@ -487,266 +441,170 @@ Array
 
 ### Filter by gtin [GET]
 
-Call examples:
-http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter={"gtin":"test_fixture_item_16"}
++ Response 200 (application/json)
 
-http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter=[{"field":"gtin","value":"test_fixture_item_16","operator":"like"}]
-Note: available operators are:
-in, not in, like, =, <, >, <=, >=, !=
 
-http://api2.freshrealm.co/products/productId/key=myaccesstoken&filter=[{"field":"gtin","value":"test_fixture_item_16"}]
-
-Input:none
-
-{Ouput
-
- Array
-(
-    [code] => 200
-    [timestamp] => 1376957888
-    [data] => Array
-        (
-            [0] => Array
-                (
-                    [id] => 2203
-                    [sku] => RREIIRT
-                    [published] => 1
-                    [weight] => 1.000
-                    [weightUnit] => lb
-                    [width] => 4.44
-                    [height] => 5.44
-                    [length] => 5.55
-                    [minFreshrealmCost] => 3.33
-                    [avgFreshrealmCost] => 3.44
-                    [maxFreshrealmCost] => 3.55
-                    [name] => Item 16
-                )
-        )
-)
-}
-
+               {
+                    "id": "2158",
+                    "sku": "XDDWW3",
+                    "published": "1",
+                    "weight": "0.400",
+                    "weightUnit": "lb",
+                    "width": "5.000",
+                    "height": "1.000",
+                    "length": "5.000",
+                    "minFreshrealmCost": "2.1",
+                    "avgFreshrealmCost": "2.3",
+                    "maxFreshrealmCost": "2.5",
+                    "name": "Item 16"       
+                }
+                
 ## Use limit and offset [products/productId/key={token}&limit={limit}&offset={offset}
+
 ### Use limit & offset [POST]
+
 Call:
 http://api2.freshrealm.co/products/productId/key=myaccesstoken&limit=1&offset=1
 
-Input:none
-{
-Ouput:
-Array
-(
-    [code] => 200
-    [timestamp] => 1376939046
-    [data] => Array
-        (
-            [0] => Array
-                (
-                    [id] => 2189
-                    [sku] => SKUTOTEST1
-                    [published] => 1
-                    [weight] => 12.000
-                    [weightUnit] => oz
-                    [width] => 4.000
-                    [height] => 1.000
-                    [length] => 3.000
-                    [minFreshrealmCost] => 3.22
-                    [avgFreshrealmCost] => 3.33
-                    [maxFreshrealmCost] => 3.55
-                    [name] => Item 2
-                )
-        )
-)
-}
++ Response 200 (application/json)
+
+
+                {
+                    "id": "2158",
+                    "sku": "XDDWW3",
+                    "published": "1",
+                    "weight": "0.400",
+                    "weightUnit": "lb",
+                    "width": "5.000",
+                    "height": "1.000",
+                    "length": "5.000",
+                    "minFreshrealmCost": "2.1",
+                    "avgFreshrealmCost": "2.3",
+                    "maxFreshrealmCost": "2.5",
+                    "name": "Item 1"       
+                } 
 
 ## Price by zipcode [/products/productId/key={token}&zip={zipcode}&fields=[{id},{name},{price}]
-### Price by Zipcode
 
-Call:
-http://api2.freshrealm.co/products/productId/key=myaccesstoken&zip=93001&fields=["id","name","price"]
+### Price by Zipcode [GET]
 
-Input:none
++ Response 200 (application/json)
 
-Ouput:
-Array
-(
-    [code] => 200
-    [timestamp] => 1376939257
-    [data] => Array
-        (
-            [id] => 2189
-            [name] => Item 2
-            [price] => 2.34
-        )
-)
+{
+    "code": "200",
+    "timestamp": "1376939257",
+    "data": {
+            "id": "2189",
+            "name": "Item 2",
+            "price": "2.34"
+        }
+}
 
 
 ## Get a list of ingredients [/products/productId/key={token}&fields[{id},{ingredients}]
-### Obtain a list of ingredents [GET]
 
-Call:
-http://api2.freshrealm.co/products/productId/key=myaccesstoken&fields=["id","ingredients"]
+### Obtain a list of ingredents [/GET]
 
-Input:none
++ Response 200 (application/json)
 
-Ouput:
-Array
-(
-    [code] => 200
-    [timestamp] => 1376939408
-    [data] => Array
-        (
-            [id] => 2203
-            [ingredients] => Array
-                (
-                    [0] => Array
-                        (
-                            [url] => api2./items/2201?key=FgDqgXUUP7dh38zb2CSCmcyookXnTgM
-                            [id] => 2201
-                            [amount] => 0.5
-                            [unit] => ft
-                        )
-                )
-        )
-)
-
+{
+   "id":"2203",
+   "ingredients":{
+      "url":"api2.freshrealm.co/items/2201?key=FgDqgXUUP7dh38zb2CSCmcyookXnTgM",
+      "id":"2201",
+      "amount":"0.5",
+      "unit":"ft"
+   }
+}
 
 ## Get Category for the product [/products/productId/categories/key={token}]
+
 ### Retrieve categories to which product belongs
 
-Call:
-http://api2.freshrealm.co/products/productId/categories/key=myaccesstoken
++ Response 200 (application/json)
+
 
 Input:none
 Ouput:
 
 {
-Array
-(
-    [code] => 200
-    [timestamp] => 1376939873
-    [data] => Array
-        (
-            [0] => Array
-                (
-                    [id] => 283
-                    [name] => Category 1
-                    [url] => api2./categories/283?key=DwnQZEAZZQCWrVT0UVdJg9WxEZq29S9
-                )
-        )
-)
+   "id":"283",
+   "name":"Category 1",
+   "url":"api2.freshrealm.co/categories/283?key=DwnQZEAZZQCWrVT0UVdJg9WxEZq29S9"
 }
+
 
 ## Nutritional Information [products/key={token}&fields=[{id},{gtin},{nutrition},{ingredients}]
 ### Get nutrition information [/GET]
-Call:
-http://api2.freshrealm.co/products/key=myaccesstoken&fields=["id","gtin","nutrition","ingredients"]
-Input:none
-Ouput:
+
++ Response 200 (application/json)
+
 
 {
-Array
-(
-    [code] => 200
-    [timestamp] => 1376939684
-    [data] => Array
-        (
-            [0] => Array
-                (
-                    [id] => 2188
-                    [gtin] => test_fixture_item_1
-                    [ingredients] => Array
-                        (
-                            [0] => Array
-                                (
-                                    [url] => api2./items/2191?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ
-                                    [id] => 2191
-                                    [amount] => 20
-                                    [unit] => lb
-                                )
-
-                            [1] => Array
-                                (
-                                    [url] => api2./items/2192?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ
-                                    [id] => 2192
-                                    [amount] => 20
-                                    [unit] => lb
-                                )
-
-                            [2] => Array
-                                (
-                                    [url] => api2./items/2201?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ
-                                    [id] => 2201
-                                    [amount] => 0.5
-                                    [unit] => ft
-                                )
-
-                            [3] => Array
-                                (
-                                    [url] => api2./items/2204?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ
-                                    [id] => 2204
-                                    [amount] => 1
-                                    [unit] => ea
-                                )
-
-                        )
-
-                    [nutrition] => Array
-                        (
-                            [Calories] => Array
-                                (
-                                    [amount] => 193.75
-                                    [unit] => KCal
-                                )
-
-                            [Fat] => Array
-                                (
-                                    [amount] => 0
-                                    [unit] => g
-                                )
-
-                            [Saturated Fat] => Array
-                                (
-                                    [amount] => 0.05
-                                    [unit] => g
-                                )
-
-                            [Cholesterol] => Array
-                                (
-                                    [amount] => 5
-                                    [unit] => mg
-                                )
-
-                            [Carbohydrates] => Array
-                                (
-                                    [amount] => 44.43
-                                    [unit] => g
-                                )
-
-                            [Fiber] => Array
-                                (
-                                    [amount] => 4.42
-                                    [unit] => g
-                                )
-
-                            [Sugar] => Array
-                                (
-                                    [amount] => 32.13
-                                    [unit] => g
-                                )
-
-                            [Protein] => Array
-                                (
-                                    [amount] => 10.47
-                                    [unit] => g
-                                )
-
-                        )
-
-                )
-
-            [1] => Array( etc.)
-
+  "id": "2188",
+  "gtin": "test_fixture_item_1",
+  "ingredients": [
+    {
+      "url": "api2./items/2191?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
+      "id": "2191",
+      "amount": "20",
+      "unit": "lb"
+    },
+    {
+      "url": "api2.freshrealm.co/items/2192?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
+      "id": "2192",
+      "amount": "20",
+      "unit": "lb"
+    },
+    {
+      "url": "api2.freshrealm.co/items/2201?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
+      "id": "2201",
+      "amount": "0.5",
+      "unit": "ft"
+    },
+    {
+      "url": "api2.freshrealm.co/items/2204?key=4Zv7kxBPIhZeiXCs67386muvMc27tVJ",
+      "id": "2204",
+      "amount": "1",
+      "unit": "ft"
+    }
+  ],
+  "nutrition": {
+    "calories": {
+      "amount": "193.75",
+      "unit": "KCal"
+    },
+    "Fat": {
+      "amount": "0",
+      "unit": "g"
+    },
+    "Saturated Fat": {
+      "amount": "0.05",
+      "unit": "g"
+    },
+    "Cholesterol": {
+      "amount": "5",
+      "unit": "mg"
+    },
+    "Carbohydrates": {
+      "amount": "44.43",
+      "unit": "g"
+    },
+    "Fiber": {
+      "amount": "4.42",
+      "unit": "g"
+    },
+    "Sugar": {
+      "amount": "32.13",
+      "unit": "g"
+    },
+    "Protein": {
+      "amount": "10.47",
+      "unit": "g"
+    }
+  }
 }
+
 
 
 # Group Orders
