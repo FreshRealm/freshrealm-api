@@ -5,9 +5,6 @@ HOST: http://www.api2.freshrealm.co
 
 This document describes the calls needed to FreshRealm’s API operations.
 
-# Authentication
-FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your "secret code" that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.
-
 # Output Format and Structure
 The REST API supports the response to be in JSON format. The response has the following structure:
 
@@ -88,6 +85,7 @@ The FreshRealm RESTful API uses best practices including the object, identifier,
 `http://api2.freshrealm.co/customers/4412/orders/`
 
 # Group Authentication
+FreshRealm’s REST API currently uses a proprietary authentication system. Each client server gets its own API access key, which is a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your "secret code" that we will send to you to begin testing.  At the end of this document a brief diagram is provided to explain our initial authentication system.
 
 ##Get Authentication Token [/authenticate]
 ### Get Authentication Token [POST]
