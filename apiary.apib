@@ -88,10 +88,8 @@ The FreshRealm RESTful API uses best practices including the object, identifier,
 `http://api2.freshrealm.co/customers/4412/orders/`
 
 # Group Products
-Use Case Scenario:
+
 This operation can be used for testing purposes and also to get the IDs of products that you can submit in the ‘Place Order’ operation. See the ‘Products ‘  resource table for more information.
-HTTP Method Used:GET
-Url:http://api2.freshrealm.co/products?key=myaccesstoken
 
 This table describes which attributes are provided by default, and which can be used as a filter.  For specific examples, and to see the data types that are passed, refer to the Example section of this document.
 Product is an active item available to your customer.
@@ -461,9 +459,6 @@ Product is an active item available to your customer.
 
 ### Use limit & offset [POST]
 
-Call:
-http://api2.freshrealm.co/products/productId/key=myaccesstoken&limit=1&offset=1
-
 + Response 200 (application/json)
 
 
@@ -539,7 +534,9 @@ http://api2.freshrealm.co/products/productId/key=myaccesstoken&limit=1&offset=1
 
 ## Nutritional Information [/products/key={token}&fields={fieldsList}]
 
-[{id},{gtin},{nutrition},{ingredients}]
++ Paramters
+    + token (required, string)
+    + fieldslist (optional, array, `["id","gtin","nutrition","ingredients"]`)
 
 ### Get nutrition information [/GET]
 
@@ -575,16 +572,16 @@ http://api2.freshrealm.co/products/productId/key=myaccesstoken&limit=1&offset=1
                     "unit": "KCal"
                 },
                 "Fat": {
-                    "amount": "0",
-                    "unit": "g"
+                "amount": "0",
+                "unit": "g"
                 },
                 "Saturated Fat": {
-                    "amount": "0.05",
-                    "unit": "g"
+                "amount": "0.05",
+                "unit": "g"
                 },
                 "Cholesterol": {
-                    "amount": "5",
-                    "unit": "mg"
+                "amount": "5",
+                "unit": "mg"
                 },
                 "Carbohydrates": {
                     "amount": "44.43",
@@ -957,10 +954,8 @@ The input `id` must match the `orderId` in the URL.
 
 
 #Group Customers
-Use Case Scenario:
+
 This operation can be used to find a customer and get all the orders from the customer.  Get customers will give you the ids for those requested customers to allow you to then get orders for them.  See the ‘Customers ‘  resource table for more information.
-HTTP Method: GET
-Url:http://api2.freshrealm.co/customers?key=myaccesstoken
 
 <TABLE>
 
@@ -1024,31 +1019,29 @@ Url:http://api2.freshrealm.co/customers?key=myaccesstoken
 
 </TABLE>
 
-This call uses GET method.
 
-Call:http://api2.freshrealm.co/customers/?key=myaccesstoken
+## List of orders placed by the customer [/customers/key={token}]
 
-Input:None
-{
-Output:
-Array
-(
-    [code] => 200
-    [timestamp] => 1377021942
-    [data] => Array (
-        [0] => Array(
-            [id] => 228
-            [firstName] => Bob
-            [lastName] => Smith
-            [email] => numberonebob@bob.com
-            [phone] => 8051234567
-            [customerId] =>
-        )
-            [1]=>Array(etc.
-)}
+### List of orders placed by the customer [GET]
++ Parameters
+    + Token (required, string)
+    + CustomerId (required)
+  
+
++ Response 200 (application/json)
+       
+        {
+           "id":"228",
+           "firstName":"Bob",
+           "lastName":"Smith",
+           "email":"numberonebob@bob.com",
+           "phone":"8051234567",
+           "customerId":""
+        }
+
 
 #Group Addresses
-Use Case Scenario:
+
 This operation can be used to find addresses and get all the addresses for a customer.  Get addresses will give you the ids for those requested addresses to allow you to then get orders for them.  See the ‘Customers ‘  resource table for more information.
 HTTP Method: GET
 Url: http://api2.freshrealm.co/addresses?key=myaccesstoken
@@ -1087,7 +1080,7 @@ Url: http://api2.freshrealm.co/addresses?key=myaccesstoken
 </TABLE>
 
 # Group Categories
-Use Case Scenario:
+
 This operation can be used to find available categories to which products belong.  See the ‘Categories’  resource table for more information.
 
 HTTP Method: GET
@@ -1204,7 +1197,6 @@ Array
 )
 }
 
-
 #Group Transactions
 Use Case Scenario:
 This operation can be used to retrieve a list of all the transactions.  Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.  See the ‘transactions ‘  resource table for more information.
@@ -1300,64 +1292,42 @@ Url:http://api2.freshrealm.co/codrops?key=myaccesstoken
 ### Get all codrops
 Method:GET
 
+
+
 Call:
 http://api2.freshrealm.co/codrops?key=myaccesstoken
 
-Input:none
 
-Output:
-
-{
-Array
-(
-    [code] => 200
-    [timestamp] => 1377027507
-    [data] => Array
-        (
-            [0] => Array
-                (
-                    [id] => 75
-                    [name] => TestDrop1
-                    [address] => 110 North 13th Street, Las Vegas, NV, 89101
-                    [facilitator] => Array
-                        (
-                            [firstName] => Facilitator
-                            [lastName] => User
-                            [email] => test_facilitator1@freshrealm.co
-                            [phone] => 9999999010
-                        )
-
-                )
-
-            [1] => etc.
-}
+            
+            {
+                        "id": "75",
+                        "name": "TestDrop1",
+                        "address": "110 North 13th Street, Las Vegas, NV, 89101",
+                        "facilitator":
+                                {
+                                    "firstName": "Facilitator",
+                                    "lastNameUser":"",
+                                    "email": "test_facilitator1@freshrealm.co",
+                                    "phone": "9999999010"
+                                }
+            }
 
 ### Get information about individual codrop
 Method:GET
 Call:
 http://api2.freshrealm.co/codrops/codropId?key=myaccesstoken
 
-Input:none
-
-Output:
-{
-Array
-(
-    [code] => 200
-    [timestamp] => 1377028620
-    [data] => Array
-        (
-            [id] => 75
-            [name] => TestDrop1
-            [notes] => public drop
-            [active] => 1
-            [timestamp] => 2013-08-20 19:38:23
-            [inviteRequired] =>
-            [public] => 1
-            [chargePerOrder] => 0.00
-        )
-)
-}
+            {
+                    
+                        "id": "75",
+                        "name": "TestDrop1",
+                        "notes": "public drop",
+                        "active": "1",
+                        "timestamp": "2013-08-20 19:38:23"
+                        "inviteRequired":
+                        "public": "1",
+                        "chargePerOrder": "0.00"
+            }
 
 ### Create Codrop
 Method:POST
@@ -1365,44 +1335,33 @@ Call:
 http://api2.freshrealm.co/codrops?key=myaccesstoken
 
 Input:
-{
-Array
-(
-    [name] => API_TestCodrop
-    [inviteRequired] =>
-    [active] =>
-    [notes] => Test codrop created through API
-    [addressFields] => Array
-        (
-            [streetAndNumber] => 500 Poli St
-            [aptSuite] => A
-            [city] => Ventura
-            [state] => CA
-            [zipcode] => 93001
-        )
-)
-}
-
+        {
+                       "name":"API_TestCodrop",
+                       "inviteRequired":"",
+                       "active":"",
+                       "notes":"Test codrop created through API",
+                       "addressFields":
+                                   {
+                                          "streetAndNumber":"500 Poli St",
+                                          "aptSuite":"A",
+                                          "city":"Ventura",
+                                          "state":"CA",
+                                          "zipcode":"93001"
+                                   }
+        }
 Output:
 
-{
-Array
-(
-    [code] => 200
-    [timestamp] => 1377029405
-    [data] => Array
-        (
-            [id] => 79
-            [name] => API_TestCodrop
-            [notes] => Test codrop created through API
-            [active] =>
-            [timestamp] => 2013-08-20 20:10:05
-            [inviteRequired] =>
-            [public] => 0
-            [chargePerOrder] => 0.00
-        )
-)
-}
+        {
+                        "id": "79"
+                        "name": "API_TestCodrop"
+                        "notes": "Test codrop created through API"
+                        "active": "",
+                        "timestamp": "2013-08-20 20:10:05"
+                        "inviteRequired": "",
+                        "public": "",
+                        "chargePerOrder": "0.00"
+        
+        }
 
 ### Get list of customers belonging to a particular codrops
 Method: GET
@@ -1411,34 +1370,25 @@ http://api2.freshrealm.co/codrops/codropId/customers?key=myaccesstoken
 
 {
 Input:none
-Array
-(
-    [code] => 200
-    [timestamp] => 1377028963
-    [data] => Array
-        (
-            [0] => Array
-                (
-                    [id] => 233
-                    [firstName] => Bob
-                    [lastName] => Smith
-                    [email] => numberonebob@bob.com
-                    [phone] => 8051234567
-                    [address] => 200 E Main St, Ventura, CA, 93001
-                )
-
-            [1] => Array
-                (
-                    [id] => 234
-                    [firstName] => David
-                    [lastName] => Sobotka
-                    [email] => david@sobotka.com
-                    [phone] => 8131234567
-                    [address] => 3501 Interstate 275 Frontage Rd E, Tampa, FL, 33607
-                )
-        )
-)
-
+           {
+                [
+                       {
+                              "id":"233",
+                              "firstName":"Bob",
+                              "lastName":"Smith",
+                              "email":"numberonebob@bob.com",
+                              "phone":"8051234567",
+                              "address":"200 E Main St, Ventura, CA, 93001"
+                       },{
+                              "id":"234",
+                              "firstName":"David",
+                              "lastName":"Sobotka",
+                              "email":"david@sobotka.com",
+                              "phone":"8131234567",
+                              "address":"3501 Interstate 275 Frontage Rd E, Tampa, FL, 33607"
+                       }
+                ]
+            }    
 
 #Group Shipping
 
