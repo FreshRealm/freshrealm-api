@@ -1168,16 +1168,7 @@ This operation is used at the checkout page to get the shipping cost and earlies
 | updateTime |  | X | Latest timestamp when the shipment was updated |
 | shippingAddress | X |  | Address resource where shipment was delivered (see Address resource above for more info |
 | shipToName | X |  | Name of shipment recipient |
-| shippingLines | X |  |  Array of shipping lines. Every shipping line contains the following information:
-+    productNumber (cartId-itemId, itemId, or “coolant”)
-+    vesselNumber
-+    customerName
-+    slotNumber
-+    vesselNotchNumber
-+    unitPrice
-+    labelInfo
-+    vesselSize (‘Small’, ‘Medium’, ‘Large’) |
-
+| shippingLines | X |  |  Array of shipping lines. Every shipping line contains the following information: `productNumber`,`vesselNumber`,`customerName`,`slotNumber`,`vesselNotchNumber`,`unitPrice`,`labelInfo`,`vesselSize` |
 
 ##Download Shipments Information [/shipments?key={token}&timestamp={value}]
 
