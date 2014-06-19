@@ -950,11 +950,11 @@ This operation can be used to find addresses and get all the addresses for a cus
 
 |Field              |Description        |
 |-------------------|-------------------|
-|streetAndNumber    |Example: 476 Main St       |
-|aptSuite           |Apartment number, unit number or suite. Example: Unit A        |
-|city               |City name      |
-|state              |State name - Example: CA or California     |
-|verify             |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
+|`streetAndNumber`    |Example: 476 Main St       |
+|`aptSuite`           |Apartment number, unit number or suite. Example: Unit A        |
+|`city`               |City name      |
+|`state`              |State name - Example: CA or California     |
+|`verify`             |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
 
 # Group Categories
 
@@ -962,19 +962,16 @@ This operation can be used to find available categories to which products belong
 
 | Field | Default | Filter | Description |
 |-------|---------|--------|-------------|
-| id | X | X | Category id |
-| parentId | X | X | Id of a parent category if category is a subcategory of another category |
-| name | X | X | Category name |
-| published | X | X | Whether a category is activated or not |
-| imageUrl |  |  | Returns urls of images that are attached to category (optional |
-| parentUrl |  |  | Url of a parent category if such category exists |
+| `id` | X | X | Category id |
+| `parentId` | X | X | Id of a parent category if category is a subcategory of another category |
+| `name` | X | X | Category name |
+| `published` | X | X | Whether a category is activated or not |
+| `imageUrl` |  |  | Returns urls of images that are attached to category (optional |
+| `parentUrl` |  |  | Url of a parent category if such category exists |
 
 
-### Get Categories
-This call uses GET method.
-
-##Retrieve individual category [/categories?key={token}]
-###Retrieve individual category [GET]
+## Retrieve individual category [/categories?key={token}]
+### Retrieve individual category [GET]
 + Parameters
     + token (required, string)
 
