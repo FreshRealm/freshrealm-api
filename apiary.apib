@@ -118,31 +118,31 @@ Product is an active item available to your customer.
 
 | Field                 | Default   | Filter    | Description |
 |-----------------------|-----------|-----------|-------------|
-| id                    | X         | X         | FreshRealm item id |
-| sku                   | X         | X         | Retailer defined item SKU |
-| gtin                  |           | X         | Global gtin identification number |
-| published             | X         | X         | Prepare your shopping cart before publishing the product. Customers should see only published products |
-| description           |           | X         |  |
-| weight                | X         | X         | Item’s weight |
-| weightUnit            | X         | X         | Unit of weight used e.g. lb, oz etc |
-| width                 | X         | X         | In inches |
-| height                | X         | X         | In inches |
-| length                | X         | X         | In inches |
-| minFreshrealmCost     | X         | X         | Minimum FreshRealm Cost |
-| avgFreshrealmCost     | X         | X         | Average FreshRealm Cost |
-| maxFreshrealmCost     | X         | X         | Maximum FreshRealm Cost |
-| name                  | X         |           | Name of the product - can be customized |
-| url                   |           |           | URL resource |
-| categories            |           |           | List of categories |
-| costs                 |           |           | Product cost |
-| prices                |           |           | Product Prices |
-| ingredients           |           |           | ingredients of the products |
-| nutrition             | X         |           | Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested |
-| imageURL              |           |           | Default image url in the full resolution |
-| images                |           |           | Array of product images. Each image has ‘default’, ‘large’(1024x768), ‘medium’(800x600) and ‘small’(160x120) keys pointing to the image url |
-| price                 |           |           | Zipcode dependent price function. Zipcode must be provided in order to obtain the result |
-| cost                  |           |           | Zipcode dependent cost function. Zipcode must be provided in order to obtain the result |
-| margin                |           |           | Zipcode dependent margin function. Zipcode must be provided in order to obtain the result |
+| `id`                    | X         | X         | FreshRealm item id |
+| `sku`                   | X         | X         | Retailer defined item SKU |
+| `gtin`                  |           | X         | Global gtin identification number |
+| `published`             | X         | X         | Prepare your shopping cart before publishing the product. Customers should see only published products |
+| `description`           |           | X         |  |
+| `weight`                | X         | X         | Item’s weight |
+| `weightUnit`            | X         | X         | Unit of weight used e.g. lb, oz etc |
+| `width`                 | X         | X         | In inches |
+| `height`                | X         | X         | In inches |
+| `length`                | X         | X         | In inches |
+| `minFreshrealmCost`     | X         | X         | Minimum FreshRealm Cost |
+| `avgFreshrealmCost`     | X         | X         | Average FreshRealm Cost |
+| `maxFreshrealmCost`     | X         | X         | Maximum FreshRealm Cost |
+| `name`                  | X         |           | Name of the product - can be customized |
+| `url`                   |           |           | URL resource |
+| `categories`            |           |           | List of categories |
+| `costs`                 |           |           | Product cost |
+| `prices`                |           |           | Product Prices |
+| `ingredients`           |           |           | ingredients of the products |
+| `nutrition`             | X         |           | Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested |
+| `imageURL`              |           |           | Default image url in the full resolution |
+| `images`                |           |           | Array of product images. Each image has ‘default’, ‘large’(1024x768), ‘medium’(800x600) and ‘small’(160x120) keys pointing to the image url |
+| `price`                 |           |           | Zipcode dependent price function. Zipcode must be provided in order to obtain the result |
+| `cost`                  |           |           | Zipcode dependent cost function. Zipcode must be provided in order to obtain the result |
+| `margin`                |           |           | Zipcode dependent margin function. Zipcode must be provided in order to obtain the result |
 
 
 ##List of all the products [/products?key={token}]
