@@ -1015,27 +1015,27 @@ This operation can be used to retrieve a list of all the transactions. Get trans
 [TBD]
 
 
-#Group Codrops
-Use these methods to obtain information about codrop, request individual codrop information, get list of customers belonging to a codrop, or create a codrop.
+#Group Co-Drops
+Use these methods to obtain information about Co-Drop, request individual Co-Drop information, get list of customers belonging to a Co-Drop, or create a Co-Drop.
 
-Codrops allow multiple customers to have food delivered to one location. Codrops can be public or private, and can be open to all or by invite only. The FreshRealm API allows retrieving information about all codrops or individual codrop, as well as creation of a new codrop.
+Codrops allow multiple customers to have food delivered to one location. Co-Drops can be public or private, and can be open to all or by invite only. The FreshRealm API allows retrieving information about all Co-Drops or individual Co-Drop, as well as creation of a new Co-Drop.
 
 
 | Field | Default | Filter | Description |
 |-------|---------|--------|-------------|
-| id | X | X | FreshRealm codrop id |
-| name | X | X | Codrop name |
-| address | X |  | Address of a codrop |
-| facilitator |  |  | Information about codrop’s facilitator |
-| notes | X | X | Notes |
-| active | X | X | Flag whether codrop is active |
-| timestamp |  | X | Latest timestamp when the codrop was updated |
-| inviteRequired |  | X | Whether invite is required |
-| chargePerOrder | X | X | Charge per order |
+| `id` | X | X | FreshRealm Co-Drop id |
+| `name` | X | X | Co-Drop name |
+| `address` | X |  | Address of a Co-Drop |
+| `facilitator` |  |  | Information about Co-Drop's facilitator |
+| `notes` | X | X | Notes |
+| `active` | X | X | Flag whether Co-Drop is active |
+| `timestamp` |  | X | Latest timestamp when the Co-Drop was updated |
+| `inviteRequired` |  | X | Whether invite is required |
+| `chargePerOrder` | X | X | Charge per order |
 
 
-## Retrieve all codrop information [/codrops?key={token}]
-### Get all co-drops [GET]
+## Co-Drops [/codrops?key={token}]
+### List All Co-Drops [GET]
 
 + Parameters
     + token (required, string)
