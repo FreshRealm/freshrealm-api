@@ -333,10 +333,14 @@ Another filtering example.
         }
 
 
-## Filter Example [/products/productId/key={token}&filter={"field":"gtin":"test_fixture_item_16","operator:"like"}]
+## Filter Example [/products/productId/key={token}&filter={filter}]
+Some fields can be used for filtering a list of resources. `Filter` is a JSON encoded GET attribute that can be defined by a key value pair or as a JSON object with an operator.
 
+### GET
++ Parameters
+    + token (required, string)
+    + filter (optional, object, `{"field":"gtin":"test_fixture_item_16","operator:"like"}`)
 
-### Filter by gtin [GET]
 
 + Response 200 (application/json)
 
