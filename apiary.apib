@@ -925,7 +925,6 @@ This call allows you to cancel existing orders that have not been started yet. A
 
 ### Cancel An Order [PUT]
 
-    The input `id` must match the `orderId` in the URL.
 
 + Parameters
     + orderId (required, number, `109`)
@@ -933,6 +932,9 @@ This call allows you to cancel existing orders that have not been started yet. A
 
 
 + Request (application/json)
+        The input `id` must match the `orderId` in the URL.
+
+    + Body
 
         {
             "id": 109
