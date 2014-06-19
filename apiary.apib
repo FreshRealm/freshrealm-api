@@ -171,76 +171,73 @@ This operation can be used for testing purposes and also to get the `id`s of pro
                 }
 
 
-## Retrieve details for individual product [/products/productsId/key={token}]
-### Details for individual products [GET]
+## Get An Individual Product [/products/productsId/key={token}]
+### GET
+
++ Parameters
+    + token (required, string)
 
 + Response 200 (application/json)
 
+                {
+                    "code": 200,
+                    "timestamp": 184653225,
+                    "data":{
+                        "id": "2158",
+                        "sku": "XDDWW3",
+                        "published": "1",
+                        "weight": "0.400",
+                        "weightUnit": "lb",
+                        "width": "5.000",
+                        "height": "1.000",
+                        "length": "5.000",
+                        "minFreshrealmCost": "2.1",
+                        "avgFreshrealmCost": "2.3",
+                        "maxFreshrealmCost": "2.5",
+                        "nutrition": {
+                            "calories": {
+                                "amount": "193.75",
+                                "unit": "KCal"
+                            },
+                            "Fat": {
+                                "amount": "0",
+                                "unit": "g"
+                            },
+                            "Saturated Fat": {
+                                "amount": "0.05",
+                                "unit": "g"
+                            },
 
-                    "id": "2158",
-                    "sku": "XDDWW3",
-                    "published": "1",
-                    "weight": "0.400",
-                    "weightUnit": "lb",
-                    "width": "5.000",
-                    "height": "1.000",
-                    "length": "5.000",
-                    "minFreshrealmCost": "2.1",
-                    "avgFreshrealmCost": "2.3",
-                    "maxFreshrealmCost": "2.5",
-                    "nutrition":
-                    {
-                    "calories":
-                        {
-                        "amount": "193.75",
-                        "unit": "KCal"
-                        },
-                    "Fat":
-                        {
-                        "amount": "0",
-                        "unit": "g"
-                        },
-                     "Saturated Fat":
-                        {
-                        "amount": "0.05",
-                        "unit": "g"
-                        },{
-
-                    "Cholesterol":
-                        {
-                        "amount": "5",
-                        "unit": "mg"
-                        },
-
-                    "Carbohydrates":
-                        {
-                        "amount": "44.43",
-                        "unit": "g"
-                        },
-
-                    "Fiber":
-                        {
-                        "amount": "4.42",
-                        "unit": "g"
-                        },
-
-                    "Sugar":
-                        {
-                        "amount": "32.13",
-                        "unit": "g"
-                        },
-
-                    "Protein":
-                        {
-                            "amount": "10.47",
-                            "unit": "g"
+                            "Cholesterol": {
+                                "amount": "5",
+                                "unit": "mg"
+                            },
+                            "Carbohydrates": {
+                                "amount": "44.43",
+                                "unit": "g"
+                            },
+                            "Fiber": {
+                                "amount": "4.42",
+                                "unit": "g"
+                            },
+                            "Sugar": {
+                                "amount": "32.13",
+                                "unit": "g"
+                            },
+                            "Protein": {
+                                "amount": "10.47",
+                                "unit": "g"
+                            }
                         }
+                    }
+                }
 
 
 
-## Retrieve id, costs, prices [/products/productId/key={token}&fields={fieldsList1}]
+## Retrieve ID, Costs, Prices [/products/productId/key={token}&fields={fieldsList1}]
+This example shows how to limit the returned data to a specific set of fields.
 
-### Get retrieve id, costs and prices [GET]
+### GET
 + Parameters
     + token (required, string)
     + fieldsList1 (optional, array, `["id","costs","prices"]`)
@@ -248,45 +245,54 @@ This operation can be used for testing purposes and also to get the `id`s of pro
 + Response 200 (application/json)
 
             {
-                "costs": {
-                    "avg": "5.23",
-                    "min": "4.55",
-                    "max": "6.03"
-                },
+                "code": 200,
+                "timestamp": 1402706999,
+                "data": {
+                    "costs": {
+                        "avg": "5.23",
+                        "min": "4.55",
+                        "max": "6.03"
+                    },
 
-                "prices": {
-                    "avg": "5.53",
-                    "min": "4.96",
-                    "max" : "6.76"
+                    "prices": {
+                        "avg": "5.53",
+                        "min": "4.96",
+                        "max" : "6.76"
+                    }
                 }
             }
 
 ## Retrieve Image Details [/products/productId/key={token}&fields={fieldsList2}]
+This example shows how to receive only image related fields. Refer to the table above to see which fields are available.
 
-### Retrive image details [GET]
+### GET
 
 + Parameters
     + token (required, string)
     + fieldsList2 (optional, array, `["id","imageUrl","url","images"]`)
 
-
 + Response 200 (application/json)
 
         {
-           "id":"2192",
-           "url":"api2./products/2192?key=pXUMjWnDRmx5bAIDn8L8NecTGWKcAsa",
-           "imageUrl":"http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
-           "images":{
-              "default":"http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
-              "large":"http://src1.sencha.io/1024/768/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
-              "medium":"http://src4.sencha.io/800/600/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
-              "small":"http://src2.sencha.io/160/120/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg"
-           }
+            "code": 200,
+            "timestamp": 1402706999,
+            "data": {
+                "id": "2192",
+                "url": "api2./products/2192?key=pXUMjWnDRmx5bAIDn8L8NecTGWKcAsa",
+                "imageUrl": "http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
+                "images": {
+                    "default":"http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
+                    "large":"http://src1.sencha.io/1024/768/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
+                    "medium":"http://src4.sencha.io/800/600/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg",
+                    "small":"http://src2.sencha.io/160/120/http://images.freshrealm.co/upload/838cf1a6-4f5f-4f75-bca6-f11db34d9fd1.jpg"
+                }
+            }
         }
 
-## Retrieve id, margin [/products/productId/key={token}&fields={fieldsList3}]
+## Retrieve ID, Margin [/products/productId/key={token}&fields={fieldsList3}]
+Another filtering example.
 
-### Product Margin information [GET]
+### GET
 + Parameters
     + token (required, string)
     + fieldsList3 (optional, array, `["id","margin"]`)
@@ -295,11 +301,15 @@ This operation can be used for testing purposes and also to get the `id`s of pro
 + Response 200 (application/json)
 
         {
-            "id":"2188",
-            "margin":{
-                "type":"default",
-                "value":"15.00",
-                "unit":"percents"
+            "code": 200,
+            "timestamp": 1402706999,
+            "data": {
+                "id": "2188",
+                "margin": {
+                    "type": "default",
+                    "value": "15.00",
+                    "unit": "percents"
+                }
             }
         }
 
