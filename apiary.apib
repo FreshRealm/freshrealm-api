@@ -332,6 +332,29 @@ These examples show how to limit the returned data to a specific set of fields.
             }
         }
 
+### List of Ingredents [GET]
++ Parameters
+    + token (required, string)
+    + productId (required, number)
+    + fieldsList (optional, array, `["id", "ingedients"]`)
+
+
++ Response 200 (application/json)
+
+        {
+            "code": "200",
+            "timestamp": "1376939257",
+            "data": {
+                "id": "2203",
+                "ingredients": [{
+                    "url": "api2.freshrealm.co/items/2201?key=FgDqgXUUP7dh38zb2CSCmcyookXnTgM",
+                    "id": "2201",
+                    "amount": "0.5",
+                    "unit": "ft"
+                }]
+            }
+        }
+
 
 ## Filter Example [/products?key={token}&filter={filter}]
 Some fields can be used for filtering a list of resources. `Filter` is a JSON encoded GET attribute that can be defined by a key value pair or as a JSON object with an operator.
@@ -432,30 +455,6 @@ Get the price of a product for a given zipcode.
         }
 
 
-## Get Ingredients [/products/{id}?key={token}&fields={fieldsList}]
-
-### Obtain a list of ingredents [GET]
-+ Parameters
-    + token (required, string)
-    + id (required, number)
-    + fieldsList (optional, array, `["id", "ingedients"]`)
-
-
-+ Response 200 (application/json)
-
-        {
-            "code": "200",
-            "timestamp": "1376939257",
-            "data": {
-                "id": "2203",
-                "ingredients": [{
-                    "url": "api2.freshrealm.co/items/2201?key=FgDqgXUUP7dh38zb2CSCmcyookXnTgM",
-                    "id": "2201",
-                    "amount": "0.5",
-                    "unit": "ft"
-                }]
-            }
-        }
 
 ## Get Categories [/products/{id}/categories?key={token}]
 Get the categories to which a particular product belongs.
