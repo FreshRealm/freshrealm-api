@@ -1824,13 +1824,22 @@ This operation can be used to find a customer and to get all the orders for the 
 |customerID                 |X              |X                      |The external customer id (customer id set by customers of FreshRealm) |
 
 
-## List of orders placed by the customer [/customers/{customerId}?key={token}]
+## Create new Customer [/customers/{token}]
 
-### GET
+### POST [POST]
 
 + Parameters
     + token (required, string)
+    
++ Request (application/json)
 
+        {
+            "id" : 20,
+            "firstName": "Mark",
+            "lastName": "Zuckeberg",
+            "email": "zuckeberg@freshrealm.co",
+            "mobilePhoneNumber": "888-457-4547"
+        }   
 
 + Response 200 (application/json)
 
@@ -1838,14 +1847,58 @@ This operation can be used to find a customer and to get all the orders for the 
             "code": 200,
             "timestamp": 1377020859,
             "data": {
-                "id": "228",
-                "firstName": "Bob",
-                "lastName": "Smith",
-                "email": "numberonebob@bob.com",
-                "phone": "8051234567",
-                "customerId": ""
+                "id" : 20,
+                "firstName": "Mark",
+                "lastName": "Zuckeberg",
+                "email": "zuckeberg@freshrealm.co",
+                "mobilePhoneNumber": "888-457-4547"
             }
         }
+
+## Create new Customer with address [/customers{token}]
+
+### POST [POST]
+
++ Parameters
+    + token (required, string)
+
++ Request (application/json)
+            
+        {  "firstName": "Mark",
+            "lastName": "Zuckeberg",
+            "email": "zuckeberg@freshrealm.co",
+            "mobilePhoneNumber": "888-457-4547",
+            "address": {
+                    "streetAndNumber": "139 Wall St",
+                    "aptSuite": "H",
+                    "city": "Ventura",
+                    "state": "CA",
+                    "zipcode": "93001"
+                }
+        }
+
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1377020859,
+            "data": 
+            {
+            "firstName": "Mark",
+            "lastName": "Zuckeberg",
+            "email": "zuckeberg@freshrealm.co",
+            "mobilePhoneNumber": "888-457-4547",
+            "address": {
+                    "streetAndNumber": "139 Wall St",
+                    "aptSuite": "H",
+                    "city": "Ventura",
+                    "state": "CA",
+                    "zipcode": "93001"
+                }
+        }
+         
+  
 
 
 #Group Addresses
@@ -2371,6 +2424,8 @@ This operation is used at the checkout page to get the shipping cost and earlies
 
 ##Create Picknpack Product Receipt [/pnpproductreceipts?key={token}]
 ###Create Picknpack Product Receipt [POST]
+
+
 Note: receipt date is optional. If no receipt date is provided, receipt date will be pre-filled with the date when API request is initiated.
 
 + Parameters
