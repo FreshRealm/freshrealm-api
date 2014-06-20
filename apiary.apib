@@ -1573,77 +1573,61 @@ To create an order, you must pass a `customerId`. If the `customerId` is not pro
     + Body
 
             {
-                 "customerId": 1,
-                 "customer": {
-                    "firstName": "Aaron",
-                    "lastName": "Francis",
-                    "email": "aarondfrancis@gmail.com",
-                    "phone": "555-555-5555",
-                    "addressFields": {
-                        "streetAndNumber": "4431 Meadow Ln",
-                        "aptSuite": "",
-                        "city": "Anytown",
-                        "state": "TX",
-                        "zipcode": "75321"
-                    }
-                },
-                "shoppingCart": [{
-                    "sku": "111111",
-                    "itemId": "1",
-                    "qty": 1,
-                    "itemPrice": "9.99"
+                "status": "authorized",
+                "customerId": 7069,
+                "shippingAddressId": 7427,
+                "items": [{
+                    "itemId": "1674",
+                    "quantity": 3
                 },{
-                    "sku": "222222",
-                    "itemId": "2",
-                    "qty": 1,
-                    "itemPrice": "5.99"
+                    "itemId": "1675",
+                    "quantity": 4
                 }],
                 "totalPrice": "20.98",
                 "salesTax": "0",
-                "totalShipping": "5.00",
-                "deliveryDate": "06-14-2014",
-                "specialInstructions": ""
+                "deliveryDate": "2014-06-01",
             }
 
 + Response 200 (application/json)
 
         {
             "code": 200,
-            "timestamp": 1402706999
+            "timestamp": 1401213818,
             "data": {
-                "id": "109",
-                "succeeded": "1",
-                "message": "Succeeded!",
-                "subTotal": "50.43",
-                "shippingAndHandling": "15.00",
-                "salesTax": "ul",
-                "total": "65.43",
-                "shippingAddressId": "415",
-                "paymentMethodToken": "Kstpsl0EJ5iDvBg3IY3jnC6yTwB",
-                "deliveryDate": "2014-06-17",
-                "complete": "0",
-                "productLines": [{
-                    "name": "Product 1",
-                    "id": "1",
-                    "description": "",
-                    "quantity": 1,
-                    "price": "9.99"
-                },{
-                    "name": "Product 2",
-                    "id": "2",
-                    "description": "",
-                    "quantity": 1,
-                    "price": "5.99"
-                }],
-                "customerId": "1",
-                "externalId": null,
-                "createTime": 1402706948,
-                "updateTime": 1402706998,
-                "confirmationUri": null,
-                "redirectUri": null,
-                "authorizationToken": 'JCejaDc2awjFbMsCGMbLRlwu5qO',
-                "authorizeTime": '2014-06-14 00:49:58',
-                "transactionTime": null,
+                "id": "10489",
+                "customerId": "7069",
+                "codropId": null,
+                "shippingAddressId": "7427",
+                "status": "authorized",
+                "manufactureDate": "2014-06-02",
+                "freshrealmSubtotal": 4.05,
+                "shippingAndHandling": 30.79182,
+                "cutOffTime": "2014-05-30 17:00",
+                "totalCost": 34.84182,
+                "totalPrice": "20.98",
+                "salesTax": "0",
+                "updateTime": 1401213818,
+                "createTime": 1401213818,
+                "orderNumber": null,
+                "deliveryDate": "2014-06-02",
+                "items": [
+                    {
+                        "id": "1674",
+                        "quantity": 3
+                    },
+                    {
+                        "id": "1675",
+                        "quantity": 4
+                    }
+                ],
+                "pickupDate": null,
+                "shipMethod": "FEDEX_GROUND",
+                "warnings": [
+                    {
+                        "type": "modifiedDeliveryDate",
+                        "message": "Delivery date was modified"
+                    }
+                ]
             }
         }
 
