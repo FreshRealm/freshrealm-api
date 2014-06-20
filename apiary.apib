@@ -1735,9 +1735,10 @@ Retrieve all the latest orders (default limit is 100 results)
             }]
         }
 
-## Get Order [/order/{orderId}?key={token}]
-Get the details of a particular order, given an `orderId`.
-### GET
+## Order Resource [/order/{orderId}?key={token}]
+Use this URL to `GET` order information or `PUT` changes to the order.
+
+### Fetch Order [GET]
 + Parameters
     + orderId (required, number, `10490`)
     + token (required, string)
@@ -1780,17 +1781,15 @@ Get the details of a particular order, given an `orderId`.
         }
 
 
-## Update an Order [/order/{orderId}?key={token}]
-
-This call allows you to modify an order. Once an order has reached the `processed` status, it can no longer be updated. This status change occurs at the `cutOffTime`.
-
-### Cancel An Order [PUT]
+### Update Order [PUT]
 
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
 
 + Request (application/json)
+This call allows you to modify an order. Once an order has reached the `processed` status, it can no longer be updated. This status change occurs at the `cutOffTime`.
+
 The input `id` must match the `orderId` in the URL.
 
     + Body
