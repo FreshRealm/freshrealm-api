@@ -1862,6 +1862,30 @@ This operation can be used to find addresses and get all the addresses for a cus
 |`state`              |State name - Example: CA or California     |
 |`verify`             |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
 
+## Retrieve customer address [/apiaddress?key={token}]
+
+###GET
+
++ Response 200
+
+            {
+               "prefix": "To our king"
+               "streetAndNumber": "139 Wall St"
+               "aptSuite": "Apt H"
+               "city": "Ventura"
+               "state": "CA"
+               "zipcode": "93001"
+               "deliveryInstructions": "Don\'t let angry neighbors take it.",
+               "pickupInstructions" => "Knock the door",
+               "pickupLocation" => "back_door",
+               "type": "residential",
+               "status": => 'confirmed",
+               "lat": "34.28329",
+               "lng": "-119.29941",
+               "shippingLocation" : "null",
+               "uniqueIdentifier": "139-WALL-ST-APT-H-VENTURA-CA"
+            }
+
 # Group Categories
 
 This operation can be used to find available categories to which products belong.  See the ‘Categories’  resource table for more information.
