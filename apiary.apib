@@ -1631,11 +1631,11 @@ To create an order, you must pass a `customerId`. If the `customerId` is not pro
             }
         }
 
-## Get All Orders [/orders?key={token}&limit={limit}]
+## List Orders [/orders?key={token}&limit={limit}]
 
 Retrieve all the latest orders (default limit is 100 results)
 
-### Get All Orders [GET]
+### List Orders [GET]
 + Parameters
     + token (required, string)
     + limit (optional, number, `3`)
@@ -1735,89 +1735,11 @@ Retrieve all the latest orders (default limit is 100 results)
             }]
         }
 
-## Get Orders By Customer [/customers/{customerId}/orders?key={token}&limit={limit}]
-Retrieve all the latest orders for a given `Customer ID` (default limit is 100 results)
-
-### GET
-+ Parameters
-    + customerId (required, number, `1001`)
-    + token (required, string)
-    + limit (optional, number, `5`)
-
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1377021331
-            "data": [{
-                "id": "576",
-                "customerId": "228",
-                "status": "PENDING",
-                "totalCost": "72.140",
-                "shippingAndHandling": "45.640",
-                "specialInstructions": "",
-                "codropId": "",
-                "createTime": "2013-08-20 17:47:37",
-                "updateTime": "2013-08-20 17:47:37",
-                "deliveryDate": "2013-08-22",
-                "orderNumber": "",
-                "trackingInfo": {
-                    "carrier": " ",
-                    "trackingNumThere": " "
-                },
-                "shippingAddress": {
-                    "streetAndNumber": "200 E Main St",
-                    "aptSuite": "",
-                    "city": "Ventura",
-                    "state": "CA",
-                    "zipcode": "93001"
-                },
-                "customer": {
-                    "firstName": "Bob",
-                    "lastName": "Smith",
-                    "phone": "8051234567",
-                    "email": "numberonebob@bob.com",
-                    "customerNumber": " "
-                }
-            }, {
-                "id": "576",
-                "customerId": "228",
-                "status": "PENDING",
-                "totalCost": "72.140",
-                "shippingAndHandling": "45.640",
-                "specialInstructions": "",
-                "codropId": "",
-                "createTime": "2013-08-20 17:47:37",
-                "updateTime": "2013-08-20 17:47:37",
-                "deliveryDate": "2013-08-22",
-                "orderNumber": "",
-                "trackingInfo": {
-                    "carrier": " ",
-                    "trackingNumThere": " "
-                },
-                "shippingAddress": {
-                    "streetAndNumber": "200 E Main St",
-                    "aptSuite": "",
-                    "city": "Ventura",
-                    "state": "CA",
-                    "zipcode": "93001"
-                },
-                "customer": {
-                    "firstName": "Bob",
-                    "lastName": "Smith",
-                    "phone": "8051234567",
-                    "email": "numberonebob@bob.com",
-                    "customerNumber": " "
-                }
-            }]
-        }
-
-
-## Get Order Details [/order/{orderId}?key={token}]
+## Get Order [/order/{orderId}?key={token}]
 Get the details of a particular order, given an `orderId`.
 ### GET
 + Parameters
-    + orderId (required, number, `109`)
+    + orderId (required, number, `10490`)
     + token (required, string)
 
 + Response 200 (application/json)
@@ -1826,45 +1748,40 @@ Get the details of a particular order, given an `orderId`.
             "code": 200,
             "timestamp": 1402706999
             "data": {
-                "id": "109",
-                "succeeded": "1",
-                "message": "Succeeded!",
-                "subTotal": "50.43",
-                "shippingAndHandling": "15.00",
-                "salesTax": "ul",
-                "total": "65.43",
-                "shippingAddressId": "415",
-                "paymentMethodToken": "Kstpsl0EJ5iDvBg3IY3jnC6yTwB",
-                "deliveryDate": "2014-06-17",
-                "complete": "0",
-                "productLines": [{
-                    "name": "Product 1",
-                    "id": "1",
-                    "description": "",
-                    "quantity": 1,
-                    "price": "9.99"
-                },{
-                    "name": "Product 2",
-                    "id": "2",
-                    "description": "",
-                    "quantity": 1,
-                    "price": "5.99"
-                }],
-                "customerId": "1",
-                "externalId": null,
-                "createTime": 1402706948,
-                "updateTime": 1402706998,
-                "confirmationUri": null,
-                "redirectUri": null,
-                "authorizationToken": 'JCejaDc2awjFbMsCGMbLRlwu5qO',
-                "authorizeTime": '2014-06-14 00:49:58',
-                "transactionTime": null,
+                "id": "10490",
+                "customerId": "7069",
+                "codropId": null,
+                "shippingAddressId": "7427",
+                "status": "authorized",
+                "manufactureDate": "2014-06-02",
+                "freshrealmSubtotal": 4.05,
+                "shippingAndHandling": 30.79182,
+                "cutOffTime": "2014-05-30 17:00",
+                "totalCost": 34.84182,
+                "totalPrice": "20.98",
+                "salesTax": "0",
+                "updateTime": 1401213818,
+                "createTime": 1401213818,
+                "orderNumber": null,
+                "deliveryDate": "2014-06-02",
+                "items": [
+                    {
+                        "id": "1674",
+                        "quantity": 3
+                    },
+                    {
+                        "id": "1675",
+                        "quantity": 4
+                    }
+                ],
+                "pickupDate": null,
+                "shipMethod": "FEDEX_GROUND"
             }
         }
 
-## Cancel an Order [/cancelOrder/{orderId}?key={token}]
+## Update an Order [/order/{orderId}?key={token}]
 
-This call allows you to cancel existing orders that have not been started yet. An order can be cancelled any time before the food is being made (while order status is `PENDING`).
+This call allows you to modify an order. Once an order has reached the `processed` status, it can no longer be updated. This status change occurs at the `cutOffTime`.
 
 ### Cancel An Order [PUT]
 
