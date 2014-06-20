@@ -1831,7 +1831,6 @@ This operation can be used to find a customer and to get all the orders for the 
 
 + Parameters
     + token (required, string)
-    + customerId (required, number)
 
 
 + Response 200 (application/json)
@@ -1866,9 +1865,15 @@ This operation can be used to find addresses and get all the addresses for a cus
 
 ###GET
 
-+ Response 200
++ Parameters
+    + token (required, string)
 
-            {
++ Response 200 (application/json)
+
+        {
+           "code": 200,
+           "timestamp": 1401126092,
+           "data": {
                "prefix": "To our king"
                "streetAndNumber": "139 Wall St"
                "aptSuite": "Apt H"
@@ -1885,6 +1890,7 @@ This operation can be used to find addresses and get all the addresses for a cus
                "shippingLocation" : "null",
                "uniqueIdentifier": "139-WALL-ST-APT-H-VENTURA-CA"
             }
+        }
 
 # Group Categories
 
