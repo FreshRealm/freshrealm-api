@@ -1548,22 +1548,22 @@ To create an order, you must pass a `customerId`. If the `customerId` is not pro
 ### Attributes
 | field          | required | type      | example                               | description |
 |-----------------------|:-:|-----------|---------------------------------------|-------------|
-| customerId            | * | int       | `1`                                   | Customer Id, see `Customers` resource |
-| shippingAddressId            | * | int       | `1`                                   | Shipping Address Id, see `Addresses` resource |
-| items            | * | array    | [...] | See below |
-| status              |   | string    | `authorized` | The current status of the order. May be one of the following: `preliminary, authorized, test` |
-| orderNumber         |   | string    | `123532` | Optional. The order number within your application. |
-| deliveryDate          |   | string    | `06-28-2014` | Optional for orders not on the earliest delivery date |
-| codropId   |   | int    |  | If the order is for Co-Drop, required |
-| totalPrice   |   | float    |  | The total price of the order |
-| salesTax   |   | float    |  | The sales tax applied to the order |
-| transactionId   |   | int    |  | The transaction to which this order is linked. See `Transactions` resource |
+| `customerId`            | * | int       | `1`                                   | Customer Id, see `Customers` resource |
+| `shippingAddressId`            | * | int       | `1`                                   | Shipping Address Id, see `Addresses` resource |
+| `items`            | * | array    | [...] | See below |
+| `status`              |   | string    | `authorized` | The current status of the order. May be one of the following: `preliminary, authorized, test` |
+| `orderNumber`         |   | string    | `123532` | Optional. The order number within your application. |
+| `deliveryDate`          |   | string    | `06-28-2014` | Optional for orders not on the earliest delivery date |
+| `codropId`   |   | int    |  | If the order is for Co-Drop, required |
+| `totalPrice`   |   | float    |  | The total price of the order |
+| `salesTax`   |   | float    |  | The sales tax applied to the order |
+| `transactionId`   |   | int    |  | The transaction to which this order is linked. See `Transactions` resource |
 
 #### Items Attributes
 | field | required  | type      | example                           | description |
 |---------------|:-:|-----------|-----------------------------------|-------------|
-| itemId        | * | int       | `1`                               | FreshRealm Item ID |
-| quantity           | * | int       | `1`                               | Quantity |
+| `itemId`        | * | int       | `1`                               | FreshRealm Item ID |
+| `quantity`           | * | int       | `1`                               | Quantity |
 
 
 ### Place An Order [POST]
@@ -1638,73 +1638,100 @@ Retrieve all the latest orders (default limit is 100 results)
 ### Get All Orders [GET]
 + Parameters
     + token (required, string)
-    + limit (optional, number, `5`)
+    + limit (optional, number, `3`)
 
 + Response 200 (application/json)
 
         {
             "code": 200,
-            "timestamp": 1377021331
+            "timestamp": 1401213818,
             "data": [{
-                "id": "576",
-                "customerId": "228",
-                "status": "PENDING",
-                "totalCost": "72.140",
-                "shippingAndHandling": "45.640",
-                "specialInstructions": "",
-                "codropId": "",
-                "createTime": "2013-08-20 17:47:37",
-                "updateTime": "2013-08-20 17:47:37",
-                "deliveryDate": "2013-08-22",
-                "orderNumber": "",
-                "trackingInfo": {
-                    "carrier": " ",
-                    "trackingNumThere": " "
-                },
-                "shippingAddress": {
-                    "streetAndNumber": "200 E Main St",
-                    "aptSuite": "",
-                    "city": "Ventura",
-                    "state": "CA",
-                    "zipcode": "93001"
-                },
-                "customer": {
-                    "firstName": "Bob",
-                    "lastName": "Smith",
-                    "phone": "8051234567",
-                    "email": "numberonebob@bob.com",
-                    "customerNumber": " "
-                }
-            }, {
-                "id": "576",
-                "customerId": "228",
-                "status": "PENDING",
-                "totalCost": "72.140",
-                "shippingAndHandling": "45.640",
-                "specialInstructions": "",
-                "codropId": "",
-                "createTime": "2013-08-20 17:47:37",
-                "updateTime": "2013-08-20 17:47:37",
-                "deliveryDate": "2013-08-22",
-                "orderNumber": "",
-                "trackingInfo": {
-                    "carrier": " ",
-                    "trackingNumThere": " "
-                },
-                "shippingAddress": {
-                    "streetAndNumber": "200 E Main St",
-                    "aptSuite": "",
-                    "city": "Ventura",
-                    "state": "CA",
-                    "zipcode": "93001"
-                },
-                "customer": {
-                    "firstName": "Bob",
-                    "lastName": "Smith",
-                    "phone": "8051234567",
-                    "email": "numberonebob@bob.com",
-                    "customerNumber": " "
-                }
+                "id": "10489",
+                "customerId": "7069",
+                "codropId": null,
+                "shippingAddressId": "7427",
+                "status": "authorized",
+                "manufactureDate": "2014-06-02",
+                "freshrealmSubtotal": 4.05,
+                "shippingAndHandling": 30.79182,
+                "cutOffTime": "2014-05-30 17:00",
+                "totalCost": 34.84182,
+                "totalPrice": "20.98",
+                "salesTax": "0",
+                "updateTime": 1401213818,
+                "createTime": 1401213818,
+                "orderNumber": null,
+                "deliveryDate": "2014-06-02",
+                "items": [
+                    {
+                        "id": "1674",
+                        "quantity": 3
+                    },
+                    {
+                        "id": "1675",
+                        "quantity": 4
+                    }
+                ],
+                "pickupDate": null,
+                "shipMethod": "FEDEX_GROUND"
+            },{
+                "id": "10490",
+                "customerId": "7069",
+                "codropId": null,
+                "shippingAddressId": "7427",
+                "status": "authorized",
+                "manufactureDate": "2014-06-02",
+                "freshrealmSubtotal": 4.05,
+                "shippingAndHandling": 30.79182,
+                "cutOffTime": "2014-05-30 17:00",
+                "totalCost": 34.84182,
+                "totalPrice": "20.98",
+                "salesTax": "0",
+                "updateTime": 1401213818,
+                "createTime": 1401213818,
+                "orderNumber": null,
+                "deliveryDate": "2014-06-02",
+                "items": [
+                    {
+                        "id": "1674",
+                        "quantity": 3
+                    },
+                    {
+                        "id": "1675",
+                        "quantity": 4
+                    }
+                ],
+                "pickupDate": null,
+                "shipMethod": "FEDEX_GROUND"
+            },{
+                "id": "10491",
+                "customerId": "7069",
+                "codropId": null,
+                "shippingAddressId": "7427",
+                "status": "authorized",
+                "manufactureDate": "2014-06-02",
+                "freshrealmSubtotal": 4.05,
+                "shippingAndHandling": 30.79182,
+                "cutOffTime": "2014-05-30 17:00",
+                "totalCost": 34.84182,
+                "totalPrice": "20.98",
+                "salesTax": "0",
+                "updateTime": 1401213818,
+                "createTime": 1401213818,
+                "orderNumber": null,
+                "deliveryDate": "2014-06-02",
+                "items": [
+                    {
+                        "id": "1674",
+                        "quantity": 3
+                    },
+                    {
+                        "id": "1675",
+                        "quantity": 4
+                    }
+                ],
+                "pickupDate": null,
+                "shipMethod": "FEDEX_GROUND"
             }]
         }
 
