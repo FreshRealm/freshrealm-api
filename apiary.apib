@@ -1945,10 +1945,53 @@ This operation can be used to find available categories to which products belong
 
 
 #Group Transactions
-Use Case Scenario:
+
+## Transaction details [/transactions?key={token}]
+
+### GET
+
+
 This operation can be used to retrieve a list of all the transactions. Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.
 
-[TBD]
++ Paramters
+    + token (required, string)
+    
++ Response 200 (application/json)
+
+
+        {
+           "code":200,
+           "timestamp":1400801692,
+           "data":{
+              "id":5,
+              "succeeded":"null",
+              "message":"null",
+              "subTotal":"null",
+              "shippingAndHandling":"10",
+              "salesTax":10,
+              "total":100,
+              "shippingAddressId":"null",
+              "complete":0,
+              "productLines":[
+                 {
+                    "name":"Sugar diet subscription",
+                    "description":"billing period 4/25 - 5/25\\n plan starts 4/22",
+                    "price":"2.32"
+                 },
+                 {
+                    "name":"Fish flavored gummy bears",
+                    "description":"Yummy snack your kids will love",
+                    "price":2.32
+                 }
+              ],
+              "customerId":7068,
+              "externalId":47,
+              "createTime":1400801692,
+              "updateTime":1400801692,
+              "confirmationUri":"http://myserver/confirm",
+              "redirectUri":"http://myserver/redirect"
+           }
+        }
 
 
 #Group Co-Drops
