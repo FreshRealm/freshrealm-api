@@ -1779,6 +1779,7 @@ Get the details of a particular order, given an `orderId`.
             }
         }
 
+
 ## Update an Order [/order/{orderId}?key={token}]
 
 This call allows you to modify an order. Once an order has reached the `processed` status, it can no longer be updated. This status change occurs at the `cutOffTime`.
@@ -1788,7 +1789,6 @@ This call allows you to modify an order. Once an order has reached the `processe
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
-
 
 + Request (application/json)
 The input `id` must match the `orderId` in the URL.
