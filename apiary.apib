@@ -1543,32 +1543,28 @@ Get the price of a product for a given zipcode.
 # Group Orders
 
 ## Place An Order [/orders]
-To create an order, you must pass either a `customerId` or a `customer` JSON object (see `Customer`).
-If neither is provided, an error will be thrown. If both are provided, `customerId` takes precedence
-over the `Customer` object. If no `customerId` is provided, the FreshRealm API looks up the customer via the
-email address and phone number. New customers are created automatically.
+To create an order, you must pass a `customerId`. If the `customerId` is not provided an error will be thrown.
 
 ### Attributes
 | field          | required | type      | example                               | description |
 |-----------------------|:-:|-----------|---------------------------------------|-------------|
-| customerId            |   | int       | `1`                                   | Customer Id |
-| customer              |   | object    | `{...}`                               | Customer object, see `Customer`. |
-| shoppingCart          | * | array     | `[...]`                               | See below |
-| totalPrice            |   | string    | `20.98` | Optional. Needed for FreshRealm to provide invoice in shipping container |
-| salesTax              |   | string    | `0.00` | Optional. Needed for FreshRealm to provide invoice in shipping container |
-| totalShipping         |   | string    | `5.00` | Optional. Needed for FreshRealm to provide invoice in shipping container |
+| customerId            | * | int       | `1`                                   | Customer Id, see `Customers` resource |
+| shippingAddressId            | * | int       | `1`                                   | Shipping Address Id, see `Addresses` resource |
+| items            | * | array    | [...] | See below |
+| status              |   | string    | `authorized` | The current status of the order. May be one of the following: `preliminary, authorized, test` |
+| orderNumber         |   | string    | `123532` | Optional. The order number within your application. |
 | deliveryDate          |   | string    | `06-28-2014` | Optional for orders not on the earliest delivery date |
-| specialInstructions   |   | string    |  | Optional |
+| codropId   |   | int    |  | If the order is for Co-Drop, required |
+| totalPrice   |   | float    |  | The total price of the order |
+| salesTax   |   | float    |  | The sales tax applied to the order |
+| transactionId   |   | int    |  | The transaction to which this order is linked. See `Transactions` resource |
 
-#### Shopping Cart Attributes
+#### Items Attributes
 | field | required  | type      | example                           | description |
 |---------------|:-:|-----------|-----------------------------------|-------------|
-| sku           | * | string    | `111111`                          | Product SKU |
 | itemId        | * | int       | `1`                               | FreshRealm Item ID |
-| qty           | * | int       | `1`                               | Quantity |
-| itemPrice     |   | string    | `9.99`                            | Optional. Item Price |
+| quantity           | * | int       | `1`                               | Quantity |
 
-**Note**: either `itemId` or `sku` must be provided. If both are provided, we first search for the item by `itemId`.
 
 ### Place An Order [POST]
 
