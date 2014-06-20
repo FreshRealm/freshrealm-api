@@ -734,7 +734,7 @@ Fetch a product by its `id`.
 ## Fetch Specific Fields [/products/{productId}?key={token}&fields={fieldsList}]
 These examples show how to limit the returned data to a specific set of fields.
 
-### List of Ingredents [GET]
+### List of Ingredients [GET]
 + Parameters
     + token (required, string)
     + productId (required, number)
@@ -1789,7 +1789,6 @@ Use this URL to `GET` order information or `PUT` changes to the order.
 
 + Request (application/json)
 This call allows you to modify an order. Once an order has reached the `processed` status, it can no longer be updated. This status change occurs at the `cutOffTime`.
-
 The input `id` must match the `orderId` in the URL.
 
     + Body
@@ -2251,7 +2250,8 @@ This operation is used at the checkout page to get the shipping cost and earlies
             }
         }
 
-## Update shipping information for a codrop [/shipments/{shipmentId}?key={token}]
+
+## Update shipping information for a codrop [/shipments/{shipmentId?key=token}]
 
 ### Update shipping information for a codrop [PUT]
 
