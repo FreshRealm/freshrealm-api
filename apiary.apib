@@ -1820,40 +1820,9 @@ This operation can be used to find a customer and to get all the orders for the 
 |lastName                   |X              |X                      |Last name of customer |
 |email                      |X              |X                      |Email Address |
 |phone                      |X              |X                      |Phone Number |
-|addresses                  |X              |X                      |List of the latest shipping addresses |
+|addresses                  |               |X                      |List of the latest shipping addresses |
 |customerID                 |X              |X                      |The external customer id (customer id set by customers of FreshRealm) |
 
-
-## New Customer [/customers?key={token}]
-
-### Create new Customer [POST]
-
-+ Parameters
-    + token (required, string)
-    
-+ Request (application/json)
-
-        {
-            "id" : 20,
-            "firstName": "Mark",
-            "lastName": "Zuckeberg",
-            "email": "zuckeberg@freshrealm.co",
-            "mobilePhoneNumber": "888-457-4547"
-        }   
-
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1377020859,
-            "data": {
-                "id" : 20,
-                "firstName": "Mark",
-                "lastName": "Zuckeberg",
-                "email": "zuckeberg@freshrealm.co",
-                "mobilePhoneNumber": "888-457-4547"
-            }
-        }
 
 ## Create new Customer with address [/customers?key={token}]
 
@@ -1877,7 +1846,6 @@ This operation can be used to find a customer and to get all the orders for the 
                 }
         }
 
-
 + Response 200 (application/json)
 
         {
@@ -1898,8 +1866,6 @@ This operation can be used to find a customer and to get all the orders for the 
                 }
         }
          
-  
-
 
 #Group Addresses
 
@@ -1967,20 +1933,19 @@ This operation can be used to find available categories to which products belong
 
 + Response 200 (application/json)
 
-            {
-                "code": 200,
-                "timestamp": 1402706999
-                "data":[{
-                    "id": "293",
-                    "name": "Category 1"
-                },{
-                    "id": "294",
-                    "name": "Category 2"
-                },{
-                    "id": "295",
-                    "name": "Category 3"
-                }]
-            }
+        {
+            "code": 200,
+            "timestamp": 1401215276,
+            "data":
+                {
+                    "id": "261",
+                    "name": "Awesomeness",
+                    "parentId": null,
+                    "published": "yes",
+                    "all_roles": "null",
+                    "phone_number":null
+                }
+        }
 
 ##Retrieve An Individual Category [/categories/{categoryId}?key={token}]
 ### GET
@@ -1996,7 +1961,7 @@ This operation can be used to find available categories to which products belong
                "name": "Category 1",
                "published": "1"
             }
-
+            
 
 #Group Transactions
 
@@ -2110,7 +2075,6 @@ Codrops allow multiple customers to have food delivered to one location. Co-Drop
                 "zipcode": "93001"
             }
         }
-
 
 + Response 200 (application/json)
 
