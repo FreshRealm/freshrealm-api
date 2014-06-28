@@ -2303,34 +2303,11 @@ This operation is used at the checkout page to get the shipping cost and earlies
 
 #Group Other API Calls
 
-## Get Drawers [/drawers?key={token}]
+##Get shipping Days [/shippingdays?key={token}]
 
-###All drawers [GET]
+The number of shipping days to reach the shopper.
 
-+ Parameters
-    + token (required, string)
-
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1402706999
-            "data":[{
-                "id": "76",
-                "barcode": "4893rhjf487rt7484jviuref874",
-                "status": "clean",
-                "updateTime": "1377025877"
-            },{
-                "id": "77",
-                "barcode": "474fhf375t76fh374984564j45gj",
-                "status": "clean",
-                "updateTime": "1377025878"
-            }]
-        }
-
-##Get Vessels [/vessels?key={token}]
-
-###Get Vessels[GET]
+###Get all shipping days [GET]
 
 + Parameters
     + token (required, string)
@@ -2386,14 +2363,15 @@ This operation is used at the checkout page to get the shipping cost and earlies
             }
         }
 
-##Create Picknpack Product Receipt [/pnpproductreceipts?key={token}]
+##Zipcode availability  [/pnpproductreceipts?key={token}]
 ###Create Picknpack Product Receipt [POST]
 
 
-Note: receipt date is optional. If no receipt date is provided, receipt date will be pre-filled with the date when API request is initiated.
+Checks to see service is available in the requested area.
 
 + Parameters
     + token (required, string)
+    +
 
 
 + Request (application/json)
