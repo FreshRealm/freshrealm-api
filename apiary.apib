@@ -1517,29 +1517,6 @@ Retrieving a large list of resources in one request will degrade performance. Us
             ]
         }
 
-## Price By Zipcode [/products/{id}?key={token}&zip={zipcode}&fields={fieldsList}]
-Get the price of a product for a given zipcode.
-
-### GET
-+ Parameters
-    + token (required, string)
-    + id (required, number)
-    + zipcode (required, string, `95660`)
-    + fieldsList (optional, array, `["id", "name", "freshRealmCost"]`)
-
-+ Response 200 (application/json)
-
-        {
-            "code": "200",
-            "timestamp": "1376939257",
-            "data": {
-                "id": "2189",
-                "name": "Item 2",
-                "freshRealmCost": "2.34"
-            }
-        }
-
-
 # Group Orders
 
 ## Place An Order [/orders]
@@ -1967,8 +1944,19 @@ This operation can be used to find available categories to which products belong
 
 This operation can be used to retrieve a list of all the transactions. Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.
 
-## Transaction details [/transactions?key={token}]
+| Field | Required| Filter | Description |
+|-------|---------|--------|-------------|
+| `id` | X | X | FreshRealm Co-Drop id |
+| `name` | X | X | Co-Drop name |
+| `address` | X |  | Address of a Co-Drop |
+| `facilitator` |  |  | Information about Co-Drop's facilitator |
+| `notes` | X | X | Notes |
+| `active` | X | X | Flag whether Co-Drop is active |
+| `timestamp` |  | X | Latest timestamp when the Co-Drop was updated |
+| `inviteRequired` |  | X | Whether invite is required |
+| `chargePerOrder` | X | X | Charge per order |
 
+## Transaction details [/transactions?key={token}]
 ### GET [GET]
 
 + Parameters
