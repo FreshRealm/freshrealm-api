@@ -2303,14 +2303,15 @@ This operation is used at the checkout page to get the shipping cost and earlies
 
 #Group Other API Calls
 
-##Get shipping Days [/shippingdays?key={token}]
+##Get shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
+
+###Get all shipping days[GET]
 
 The number of shipping days to reach the shopper.
 
-###Get all shipping days [GET]
-
 + Parameters
     + token (required, string)
+    + zipcode (required, integer)
 
 + Response 200 (application/json)
 
@@ -2363,15 +2364,15 @@ The number of shipping days to reach the shopper.
             }
         }
 
-##Zipcode availability  [/pnpproductreceipts?key={token}]
-###Create Picknpack Product Receipt [POST]
+## Verify Zipcode availability  [/zipcodeavailability?key={token}]
+### Zipcode availability  [GET]
 
 
 Checks to see service is available in the requested area.
 
 + Parameters
     + token (required, string)
-    +
+    + zipcode (required, integer)
 
 
 + Request (application/json)
