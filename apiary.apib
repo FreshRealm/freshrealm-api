@@ -1944,17 +1944,30 @@ This operation can be used to find available categories to which products belong
 
 This operation can be used to retrieve a list of all the transactions. Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.
 
-| Field | Required| Filter | Description |
-|-------|---------|--------|-------------|
-| `id` | X | X | FreshRealm Co-Drop id |
-| `name` | X | X | Co-Drop name |
-| `address` | X |  | Address of a Co-Drop |
-| `facilitator` |  |  | Information about Co-Drop's facilitator |
-| `notes` | X | X | Notes |
-| `active` | X | X | Flag whether Co-Drop is active |
-| `timestamp` |  | X | Latest timestamp when the Co-Drop was updated |
-| `inviteRequired` |  | X | Whether invite is required |
-| `chargePerOrder` | X | X | Charge per order |
+| Field | Required | Description |
+|-------|----------|-------------|
+| id | X |    |
+| succeeded | | successful transaction |
+| message | | message for transaction status |
+| shippingAndHandling | X | Shipping and Handling Charges |
+| salesTax | X | Sales Tax Chaarges |
+| subTotal | X | Subtotal of all items excluding sales Tax |
+| total | X | Subtotal including Sales Tax |
+| shippingAddressId | X | Shipping Address Id for the customer |
+| paymentMethodToken | X | Token for payment Methodd |
+| deliveryDate | X | Estimated delivery Date for the shipment |
+| complete |  |  |
+| productLines | X | Line items for product details |
+| customerId | X | Customer Id for the shopper |
+| externalId | X | External Id for the shopper |
+| createTime |  | Time Transaction was created |
+| updateTime |  | Time Transaction was updated |
+| confirmationUri | X | Confirmation Uri for the transaction |
+| redirectUri | X | Redirect Uri for the transaction |
+| authorizationToken | |  Authorization token for the transaction |
+| authorizeTime | | Time transaction was authorized |
+| transactionTime | | Time of the transaction |
+
 
 ## Transaction details [/transactions?key={token}]
 ### GET [GET]
