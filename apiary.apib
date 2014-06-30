@@ -2387,16 +2387,17 @@ Checks to see service is available in the requested area.
 + Response 200 (application/json)
 
         {
-            "code": "200",
-            "timestamp": "13031633",
-            "data": {
-                "id": "2",
-                "itemId": "2248",
-                "receiptDate": "2013-06-01 04:00:00",
-                "quantity": "8",
-                "location": "A1",
-                "picknpackId": "213",
-                "createTime": "2013-08-20 20:47:13",
-                "updateTime": "2013-08-20 20:47:13"
+            {
+                "code": 200,
+                "timestamp": 1404146938,
+                "data": {
+                    "available": 1,
+                    "id": "16",
+                    "zipcode": "95828",
+                    "shppingMethods": [
+                        "fedex_ground"
+                    ]
+                }
             }
+        }
         }
