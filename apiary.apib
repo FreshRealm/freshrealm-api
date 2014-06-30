@@ -1523,7 +1523,12 @@ Retrieving a large list of resources in one request will degrade performance. Us
 To create an order, you must pass a `customerId`. If the `customerId` is not provided an error will be thrown. There are four different statuses that can be used to send order 
 data: `cancelled`, `test`,`preliminary`, `authorized`.
 
-
+|field | description |
+|------|-------------|
+|`test`| test to verify integrity of data (availability, qty ,etc) |
+|`preliminary`| orders in queue waiting to be processed due to not being able to meet cutoff time or weekly subscription plans |
+|`authorized` | authorized transactions |
+|`cancelled` | cancelled order |
 
 ### Attributes
 | field          | required | type      | example                               | description |
@@ -2237,91 +2242,91 @@ The number of shipping days to reach the shopper.
 + Response 200 (application/json)
 
         {
-    "code": 200,
-    "timestamp": 1404152982,
-    "data": [
-        {
-            "version": 5,
-            "vesselName": "Medium",
-            "vesselType": "2",
-            "coolantInside": 5,
-            "coolantNeeded": 5,
-            "itemsInside": 3,
-            "flatCoolantInside": 2,
-            "notchesUsed": 3,
-            "drawerCount": 3,
-            "freeDrawers": 2,
-            "load": 10,
-            "totalWeight": 8.125,
-            "emptyWeight": 0,
-            "containersInside": {
-                "0": 1,
-                "1": 2
-            },
-            "containersFree": {
-                "1": 5,
-                "2": 2,
-                "4": 13
-            },
-            "drawers": [
+            "code": 200,
+            "timestamp": 1404152982,
+            "data": [
                 {
-                    "vesselNotchNumber": 1,
-                    "number": 1,
-                    "items": [
+                    "version": 5,
+                    "vesselName": "Medium",
+                    "vesselType": "2",
+                    "coolantInside": 5,
+                    "coolantNeeded": 5,
+                    "itemsInside": 3,
+                    "flatCoolantInside": 2,
+                    "notchesUsed": 3,
+                    "drawerCount": 3,
+                    "freeDrawers": 2,
+                    "load": 10,
+                    "totalWeight": 8.125,
+                    "emptyWeight": 0,
+                    "containersInside": {
+                        "0": 1,
+                        "1": 2
+                    },
+                    "containersFree": {
+                        "1": 5,
+                        "2": 2,
+                        "4": 13
+                    },
+                    "drawers": [
                         {
-                            "itemId": "1676",
-                            "orderId": null,
-                            "codropLabel": "",
-                            "description": "Roasting Red Potatoes"
+                            "vesselNotchNumber": 1,
+                            "number": 1,
+                            "items": [
+                                {
+                                    "itemId": "1676",
+                                    "orderId": null,
+                                    "codropLabel": "",
+                                    "description": "Roasting Red Potatoes"
+                                },
+                                {
+                                    "itemId": "1676",
+                                    "orderId": null,
+                                    "codropLabel": "",
+                                    "description": "Roasting Red Potatoes"
+                                },
+                                {
+                                    "itemId": "1401",
+                                    "orderId": null,
+                                    "codropLabel": "",
+                                    "description": "Red Apples - Bagged"
+                                }
+                            ],
+                            "coolants": [
+                                {
+                                    "itemId": "1684"
+                                }
+                            ]
                         },
                         {
-                            "itemId": "1676",
-                            "orderId": null,
-                            "codropLabel": "",
-                            "description": "Roasting Red Potatoes"
+                            "vesselNotchNumber": 2,
+                            "number": 2,
+                            "items": [],
+                            "coolants": [
+                                {
+                                    "itemId": "1684"
+                                },
+                                {
+                                    "itemId": "1684"
+                                },
+                                {
+                                    "itemId": "1684"
+                                },
+                                {
+                                    "itemId": "1684"
+                                }
+                            ]
                         },
                         {
-                            "itemId": "1401",
-                            "orderId": null,
-                            "codropLabel": "",
-                            "description": "Red Apples - Bagged"
-                        }
-                    ],
-                    "coolants": [
-                        {
-                            "itemId": "1684"
+                            "vesselNotchNumber": 3,
+                            "number": 3,
+                            "items": [],
+                            "coolants": []
                         }
                     ]
-                },
-                {
-                    "vesselNotchNumber": 2,
-                    "number": 2,
-                    "items": [],
-                    "coolants": [
-                        {
-                            "itemId": "1684"
-                        },
-                        {
-                            "itemId": "1684"
-                        },
-                        {
-                            "itemId": "1684"
-                        },
-                        {
-                            "itemId": "1684"
-                        }
-                    ]
-                },
-                {
-                    "vesselNotchNumber": 3,
-                    "number": 3,
-                    "items": [],
-                    "coolants": []
                 }
             ]
         }
-    ]
-}
 
 ## Verify Zipcode availability [/zipcodeavailability?key={token}&zipcode={zipcode}]
 ### Zipcode availability [POST]
