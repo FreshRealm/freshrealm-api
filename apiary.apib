@@ -1520,7 +1520,10 @@ Retrieving a large list of resources in one request will degrade performance. Us
 # Group Orders
 
 ## Place An Order [/orders]
-To create an order, you must pass a `customerId`. If the `customerId` is not provided an error will be thrown.
+To create an order, you must pass a `customerId`. If the `customerId` is not provided an error will be thrown. There are four different statuses that can be used to send order 
+data: `cancelled`, `test`,`preliminary`, `authorized`.
+
+
 
 ### Attributes
 | field          | required | type      | example                               | description |
@@ -2144,163 +2147,6 @@ Codrops allow multiple customers to have food delivered to one location. Co-Drop
             }
 
 
-#Group Shipping
-
-###Get Shipping Details
-This operation is used at the checkout page to get the shipping cost and earliest delivery date based on the items and address that the food is being delivered to without placing the actual order.
-
-| Field | Default | Filter | Description |
-|-------|---------|--------|-------------|
-| id | X | X | Shipment id |
-| shipMethod | X | X | Indicates what postal carrier was used to ship the shipment. Possible values are ‘fedex’, ‘usps’, ‘ups’ etc |
-| updateTime |  | X | Latest timestamp when the shipment was updated |
-| shippingAddress | X |  | Address resource where shipment was delivered (see Address resource above for more info |
-| shipToName | X |  | Name of shipment recipient |
-| shippingLines | X |  |  Array of shipping lines. Every shipping line contains the following information: `productNumber`, `vesselNumber`, `customerName`, `slotNumber`, `vesselNotchNumber`, `unitPrice`, `labelInfo`, `vesselSize` |
-
-##Download Shipments Information [/shipments?key={token}&timestamp={timestamp}]
-
-### Shipment Information [GET]
-+ Parameters
-    + token (required, string)
-    + timestamp (optional, number)
-
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1402706999
-            "data": {
-                "streetAndNumber": "200 E Main St",
-                "aptSuite": "",
-                "city": "Ventura",
-                "state": "CA",
-                "zipcode": "93001",
-                "country": "US",
-                "shipToName": "Bob Smith",
-                "shippingLines":[{
-                    "productNumber": "coolant",
-                    "vesselNumber": "0",
-                    "slotNumber": "0",
-                    "vesselNotchNumber": "0",
-                    "unitPrice": "N/A",
-                    "labelInfo": "N/A",
-                    "vesselSize": "Large"
-                }]
-            }
-        }
-
-## Update Shipping Information [/shipments/{shipmentId}?key={token}]
-
-### PUT
-
-+ Parameters
-    + token (required, string)
-    + shipmentId (required, number, `45`)
-
-+ Request
-
-        {
-            "id": "45",
-            "shipDate": "2013-07-05",
-            "actualFreightCost": "23.33",
-            "vessels": [{
-                "id": "45",
-                "vesselNumber": "1234567",
-                "trackingNumber": "7423542523374",
-                "trackingNumberBack": "7423542523374",
-                "actualWeight": "5.34",
-                "drawers": [{
-                    "slotNumber": "2",
-                    "drawerNumber": "4893rhjf487rt7484jviuref874"
-                },{
-                    "slotNumber": "3",
-                    "drawerNumber": "474fhf375t76fh374984564j45gj"
-                }]
-            }]
-        }
-
-+ Response 200 (application/json)
-
-        {
-            "code": "200",
-            "timestamp": "1377032713",
-            "data": {
-                "id": "45"
-            }
-        }
-
-##Get Shipping Details [/getshippingdetails?key={token}]
-###Get Shipping Details [GET]
-
-+ Parameters
-    + token (required, string)
-
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1402706999
-            "data": {
-                "customer": {
-                    "firstName": "Joe",
-                    "lastName": "Smith",
-                    "email": "joesgvggggmith@yahoo.com",
-                    "phone": "8051234567",
-                    "customerNumber": "555RTT",
-                    "addressFields": {
-                        "streetAndNumber": "476 E Main Street",
-                        "aptSuite": "200",
-                        "city": "Ventura",
-                        "state": "CA",
-                        "zipcode": "93001"
-                    },
-                    "shoppingCart": [{
-                        "sku": "XFEG8228",
-                        "itemId": "2189",
-                        "qty": "2"
-                    },{
-                        "sku": "FGSXBSNW",
-                        "itemId": "2192",
-                        "qty": "7"
-                    }]
-                }
-            }
-        }
-
-
-## Update shipping information for a codrop [/shipments/{shipmentId?key=token}]
-### Update shipping information for a codrop [PUT]
-
-+ Parameters
-    + token (required, string)
-    + shipmentId (required, number)
-
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1402706999
-            "data": {
-                "id": "46",
-                "shipDate": "2013-07-05",
-                "actualFreightCost": "23.33",
-                "vessels": [{
-                    "vesselNumber": "1234567",
-                    "trackingNumber": "9923542523374",
-                    "trackingNumberBack": "9923542523374",
-                    "actualWeight": "225.34",
-                    "drawers": [{
-                        "slotNumber": "2",
-                        "drawerNumber": "4893rhjf487rt7484jviuref874"
-                    },{
-                        "slotNumber": "3",
-                        "drawerNumber": "474fhf375t76fh374984564j45gj"
-                    }]
-                }]
-            }
-        }
-
 #Group Other API Calls
 ##Get shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
 
@@ -2315,21 +2161,70 @@ The number of shipping days to reach the shopper.
 + Response 200 (application/json)
 
         {
-            "code": "200",
-            "timestamp": "1377026573",
-            "data": [{
-                "id": "29",
-                "vesselTypeId": "2",
-                "vesselNumber": "1234567",
-                "status": "ready",
-                "updateTime": "1377026572"
-            },{
-                "id": "30",
-                "vesselTypeId": "3",
-                "vesselNumber": "7654321",
-                "status":  "in use",
-                "updateTime": "1377026572"
-            }]
+            "code": 200,
+            "timestamp": 1404151616,
+            "data": [
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-03",
+                    "deliveryDate": "2014-07-04",
+                    "cutOffTime": 1404305100
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-07",
+                    "deliveryDate": "2014-07-08",
+                    "cutOffTime": 1404492300
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-10",
+                    "deliveryDate": "2014-07-11",
+                    "cutOffTime": 1404909900
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-14",
+                    "deliveryDate": "2014-07-15",
+                    "cutOffTime": 1405097100
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-17",
+                    "deliveryDate": "2014-07-18",
+                    "cutOffTime": 1405514700
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-21",
+                    "deliveryDate": "2014-07-22",
+                    "cutOffTime": 1405701900
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-24",
+                    "deliveryDate": "2014-07-25",
+                    "cutOffTime": 1406119500
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-28",
+                    "deliveryDate": "2014-07-29",
+                    "cutOffTime": 1406306700
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-31",
+                    "deliveryDate": "2014-08-01",
+                    "cutOffTime": 1406724300
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-08-04",
+                    "deliveryDate": "2014-08-05",
+                    "cutOffTime": 1406911500
+                }
+            ]
         }
 
 ##Get Vessel Load [/vesselload?key={token}&items={items}]
@@ -2339,31 +2234,96 @@ The number of shipping days to reach the shopper.
     + token (required, string)
     + items (required, array)
 
-+ Request (application/json)
-
-        [{
-            "itemId": 2252,
-            "qty": 2
-        },{
-            "itemId": 2249,
-            "qty": 2
-        }]
-
 + Response 200 (application/json)
 
         {
-            "code": "200",
-            "timestamp": "1377029658",
-            "data": {
-                "size": "Large",
-                "load": "27",
-                "itemsInside": "4",
-                "freeSpace": "11",
-                "shippingWeight": "29.3"
-            }
+    "code": 200,
+    "timestamp": 1404152982,
+    "data": [
+        {
+            "version": 5,
+            "vesselName": "Medium",
+            "vesselType": "2",
+            "coolantInside": 5,
+            "coolantNeeded": 5,
+            "itemsInside": 3,
+            "flatCoolantInside": 2,
+            "notchesUsed": 3,
+            "drawerCount": 3,
+            "freeDrawers": 2,
+            "load": 10,
+            "totalWeight": 8.125,
+            "emptyWeight": 0,
+            "containersInside": {
+                "0": 1,
+                "1": 2
+            },
+            "containersFree": {
+                "1": 5,
+                "2": 2,
+                "4": 13
+            },
+            "drawers": [
+                {
+                    "vesselNotchNumber": 1,
+                    "number": 1,
+                    "items": [
+                        {
+                            "itemId": "1676",
+                            "orderId": null,
+                            "codropLabel": "",
+                            "description": "Roasting Red Potatoes"
+                        },
+                        {
+                            "itemId": "1676",
+                            "orderId": null,
+                            "codropLabel": "",
+                            "description": "Roasting Red Potatoes"
+                        },
+                        {
+                            "itemId": "1401",
+                            "orderId": null,
+                            "codropLabel": "",
+                            "description": "Red Apples - Bagged"
+                        }
+                    ],
+                    "coolants": [
+                        {
+                            "itemId": "1684"
+                        }
+                    ]
+                },
+                {
+                    "vesselNotchNumber": 2,
+                    "number": 2,
+                    "items": [],
+                    "coolants": [
+                        {
+                            "itemId": "1684"
+                        },
+                        {
+                            "itemId": "1684"
+                        },
+                        {
+                            "itemId": "1684"
+                        },
+                        {
+                            "itemId": "1684"
+                        }
+                    ]
+                },
+                {
+                    "vesselNotchNumber": 3,
+                    "number": 3,
+                    "items": [],
+                    "coolants": []
+                }
+            ]
         }
+    ]
+}
 
-## Verify Zipcode availability  [/zipcodeavailability?key={token}&zipcode={zipcode}]
+## Verify Zipcode availability [/zipcodeavailability?key={token}&zipcode={zipcode}]
 ### Zipcode availability [POST]
 
 
