@@ -1531,18 +1531,21 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 |`cancelled` | cancelled order |
 
 ### Attributes
-| field          | required | type      | example                               | description |
+| field           | type      | can edit | description |
 |-----------------------|:-:|-----------|---------------------------------------|-------------|
-| `customerId`            | * | int       | `1`                                   | Customer Id, see `Customers` resource |
-| `shippingAddressId`            | * | int       | `1`                                   | Shipping Address Id, see `Addresses` resource |
-| `items`            | * | array    | [...] | See below |
-| `status`              |   | string    | `authorized` | The current status of the order. May be one of the following: `preliminary, authorized, test` |
-| `orderNumber`         |   | string    | `123532` | Optional. The order number within your application. |
-| `deliveryDate`          |   | string    | `06-28-2014` | Optional for orders not on the earliest delivery date |
-| `codropId`   |   | int    |  | If the order is for Co-Drop, required |
-| `totalPrice`   |   | float    |  | The total price of the order |
-| `salesTax`   |   | float    |  | The sales tax applied to the order |
-| `transactionId`   |   | int    |  | The transaction to which this order is linked. See `Transactions` resource |
+| `id`            | int |                       
+| `myCustomerId` | int | X |  Customer Id, see `Customers` resource |
+| `firstName` | string | X | First name of the customer |
+| `lastName`| string | X | Last Name of the customer |
+| `email` | string | Email address of the customer |
+| `phoneNumber` | string | X | Phone number of the customer |
+| `mobilePhoneNumber` | string | Mobile phone number of the customer |
+| `isAccountActive` | boolean | Account status update |
+| `address` | string | X | Address of the customer |
+| `emailVerified` | boolean | X | 
+| `extraAttributes` | string | X |
+
+
 
 #### Items Attributes
 | field | required  | type      | example                           | description |
