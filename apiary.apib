@@ -2158,9 +2158,9 @@ Codrops allow multiple customers to have food delivered to one location. Co-Drop
 #Group Other API Calls
 ##Get shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
 
-###Get all shipping days[GET]
-
 The number of shipping days to reach the shopper.
+
+###Get all shipping days[GET]
 
 + Parameters
     + token (required, string)
@@ -2236,6 +2236,9 @@ The number of shipping days to reach the shopper.
         }
 
 ##Get Vessel Load [/vesselload?key={token}&items={items}]
+
+Get Vessel Load 
+
 ###Get Vessel Load [GET]
 
 + Parameters
@@ -2332,10 +2335,13 @@ The number of shipping days to reach the shopper.
         }
 
 ## Verify Zipcode availability [/zipcodeavailability?key={token}&zipcode={zipcode}]
+
+Checks to see service is available in the requested area.
+
+
 ### Zipcode availability [POST]
 
 
-Checks to see service is available in the requested area.
 
 + Parameters
     + token (required, string)
