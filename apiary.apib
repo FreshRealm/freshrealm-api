@@ -114,29 +114,29 @@ A **product** is an active item available for you to purchase.
 The following table describes which attributes are provided by default, and which can be used as a filter.
 
 
-| Field                 | Default   | Filter    | Description |
-|-----------------------|-----------|-----------|-------------|
-| `id`                    | X         | X         | FreshRealm item id |
-| `itemName`              | X         |           | Name of the product |
-| `customName`            | X         |           | Customize name of the product |
-| `sku`                   | X         | X         | Retailer defined item SKU |
-| `gtin`                  |           | X         | Global gtin identification number |
-| `published`             | X         | X         | A published flag (boolean) |
-| `description`           |           | X         | Product description |
-| `size`                  | X         | X         | An array containing `height`, `width`, `length`, `containerId`, `containerName`, and `estimatedVesselLoad`. |
-| `weight`                | X         | X         |  Weight |
-| `weightUnit`            | X         | X         | Unit of weight used e.g. lb, oz, etc. |
-| `freshRealmCost`        | X         | X         | FreshRealm Cost |
-| `categories`            |           |           | List of categories |
-| `updateTime`            |           |           | Time of last update |
-| `imageURL`              |           |           | Default image url in the full resolution |
-| `nutritionInfo`         | X         |           | Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested |
-| `isAvailable`           |           |           | Whether or not it is currently available for purchase |
-| `ingredients`           |           |           | Ingredients of the product |
-| `allergens`             |           |           | Product allergens |
-| `categories`            |           |           | Whether or not it is currently available for purchase |
-| `itemType`              |           |           | Ingredients of the product |
-| `shippingLocations`     |           |           | Product allergens |
+| Field                 | Default   | Description |
+|-----------------------|-----------|-------------|
+| `id`                    | X         | FreshRealm item id |
+| `itemName`              | X         | Name of the product |
+| `customName`            | X         | Customize name of the product |
+| `sku`                   | X         | Retailer defined item SKU |
+| `gtin`                  |           | Global gtin identification number |
+| `published`             | X         | A published flag (boolean) |
+| `description`           |           | Product description |
+| `size`                  | X         | An array containing `height`, `width`, `length`, `containerId`, `containerName`, and `estimatedVesselLoad`. |
+| `weight`                | X         | Weight |
+| `weightUnit`            | X         | Unit of weight used e.g. lb, oz, etc. |
+| `freshRealmCost`        | X         | FreshRealm Cost |
+| `categories`            |           | List of categories |
+| `updateTime`            |           | Time of last update |
+| `imageURL`              |           | Default image url in the full resolution |
+| `nutritionInfo`         | X         | Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested |
+| `isAvailable`           |           | Whether or not it is currently available for purchase |
+| `ingredients`           |           | Ingredients of the product |
+| `allergens`             |           | Product allergens |
+| `categories`            |           | Whether or not it is currently available for purchase |
+| `itemType`              |           | Ingredients of the product |
+| `shippingLocations`     |           | Product allergens |
 
 
 ## List Products [/products?key={token}]
