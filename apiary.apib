@@ -114,23 +114,23 @@ A **product** is an active item available for you to purchase.
 The following table describes which attributes are provided by default, and which can be used as a filter.
 
 
-| Field                 | Readable   | Description |
+| Field                 | Can Edit   | Description |
 |-----------------------|-----------|-------------|
-| `id`                    | X         | FreshRealm item id |
-| `itemName`              | X         | Name of the product |
-| `customName`            | X         | Customize name of the product |
-| `sku`                   | X         | Retailer defined item SKU |
-| `gtin`                  |           | Global gtin identification number |
-| `published`             | X         | A published flag (boolean) |
-| `description`           |           | Product description |
-| `size`                  | X         | An array containing `height`, `width`, `length`, `containerId`, `containerName`, and `estimatedVesselLoad`. |
-| `weight`                | X         | Weight |
-| `weightUnit`            | X         | Unit of weight used e.g. lb, oz, etc. |
-| `freshRealmCost`        | X         | FreshRealm Cost |
-| `categories`            |           | List of categories |
+| `id`                    |          | FreshRealm item id |
+| `itemName`              |        | Name of the product |
+| `customName`            |    X    | Customize name of the product |
+| `sku`                   |        | Retailer defined item SKU |
+| `gtin`                  |        | Global gtin identification number |
+| `published`             |    X   | A published flag (boolean) |
+| `description`           |    X   | Product description |
+| `size`                  |        | An array containing `height`, `width`, `length`, `containerId`, `containerName`, and `estimatedVesselLoad`. |
+| `weight`                |        | Weight |
+| `weightUnit`            |        | Unit of weight used e.g. lb, oz, etc. |
+| `freshRealmCost`        |        | FreshRealm Cost |
+| `categories`            |    X      | List of categories |
 | `updateTime`            |           | Time of last update |
 | `imageURL`              |           | Default image url in the full resolution |
-| `nutritionInfo`         | X         | Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested |
+| `nutritionInfo`         |        | Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested |
 | `isAvailable`           |           | Whether or not it is currently available for purchase |
 | `ingredients`           |           | Ingredients of the product |
 | `allergens`             |           | Product allergens |
@@ -1537,38 +1537,38 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 |`vessel_returned` | vessel returned back to the facility|
 
 ### Attributes
-| field           | Can edit | description |
-|-----------------------|:-:|-----------|---------------------------------------|-------------|
+| field           | Can Edit | description |
+|-----------------------|-----------|---------------------------------------|
 | `id`            |  | FreshRealm Order Id |                   
 | `customerId` | X |  Customer Id, see `Customers` resource |
 | `codropId` | X |  Codrop Id, see `codrop` resource  |
 | `shippingAddressId` | X |  Shipping Address Id |
 | `status` | X |  Customer Id, see `Customers` resource |
-| `manufactureDate` | X |  Manufacture Date for the order |
-| `freshrealmSubtotal` | X |  Freshrealm total cost |
-| `shippingAndHandling` | X |  Shipping and Handling charges for the order |
-| `cutoffTime` | X |  cutoff time for the order |
-| `totalCost` | X |  total cost for the order |
-| `totalPrice` | X |  total price of the order |
+| `manufactureDate` |  |  Manufacture Date for the order |
+| `freshrealmSubtotal` |  |  Freshrealm total cost |
+| `shippingAndHandling` |  |  Shipping and Handling charges for the order |
+| `cutoffTime` |  |  cutoff time to accept order |
+| `totalCost` |  |  total cost for the order |
+| `totalPrice` | X |  total price including Shipping and Handling |
 | `salesTax` | X |  sales tax for the order |
-| `updateTime` | X | update time for the order |
-| `createTime` | X |  Create time when the order was created |
+| `updateTime` |  | update time for the order |
+| `createTime` |  |  Create time when the order was created |
 | `orderNumber` | X |  order number  |
 | `deliveryDate` | X |  delivery date for the order |
 | `items` | X | list of all items in the order |
 | `pickupDate` | X |  pickup date for the order|
-| `shipMethod` | X |  ship method for the order |
-| `warnings` | X |  any warnings or instructions for unexpected scenarios |
-| `transactionId` | X |  transaction id from the merchant services |
-| `trackingNumber` | X |  tracking number for the vessel |
+| `shipMethod` | X* |  ship method for the order |
+| `warnings` |  |  any warnings or instructions for unexpected scenarios |
+| `transactionId` | X |  transaction id from merchant services provider |
+| `trackingNumber` |  |  tracking number for the vessel |
 
-
+ *ship method can not be edited once created.
 
 #### Items Attributes
 | field | required  | type      | example                           | description |
 |---------------|:-:|-----------|-----------------------------------|-------------|
-| `itemId`        | * | int       | `1`                               | FreshRealm Item ID |
-| `quantity`           | * | int       | `1`                               | Quantity |
+| `itemId`      | * | int       | `1`                               | FreshRealm Item ID |
+| `quantity`    | * | int       | `1`                               | Quantity |
 
 
 ### Place An Order [POST]
@@ -1818,22 +1818,23 @@ The input `id` must match the `orderId` in the URL.
 
 This operation can be used to find a customer and to get all the orders for the customer.
 
-|Field                      |Can write        |Description |
+|Field                      |Can edit        |Description |
 |---------------------------|---------------|------------|
-|id                         |X              |FreshRealm customer id |
-|myCustomerID               |X              |The external customer id (customer id set by customers of FreshRealm) |
-|firstName                  |X              |First name of customer |
-|lastName                   |X              |Last name of customer |
-|email                      |X              |Email Address |
-|phoneNumber                |X              |Phone Number |
-|mobilePhoneNumber          |X              |Mobile Phone Number |
-|isAccountActive            |X              |is customer Active |
-|address                    |               |List of the latest shipping address |
-|emailVerified              |X              |Email Address is verified|
-|extraAttributes            |X              |All other attributes related to the customer |
-|addresses                  |               |List of all the shipping addresses |
+|id                         |            |FreshRealm customer id |
+|myCustomerID               |            |The external customer id (customer id set by customers of FreshRealm) |
+|firstName                  |    X*       |First name of customer |
+|lastName                   |    X*       |Last name of customer |
+|email                      |    X*       |Email Address |
+|phoneNumber                |    X       |Phone Number |
+|mobilePhoneNumber          |    X       |Mobile Phone Number |
+|isAccountActive            |            |is customer Active |
+|address                    |    X*       |List of the latest shipping address |
+|emailVerified              |    X       |Email Address is verified|
+|extraAttributes            |    X       |All other attributes related to the customer |
+|addresses                  |            |List of all the shipping addresses |
 
-
+  *cannot be edited once created
+  
 ## Create new Customer with address [/customers?key={token}]
 
 ### Create new Customer with address[POST]
@@ -1881,28 +1882,27 @@ This operation can be used to find a customer and to get all the orders for the 
 
 This operation can be used to find addresses and get all the addresses for a customer.
 
-|Field              |Description        |
+|Field              | Can Edit|Description        |
 |-------------------|-------------------|
-|`prefix`             |Address Prefix |
-|`streetAndNumber`    |Example: 476 Main St       |
-|`aptSuite`           |Apartment number, unit number or suite. Example: Unit A        |
-|`city`               |City name      |
-|`state`              |State name - Example: CA or California     |
-|`zipcode`            |Zipcode - Example: 93001     |
-|`deliveryInstructions`|Special Delivery Instructions     |
-|`pickupInstuctions`   | Pickup instructions for return of Vessel |
-|`pickupLocation`    |Pickup location for the vessel    |
-|`type`              |Residntial or Commercial    |
-|`verifyShipper`     |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
-|`id`                |Address ID      |
-|`customerId`        |id of the customer      |
-|`status`           |status of the address, if it is active or previous, etc|
-|`lat`              |Latitude of the customer address|
-|`lng`              |Longitude of the customer address     |
-|`shippingLocation` |Shipping Location of the facility  |
-|`uniqueIdentifier` |Unique Identifier for the address    |
-|`updateTime`       |Update time for the last address update |
-
+|`prefix`            | X  |Address Prefix |
+|`streetAndNumber`   |  X |Example: 476 Main St       |
+|`aptSuite`          | X  |Apartment number, unit number or suite. Example: Unit A        |
+|`city`              | X  |City name      |
+|`state`             | X  |State name - Example: CA or California     |
+|`zipcode`           | X  |Zipcode - Example: 93001     |
+|`deliveryInstructions`| X |Special Delivery Instructions     |
+|`pickupInstuctions` |  X | Pickup instructions for return of Vessel |
+|`pickupLocation` |  X |Pickup location for the vessel    |
+|`type`           |  X |Residntial or Commercial    |
+|`verifyShipper`  | X  |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
+|`id`             |   |Address ID      |
+|`customerId`     |   |id of the customer      |
+|`status`         |   |status of the address, if it is active or previous, etc|
+|`lat`            |   |Latitude of the customer address|
+|`lng`            |   |Longitude of the customer address     |
+|`shippingLocation`  |    |Shipping Location of the facility  |
+|`uniqueIdentifier` |    |Unique Identifier for the address    |
+|`updateTime`      |    |Update time for the last address update |
 
 
 
@@ -1941,12 +1941,12 @@ This operation can be used to find addresses and get all the addresses for a cus
 
 This operation can be used to find available categories to which products belong.  See the ‘Categories’  resource table for more information.
 
-| Field | Default | Filter | Description |
-|-------|---------|--------|-------------|
-| `id` | X | X | Category id |
-| `parentId` | X | X | Id of a parent category if category is a subcategory of another category |
-| `name` | X | X | Category name |
-| `published` | X | X | Whether a category is activated or not |
+| Field | Can Edit   | Description |
+|-------|---------|-------------|
+| `id` |   | Category id |
+| `parentId` | X  | Id of a parent category if category is a subcategory of another category |
+| `name` | X  | Category name |
+| `published` | X | Whether a category is activated or not |
 
 
 ## List Categories [/categories?key={token}]
@@ -1992,16 +1992,16 @@ This operation can be used to find available categories to which products belong
 
 This operation can be used to retrieve a list of all the transactions. Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.
 
-| Field | Required | Description |
+| Field | Can Write | Description |
 |-------|----------|-------------|
-| id | X |    |
+| id |  |    |
 | succeeded | | successful transaction |
 | message | | message for transaction status |
 | shippingAndHandling | X | Shipping and Handling Charges |
 | salesTax | X | Sales Tax Charges |
 | subTotal | X | Subtotal of all items excluding sales Tax |
 | total | X | Subtotal including Sales Tax |
-| shippingAddressId | X | Shipping Address Id for the customer |
+| shippingAddressId |  | Shipping Address Id for the customer |
 | paymentMethodToken | X | Token for payment Method |
 | deliveryDate | X | Estimated delivery Date for the shipment |
 | selectedDeliveryDates | X | Future delivery Date selected by the customer |
@@ -2019,9 +2019,9 @@ This operation can be used to retrieve a list of all the transactions. Get trans
 | authorizeTime | | Time transaction was authorized |
 | transactionTime | | Time of the transaction |
 | refunds | |  refunds for the transaction |
-| vessels | | Time transaction was authorized |
-| selectShipping | | All shipping Methods  |
-| shippingMargin | | Margin on shipping cost  |
+| vessels | X | Time transaction was authorized |
+| selectShipping |X | All shipping Methods  |
+| shippingMargin |X | Margin on shipping cost  |
 | shippingService | | Select a specific shipping method |
 
 
@@ -2075,17 +2075,17 @@ Use these methods to obtain information about Co-Drop, request individual Co-Dro
 Codrops allow multiple customers to have food delivered to one location. Co-Drops can be public or private, and can be open to all or by invite only. The FreshRealm API allows retrieving information about all Co-Drops or individual Co-Drop, as well as creation of a new Co-Drop.
 
 
-| Field | Default | Filter | Description |
-|-------|---------|--------|-------------|
-| `id` | X | X | FreshRealm Co-Drop id |
-| `nickname` | X | X | Co-Drop's nickname |
-| `organizationId` |  |  | Id for the Co-Drop's organization  |
-| `pickupInstructions` |  |  | Pickup instructions for Co-Drop's facilitator |
-| `deliveryInstructions` |  |  | Delivery Instructions for the co-drop facilitator |
-| `approvedDomains` | X | X | Approved domains for co-drops |
-| `zipcode` | X | X | Zipcode for the delivery of co-drop shipment |
-| `email` |  | X | Email address for the co-drop customer |
-| `notes` |  | X | Notes for the co-drop shipment |
+| Field | Api Params | Description |
+|-------|---------|-------------|
+| `id` |  | FreshRealm Co-Drop id |
+| `nickname` |  |Co-Drop's nickname |
+| `organizationId` |  | Id for the Co-Drop's organization  |
+| `pickupInstructions` |  | Pickup instructions for Co-Drop's facilitator |
+| `deliveryInstructions` |  | Delivery Instructions for the co-drop facilitator |
+| `approvedDomains` |  | Approved domains for co-drops |
+| `zipcode` | X | Zipcode for the delivery of co-drop shipment |
+| `email` | X | Email address for the co-drop customer |
+| `notes` |  | Notes for the co-drop shipment |
 
 
 ## Co-Drops Collection [/codrops?key={token}]
