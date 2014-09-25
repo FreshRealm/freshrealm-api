@@ -2065,14 +2065,14 @@ Codrops allow multiple customers to have food delivered to one location. Co-Drop
 | Field | Default | Filter | Description |
 |-------|---------|--------|-------------|
 | `id` | X | X | FreshRealm Co-Drop id |
-| `name` | X | X | Co-Drop name |
-| `address` | X |  | Address of a Co-Drop |
-| `facilitator` |  |  | Information about Co-Drop's facilitator |
-| `notes` | X | X | Notes |
-| `active` | X | X | Flag whether Co-Drop is active |
-| `timestamp` |  | X | Latest timestamp when the Co-Drop was updated |
-| `inviteRequired` |  | X | Whether invite is required |
-| `chargePerOrder` | X | X | Charge per order |
+| `nickname` | X | X | Co-Drop's nickname |
+| `organizationId` |  |  | Id for the Co-Drop's organization  |
+| `pickupInstructions` |  |  | Pickup instructions for Co-Drop's facilitator |
+| `deliveryInstructions` |  |  | Delivery Instructions for the co-drop facilitator |
+| `approvedDomains` | X | X | Approved domains for co-drops |
+| `zipcode` | X | X | Zipcode for the delivery of co-drop shipment |
+| `email` |  | X | Email address for the co-drop customer |
+| `notes` |  | X | Notes for the co-drop shipment |
 
 
 ## Co-Drops Collection [/codrops?key={token}]
