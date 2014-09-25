@@ -1527,25 +1527,40 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 
 |field | description |
 |------|-------------|
-|`test`| test to verify integrity of data (availability, qty ,etc) |
 |`preliminary`| orders in queue waiting to be processed due to not being able to meet cutoff time or weekly subscription plans |
 |`authorized` | authorized transactions |
+|`processed` | processed transactions |
+|`in_transit`| orders in transit |
+|`at_customer`| vessel with the customer and waiting for pickup |
 |`cancelled` | cancelled order |
+|`in_transit_back` | vessel on its way back to the facility  |
+|`vessel_returned` | vessel returned back to the facility|
 
 ### Attributes
-| field           | type      | Can edit | description |
+| field           | Can edit | description |
 |-----------------------|:-:|-----------|---------------------------------------|-------------|
-| `id`            | int |  | FreshRealm Order Id |                   
-| `myCustomerId` | int | X |  Customer Id, see `Customers` resource |
-| `firstName` | string | X | First name of the customer |
-| `lastName`| string | X | Last Name of the customer |
-| `email` | string | | Email address of the customer |
-| `phoneNumber` | string | X | Phone number of the customer |
-| `mobilePhoneNumber` | string | | Mobile phone number of the customer |
-| `isAccountActive` | boolean | | Account status update |
-| `address` | string | X | Address of the customer |
-| `emailVerified` | boolean | X | Email verification Status for the customer |
-| `extraAttributes` | string | X | Extra Fields and Attributes |
+| `id`            |  | FreshRealm Order Id |                   
+| `customerId` | X |  Customer Id, see `Customers` resource |
+| `codropId` | X |  Codrop Id, see `codrop` resource  |
+| `shippingAddressId` | X |  Shipping Address Id |
+| `status` | X |  Customer Id, see `Customers` resource |
+| `manufactureDate` | X |  Manufacture Date for the order |
+| `freshrealmSubtotal` | X |  Freshrealm total cost |
+| `shippingAndHandling` | X |  Shipping and Handling charges for the order |
+| `cutoffTime` | X |  cutoff time for the order |
+| `totalCost` | X |  total cost for the order |
+| `totalPrice` | X |  total price of the order |
+| `salesTax` | X |  sales tax for the order |
+| `updateTime` | X | update time for the order |
+| `createTime` | X |  Create time when the order was created |
+| `orderNumber` | X |  order number  |
+| `deliveryDate` | X |  delivery date for the order |
+| `items` | X | list of all items in the order |
+| `pickupDate` | X |  pickup date for the order|
+| `shipMethod` | X |  ship method for the order |
+| `warnings` | X |  any warnings or instructions for unexpected scenarios |
+| `transactionId` | X |  transaction id from the merchant services |
+| `trackingNumber` | X |  tracking number for the vessel |
 
 
 
@@ -1803,7 +1818,7 @@ The input `id` must match the `orderId` in the URL.
 
 This operation can be used to find a customer and to get all the orders for the customer.
 
-|Field                      |Readable        |Description |
+|Field                      |Can write        |Description |
 |---------------------------|---------------|------------|
 |id                         |X              |FreshRealm customer id |
 |myCustomerID               |X              |The external customer id (customer id set by customers of FreshRealm) |
@@ -1932,8 +1947,6 @@ This operation can be used to find available categories to which products belong
 | `parentId` | X | X | Id of a parent category if category is a subcategory of another category |
 | `name` | X | X | Category name |
 | `published` | X | X | Whether a category is activated or not |
-| `imageUrl` |  |  | Returns urls of images that are attached to category (optional |
-| `parentUrl` |  |  | Url of a parent category if such category exists |
 
 
 ## List Categories [/categories?key={token}]
@@ -2190,7 +2203,7 @@ Codrops allow multiple customers to have food delivered to one location. Co-Drop
 #Group Other API Calls
 ##Get shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
 
-The number of shipping days to reach the shopper.
+The number of shipping days to reach the shopper. The limit parameter controls the number of weeks worth of shipping days returned.
 
 ###Get all shipping days[GET]
 
