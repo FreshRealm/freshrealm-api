@@ -114,7 +114,7 @@ A **product** is an active item available for you to purchase.
 The following table describes which attributes are provided by default, and which can be used as a filter.
 
 
-| Field                 | Default   | Description |
+| Field                 | Readable   | Description |
 |-----------------------|-----------|-------------|
 | `id`                    | X         | FreshRealm item id |
 | `itemName`              | X         | Name of the product |
@@ -134,9 +134,8 @@ The following table describes which attributes are provided by default, and whic
 | `isAvailable`           |           | Whether or not it is currently available for purchase |
 | `ingredients`           |           | Ingredients of the product |
 | `allergens`             |           | Product allergens |
-| `categories`            |           | Whether or not it is currently available for purchase |
-| `itemType`              |           | Ingredients of the product |
-| `shippingLocations`     |           | Product allergens |
+| `itemType`              |           |  Type of item. For e.g : raw material , packing supply, etc|
+| `shippingLocations`     |           | Available shipping locations for the specified product|
 
 
 ## List Products [/products?key={token}]
@@ -1804,15 +1803,20 @@ The input `id` must match the `orderId` in the URL.
 
 This operation can be used to find a customer and to get all the orders for the customer.
 
-|Field                      |Default        |Filter                 |Description |
-|---------------------------|---------------|-----------------------|------------|
-|id                         |X              |X                      |FreshRealm customer id |
-|firstName                  |X              |X                      |First name of customer |
-|lastName                   |X              |X                      |Last name of customer |
-|email                      |X              |X                      |Email Address |
-|phone                      |X              |X                      |Phone Number |
-|addresses                  |               |X                      |List of the latest shipping addresses |
-|customerID                 |X              |X                      |The external customer id (customer id set by customers of FreshRealm) |
+|Field                      |Readable        |Description |
+|---------------------------|---------------|------------|
+|id                         |X              |FreshRealm customer id |
+|myCustomerID               |X              |The external customer id (customer id set by customers of FreshRealm) |
+|firstName                  |X              |First name of customer |
+|lastName                   |X              |Last name of customer |
+|email                      |X              |Email Address |
+|phoneNumber                |X              |Phone Number |
+|mobilePhoneNumber          |X              |Mobile Phone Number |
+|isAccountActive            |X              |is customer Active |
+|address                    |               |List of the latest shipping address |
+|emailVerified              |X              |Email Address is verified|
+|extraAttributes            |X              |All other attributes related to the customer |
+|addresses                  |               |List of all the shipping addresses |
 
 
 ## Create new Customer with address [/customers?key={token}]
@@ -1864,11 +1868,28 @@ This operation can be used to find addresses and get all the addresses for a cus
 
 |Field              |Description        |
 |-------------------|-------------------|
+|`prefix`             |Address Prefix |
 |`streetAndNumber`    |Example: 476 Main St       |
 |`aptSuite`           |Apartment number, unit number or suite. Example: Unit A        |
 |`city`               |City name      |
 |`state`              |State name - Example: CA or California     |
-|`verify`             |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
+|`zipcode`            |State name - Example: CA or California     |
+|`deliveryInstructions`|Apartment number, unit number or suite. Example: Unit A        |
+|`pickupInstuctions`   |     |
+|`pickupLocation`    |pickup location for the vessel    |
+|`type`              |Residntial or Commercial    |
+|`verifyShipper`     |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
+|`id`                |      |
+|`customerId`        |id of the customer      |
+|`status`           | status of the address, if it is active or previous, etc|
+|`lat`              |Latitude of the customer address|
+|`lng`              |Longitude of the customer address     |
+|`shippingLocation` |State name - Example: CA or California     |
+|`uniqueIdentifier` |Unique Identifier for the address    |
+|`updateTime`       |Update time for the last address update |
+
+
+
 
 ## Retrieve customer address [/apiaddress?key={token}]
 
