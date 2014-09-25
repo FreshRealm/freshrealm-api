@@ -1985,13 +1985,16 @@ This operation can be used to retrieve a list of all the transactions. Get trans
 | succeeded | | successful transaction |
 | message | | message for transaction status |
 | shippingAndHandling | X | Shipping and Handling Charges |
-| salesTax | X | Sales Tax Chaarges |
+| salesTax | X | Sales Tax Charges |
 | subTotal | X | Subtotal of all items excluding sales Tax |
 | total | X | Subtotal including Sales Tax |
 | shippingAddressId | X | Shipping Address Id for the customer |
-| paymentMethodToken | X | Token for payment Methodd |
+| paymentMethodToken | X | Token for payment Method |
 | deliveryDate | X | Estimated delivery Date for the shipment |
-| complete |  |  |
+| selectedDeliveryDates | X | Future delivery Date selected by the customer |
+| isAuthorized | | transaction is approved |
+| cardInfo | | Card information for the customer |
+| complete |  | transaction is approved and completed |
 | productLines | X | Line items for product details |
 | customerId | X | Customer Id for the shopper |
 | externalId | X | External Id for the shopper |
@@ -2002,6 +2005,11 @@ This operation can be used to retrieve a list of all the transactions. Get trans
 | authorizationToken | |  Authorization token for the transaction |
 | authorizeTime | | Time transaction was authorized |
 | transactionTime | | Time of the transaction |
+| refunds | |  refunds for the transaction |
+| vessels | | Time transaction was authorized |
+| selectShipping | | All shipping Methods  |
+| shippingMargin | | Margin on shipping cost  |
+| shippingService | | Select a specific shipping method |
 
 
 ## Transaction details [/transactions?key={token}]
