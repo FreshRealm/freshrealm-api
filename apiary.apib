@@ -35,32 +35,32 @@ JSON will be returned in all responses from this API, with the following structu
 `Data` contains attributes of a single resource or array of resources.
 
 # Service Endpoints
-An endpoint is the URL of the server that handles your request.  The API endpoint for all requests in this document is http://api2.freshrealm.co/
+An endpoint is the URL of the server that handles your request.  The API endpoint for all requests in this document is http://api2.sandbox.freshrealm.co/
 
 # Example
 In the case where you want to retrieve recent order information, you would use the GET HTTP method to the following URL:
 
-`http://api2.freshrealm.co/orders?key=myaccesstoken`
+`http://api2.sandbox.freshrealm.co/orders?key=myaccesstoken`
 
 A `key` is a required attribute for each call. See the authentication diagram at the bottom of this document for more information.
 
 # Requesting Specific Fields
 For performance reasons, FreshRealm recommends retrieving the minimum number of fields. In addition, not all fields are retrieved by default, so additional fields may be requested (details of the attributes of the resources are described in the Resource Description section).  To retrieve fewer (or more) fields, use the `fields` attribute in the GET request.
 
-`http://api2.freshrealm.co/orders?fields=["totalPrice"]`
+`http://api2.sandbox.freshrealm.co/orders?fields=["totalPrice"]`
 
 To obtain multiple fields, separate the fields by commas:
 
-`http://api2.freshrealm.co/products/1918?fields=["id","costs","prices”]`
+`http://api2.sandbox.freshrealm.co/products/1918?fields=["id","costs","prices”]`
 
 Some calls retrieve nested arrays.  When this is the case you must use the key of the array to retrieve a subset of the fields.  For example to retrieve customer information for order 678 (e.g. email, phone...) you could use this call:
 
-`http://api2.freshrealm.co/orders/678?fields=["customer"]`
+`http://api2.sandbox.freshrealm.co/orders/678?fields=["customer"]`
 
 # Limit and Offset
 Retrieving a large list of resources in one request will degrade performance. Use `limit` and `offset` GET attributes to divide your request into multiple queries. The default value for `limit` is 100.  The default ordering is most recent records first. For example, if we want to get the next 50 orders starting from, and including, position 150 (150th most recent order), use the following call:
 
-`http://api2.freshrealm.co/orders?offset=150&limit=50`
+`http://api2.sandbox.freshrealm.co/orders?offset=150&limit=50`
 
 # Filter
 Some fields can be used for filtering a list of resources. Filter is a JSON encoded GET attribute that can be defined by a key value pair or as a JSON object with an operator.
@@ -69,18 +69,18 @@ Some fields can be used for filtering a list of resources. Filter is a JSON enco
 `in`, `not in`, `like`, `=`, `<`, `>`, `<=`, `>=`, `!=`
 
 #### Ex: Find customer by email
-`http://api2.freshrealm.co/customers?filter={"email":"mycustomer@freshrealm.co"}`
+`http://api2.sandbox.freshrealm.co/customers?filter={"email":"mycustomer@freshrealm.co"}`
 
 #### Ex: List all orders with a total price greater than $50
-`http://api2.freshrealm.co/orders?filter=[{"field":"total","operator":">","value":"50"}]`
+`http://api2.sandbox.freshrealm.co/orders?filter=[{"field":"total","operator":">","value":"50"}]`
 
 ### Timestamp Filter
 This filter allows retrieval of records created or modified after this time. Every request returns a timestamp, which can be used for this filter. It can be used for database synchronization of products between FreshRealm and your application. The following call would return all orders modified or created after `1367975121`.
 
-`http://api2.freshrealm.co/orders?timestamp=1367975121`
+`http://api2.sandbox.freshrealm.co/orders?timestamp=1367975121`
 
 # Contributing
-This API documentation lives on Github. If you see an error or a typo, please submit a pull request at [https://github.com/trooprr/freshrealm-api](https://github.com/trooprr/freshrealm-api). We're always happy to have contributions.
+This API documentation lives on Github. If you see an error or a typo, please submit a pull request at [https://github.com/freshrealm/freshrealm-api](https://github.com/freshrealm/freshrealm-api). We're always happy to have contributions.
 
 # Group Authentication
 FreshRealm’s REST API currently uses a proprietary authentication system. Each client gets its own API access key, which must be a part of every request sent to the FreshRealm API.  You must obtain this key by using our authentication call and supplying your secret, which we will provide to you.  At the end of this document a brief diagram is provided to explain our initial authentication system.
@@ -751,7 +751,7 @@ These examples show how to limit the returned data to a specific set of fields.
             "data": {
                 "id": "2203",
                 "ingredients": [{
-                    "url": "api2.freshrealm.co/items/2201?key=FgDqgXUUP7dh38zb2CSCmcyookXnTgM",
+                    "url": "api2.sandbox.freshrealm.co/items/2201?key=FgDqgXUUP7dh38zb2CSCmcyookXnTgM",
                     "id": "2201",
                     "amount": "0.5",
                     "unit": "ft"
