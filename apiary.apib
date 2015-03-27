@@ -130,7 +130,7 @@ Your FreshRealm secret must be obtained by contacting FreshRealm.
 
 # Group Products
 
-A **product** is an active item available for you to purchase.
+A **product** is an active item available for you to purchase. Product is using "SKU" number as primary identifier for order API and product updates. 
 
 The following table describes which attributes are provided by default, and which can be used as a filter.
 
@@ -140,15 +140,17 @@ The following table describes which attributes are provided by default, and whic
 | `id`                    |          | FreshRealm item id |
 | `itemName`              |        | Name of the product |
 | `customName`            |    X    | Customize name of the product |
-| `sku`                   |        | Retailer defined item SKU |
+| `sku`                   |        | Retailer defined item SKU used as primary identifier for product. It is a string with maximum length of 45 characters. SKU has to be a unique string.|
 | `gtin`                  |        | Global gtin identification number |
 | `published`             |    X   | A published flag (boolean) |
 | `description`           |    X   | Product description |
-| `size`                  |        | An array containing `height`, `width`, `length`, `containerId`, `containerName`, and `estimatedVesselLoad`. |
+| `size`                  |        | An array containing `height`, `width`, `length`, `containerId`, `containerName`, `estimatedVesselLoad` and `slots`. A Vessel has capacity of 40 slots. |
 | `weight`                |        | Weight |
 | `weightUnit`            |        | Unit of weight used e.g. lb, oz, etc. |
+| `itemType`            |        | Either `product` or `meal_plan` |
 | `freshRealmCost`        |        | FreshRealm Cost |
-| `categories`            |    X      | List of categories |
+| `categories`            |    X      | List of categories - categories will be deprecated soon. Use tags instead. |
+| `tagGroups`            |     X      | Each product can be assigned to multiple groups with different tags inside. Groups can be used for navigation or categories. Groups have following structure: groupId => [tag1Id, tag2Id] |
 | `updateTime`            |           | Time of last update |
 | `imageURL`              |           | Default image url in the full resolution |
 | `nutritionInfo`         |        | Nutritional information for a product. Included by default if individual product is requested but not when list of products is requested |
@@ -157,7 +159,8 @@ The following table describes which attributes are provided by default, and whic
 | `allergens`             |           | Product allergens |
 | `itemType`              |           |  Type of item. For e.g : raw material , packing supply, etc|
 | `shippingLocations`     |           | Available shipping locations for the specified product|
-
+| `subProducts`     |           | List of SKU number of sub products. This field is used by meal type of product.|
+| `customData`     |           | Save additional product information as key value pairs. Custom data might come pre-populated by food maker. It is recommended to save product information from e-commerce platform to this field.|
 
 ## List Products [/products?key={token}]
 Return all of the products. See the `Products` resource table for more information.
@@ -169,388 +172,414 @@ Return all of the products. See the `Products` resource table for more informati
 
 + Response 200 (application/json)
 
-        {
-           "code":200,
-           "timestamp":1403221161,
-           "data":[
-              {
-                 "id":"1391",
-                 "itemName":"Turkey, Egg White & Sundried Tomato Breakfast",
-                 "customName":null,
-                 "sku":"",
-                 "gtin":"10826766900005",
-                 "published":"0",
-                 "description":null,
-                 "size":{
-                    "height":"2.26",
-                    "width":"3.71",
-                    "length":"7.61",
-                    "containerId":"1",
-                    "containerName":"Medium Container",
-                    "estimatedVesselLoad":"5"
-                 },
-                 "weight":"7.500",
-                 "weightUnit":"oz",
-                 "freshRealmCost":null,
-                 "updateTime":1402509020,
-                 "categories":[
+   {  
+   "code":200,
+   "timestamp":1427386200,
+   "data":[  
+      {  
+         "id":"1391",
+         "itemName":"Turkey, Egg White & Sundried Tomato Breakfast",
+         "customName":null,
+         "sku":"1391",
+         "gtin":"10826766900005",
+         "published":"0",
+         "description":null,
+         "size":{  
+            "height":"2.26",
+            "width":"3.71",
+            "length":"7.61",
+            "containerId":"1",
+            "containerName":"Medium Container",
+            "estimatedVesselLoad":"5",
+            "slots":"2"
+         },
+         "weight":"7.5",
+         "weightUnit":"oz",
+         "freshRealmCost":null,
+         "updateTime":1425340991,
+         "categories":[  
 
-                 ],
-                 "imageUrl":null,
-                 "nutritionInfo":{
-                    "Calories":{
-                       "amount":"285.36",
-                       "unit":"KCal",
-                       "weightGrams":null,
-                       "percentDaily":15
-                    },
-                    "Fat Calories":{
-                       "amount":"35.86",
-                       "unit":"KCal",
-                       "weightGrams":null,
-                       "percentDaily":8
-                    },
-                    "Fat":{
-                       "amount":"3.98",
-                       "unit":"g",
-                       "weightGrams":"3.98",
-                       "percentDaily":7
-                    },
-                    "Saturated Fat":{
-                       "amount":"1.49",
-                       "unit":"g",
-                       "weightGrams":"1.49",
-                       "percentDaily":8
-                    },
-                    "Polyunsaturated Fat":{
-                       "amount":null,
-                       "unit":"g",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Monounsaturated Fat":{
-                       "amount":null,
-                       "unit":"g",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Trans Fat":{
-                       "amount":"0",
-                       "unit":"g",
-                       "weightGrams":"0",
-                       "percentDaily":0
-                    },
-                    "Cholesterol":{
-                       "amount":"14.72",
-                       "unit":"mg",
-                       "weightGrams":0.01472,
-                       "percentDaily":5
-                    },
-                    "Carbohydrates":{
-                       "amount":"48.07",
-                       "unit":"g",
-                       "weightGrams":"48.07",
-                       "percentDaily":17
-                    },
-                    "Fiber":{
-                       "amount":"4.12",
-                       "unit":"g",
-                       "weightGrams":"4.12",
-                       "percentDaily":17
-                    },
-                    "Sugar":{
-                       "amount":"14",
-                       "unit":"g",
-                       "weightGrams":"14",
-                       "percentDaily":16
-                    },
-                    "Protein":{
-                       "amount":"15.84",
-                       "unit":"g",
-                       "weightGrams":"15.84",
-                       "percentDaily":32
-                    },
-                    "Vitamin A":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Thiamine B1":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Vitamin B6":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Folate B9":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Vitamin C":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Vitamin E":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Calcium":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Copper":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Iron":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Phosphorous":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Potassium":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Sodium":{
-                       "amount":"549.37",
-                       "unit":"mg",
-                       "weightGrams":0.54937,
-                       "percentDaily":23
-                    }
-                 },
-                 "isAvailable":1,
-                 "shippingLocations":[
+         ],
+         "tagGroups":[  
 
-                 ],
-                 "ingredients":[
-                    "Grape 1.39\/lb",
-                    "Organic Wheat Sandwich Thin 6\/6 ea #3438",
-                    "Egg White Patty 3.5\" 160\/1.75 oz #3675766",
-                    "Turkey Breast 2\/9-lb 6109724",
-                    "Cheese Cream  10\/3 lb #5406467",
-                    "Spinach 2.68\/lb",
-                    "Sundried Tomato 5.49\/lb"
-                 ],
-                 "alergens":[
+         ],
+         "imageUrl":null,
+         "nutritionInfo":{  
+            "Calories":{  
+               "amount":"285.36",
+               "unit":"KCal",
+               "weightGrams":null,
+               "percentDaily":14
+            },
+            "Fat Calories":{  
+               "amount":"35.86",
+               "unit":"KCal",
+               "weightGrams":null,
+               "percentDaily":7
+            },
+            "Fat":{  
+               "amount":"3.98",
+               "unit":"g",
+               "weightGrams":"3.98",
+               "percentDaily":6
+            },
+            "Saturated Fat":{  
+               "amount":"1.49",
+               "unit":"g",
+               "weightGrams":"1.49",
+               "percentDaily":7
+            },
+            "Polyunsaturated Fat":{  
+               "amount":null,
+               "unit":"g",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Monounsaturated Fat":{  
+               "amount":null,
+               "unit":"g",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Trans Fat":{  
+               "amount":"0",
+               "unit":"g",
+               "weightGrams":"0",
+               "percentDaily":0
+            },
+            "Cholesterol":{  
+               "amount":"14.72",
+               "unit":"mg",
+               "weightGrams":0.01472,
+               "percentDaily":5
+            },
+            "Carbohydrates":{  
+               "amount":"48.07",
+               "unit":"g",
+               "weightGrams":"48.07",
+               "percentDaily":16
+            },
+            "Fiber":{  
+               "amount":"4.12",
+               "unit":"g",
+               "weightGrams":"4.12",
+               "percentDaily":16
+            },
+            "Sugar":{  
+               "amount":"14",
+               "unit":"g",
+               "weightGrams":"14",
+               "percentDaily":16
+            },
+            "Protein":{  
+               "amount":"15.84",
+               "unit":"g",
+               "weightGrams":"15.84",
+               "percentDaily":32
+            },
+            "Vitamin A":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Thiamine B1":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Vitamin B6":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Folate B9":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Vitamin C":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Vitamin E":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Calcium":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Copper":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Iron":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Phosphorous":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Potassium":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Sodium":{  
+               "amount":"549.37",
+               "unit":"mg",
+               "weightGrams":0.54937,
+               "percentDaily":23
+            }
+         },
+         "isAvailable":1,
+         "shippingLocations":[  
 
-                 ]
-              },
-              {
-                 "id":"1400",
-                 "itemName":"Ham & Egg Breakfast Sandwich",
-                 "customName":null,
-                 "sku":"",
-                 "gtin":"10826766900012",
-                 "published":"0",
-                 "description":null,
-                 "size":{
-                    "height":"2.26",
-                    "width":"3.71",
-                    "length":"7.61",
-                    "containerId":"1",
-                    "containerName":"Medium Container",
-                    "estimatedVesselLoad":"5"
-                 },
-                 "weight":"8.750",
-                 "weightUnit":"oz",
-                 "freshRealmCost":null,
-                 "updateTime":1402509020,
-                 "categories":[
+         ],
+         "ingredients":[  
+            "Grape 1.39\/lb",
+            "Organic Wheat Sandwich Thin 6\/6 ea #3438",
+            "Egg White Patty 3.5\" 160\/1.75 oz #3675766",
+            "Turkey Breast 2\/9-lb 6109724",
+            "Cheese Cream  10\/3 lb #5406467",
+            "Spinach 2.68\/lb",
+            "Sundried Tomato 5.49\/lb"
+         ],
+         "subProducts":[  
 
-                 ],
-                 "imageUrl":null,
-                 "nutritionInfo":{
-                    "Calories":{
-                       "amount":"231.67",
-                       "unit":"KCal",
-                       "weightGrams":null,
-                       "percentDaily":12
-                    },
-                    "Fat Calories":{
-                       "amount":"19",
-                       "unit":"KCal",
-                       "weightGrams":null,
-                       "percentDaily":4
-                    },
-                    "Fat":{
-                       "amount":"2.11",
-                       "unit":"g",
-                       "weightGrams":"2.11",
-                       "percentDaily":4
-                    },
-                    "Saturated Fat":{
-                       "amount":"0.15",
-                       "unit":"g",
-                       "weightGrams":"0.15",
-                       "percentDaily":1
-                    },
-                    "Polyunsaturated Fat":{
-                       "amount":null,
-                       "unit":"g",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Monounsaturated Fat":{
-                       "amount":null,
-                       "unit":"g",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Trans Fat":{
-                       "amount":null,
-                       "unit":"g",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Cholesterol":{
-                       "amount":"7.59",
-                       "unit":"mg",
-                       "weightGrams":0.00759,
-                       "percentDaily":3
-                    },
-                    "Carbohydrates":{
-                       "amount":"39.58",
-                       "unit":"g",
-                       "weightGrams":"39.58",
-                       "percentDaily":14
-                    },
-                    "Fiber":{
-                       "amount":"5.44",
-                       "unit":"g",
-                       "weightGrams":"5.44",
-                       "percentDaily":22
-                    },
-                    "Sugar":{
-                       "amount":"14.27",
-                       "unit":"g",
-                       "weightGrams":"14.27",
-                       "percentDaily":16
-                    },
-                    "Protein":{
-                       "amount":"13.24",
-                       "unit":"g",
-                       "weightGrams":"13.24",
-                       "percentDaily":27
-                    },
-                    "Vitamin A":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Thiamine B1":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Vitamin B6":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Folate B9":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Vitamin C":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Vitamin E":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Calcium":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Copper":{
-                       "amount":null,
-                       "unit":"mcg",
-                       "weightGrams":null,
-                       "percentDaily":0
-                    },
-                    "Iron":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Phosphorous":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Potassium":{
-                       "amount":null,
-                       "unit":"mg",
-                       "weightGrams":0,
-                       "percentDaily":0
-                    },
-                    "Sodium":{
-                       "amount":"497.65",
-                       "unit":"mg",
-                       "weightGrams":0.49765,
-                       "percentDaily":21
-                    }
-                 },
-                 "isAvailable":1,
-                 "shippingLocations":[
+         ],
+         "alergens":[  
 
-                 ],
-                 "ingredients":[
-                    "Orange 5-lb",
-                    "Red 88-xf ctn",
-                    "Muffin Whole Wheat English 8\/12 oz #77793",
-                    "Egg White Patty 3.5\" 160\/1.75 oz #3675766",
-                    "Red Bell",
-                    "Ham Hormel Low Sodium Presliced 6\/2 lbs #3133"
-                 ],
-                 "alergens":[
+         ],
+         "itemType":"product",
+         "isUsda":false,
+         "shelfLife":null,
+         "customData":[  
 
-                 ]
-              }
-           ]
-        }
+         ]
+      },
+      {  
+         "id":"1400",
+         "itemName":"Ham & Egg Breakfast Sandwich",
+         "customName":null,
+         "sku":"1400",
+         "gtin":"10826766900012",
+         "published":"0",
+         "description":null,
+         "size":{  
+            "height":"2.26",
+            "width":"3.71",
+            "length":"7.61",
+            "containerId":"1",
+            "containerName":"Medium Container",
+            "estimatedVesselLoad":"5",
+            "slots":"2"
+         },
+         "weight":"8.75",
+         "weightUnit":"oz",
+         "freshRealmCost":null,
+         "updateTime":1425340991,
+         "categories":[  
 
-## Get A Product [/products/{id}?key={token}]
-Fetch a product by its `id`.
+         ],
+         "tagGroups":[  
+
+         ],
+         "imageUrl":null,
+         "nutritionInfo":{  
+            "Calories":{  
+               "amount":"231.67",
+               "unit":"KCal",
+               "weightGrams":null,
+               "percentDaily":12
+            },
+            "Fat Calories":{  
+               "amount":"19",
+               "unit":"KCal",
+               "weightGrams":null,
+               "percentDaily":4
+            },
+            "Fat":{  
+               "amount":"2.11",
+               "unit":"g",
+               "weightGrams":"2.11",
+               "percentDaily":3
+            },
+            "Saturated Fat":{  
+               "amount":"0.15",
+               "unit":"g",
+               "weightGrams":"0.15",
+               "percentDaily":1
+            },
+            "Polyunsaturated Fat":{  
+               "amount":null,
+               "unit":"g",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Monounsaturated Fat":{  
+               "amount":null,
+               "unit":"g",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Trans Fat":{  
+               "amount":null,
+               "unit":"g",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Cholesterol":{  
+               "amount":"7.59",
+               "unit":"mg",
+               "weightGrams":0.00759,
+               "percentDaily":3
+            },
+            "Carbohydrates":{  
+               "amount":"39.58",
+               "unit":"g",
+               "weightGrams":"39.58",
+               "percentDaily":13
+            },
+            "Fiber":{  
+               "amount":"5.44",
+               "unit":"g",
+               "weightGrams":"5.44",
+               "percentDaily":22
+            },
+            "Sugar":{  
+               "amount":"14.27",
+               "unit":"g",
+               "weightGrams":"14.27",
+               "percentDaily":16
+            },
+            "Protein":{  
+               "amount":"13.24",
+               "unit":"g",
+               "weightGrams":"13.24",
+               "percentDaily":26
+            },
+            "Vitamin A":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Thiamine B1":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Vitamin B6":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Folate B9":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Vitamin C":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Vitamin E":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Calcium":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Copper":{  
+               "amount":null,
+               "unit":"mcg",
+               "weightGrams":null,
+               "percentDaily":0
+            },
+            "Iron":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Phosphorous":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Potassium":{  
+               "amount":null,
+               "unit":"mg",
+               "weightGrams":0,
+               "percentDaily":0
+            },
+            "Sodium":{  
+               "amount":"497.65",
+               "unit":"mg",
+               "weightGrams":0.49765,
+               "percentDaily":21
+            }
+         },
+         "isAvailable":1,
+         "shippingLocations":[  
+
+         ],
+         "ingredients":[  
+            "Orange 5-lb",
+            "Red 88-xf ctn",
+            "Muffin Whole Wheat English 8\/12 oz #77793",
+            "Egg White Patty 3.5\" 160\/1.75 oz #3675766",
+            "Red Bell",
+            "Ham Hormel Low Sodium Presliced 6\/2 lbs #3133"
+         ],
+         "subProducts":[  
+
+         ],
+         "alergens":[  
+
+         ],
+         "itemType":"product",
+         "isUsda":false,
+         "shelfLife":null,
+         "customData":[  
+
+         ]
+      }
+       ]
+    }
+
+## Get A Product [/products/{sku}?key={token}]
+Fetch a product by its `sku`.
 
 ### GET
 
@@ -811,6 +840,7 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
                         "containerId": "1",
                         "containerName": "Medium Container",
                         "estimatedVesselLoad": "5"
+                        "slots": 1
                     },
                     "weight": "7.500",
                     "weightUnit": "oz",
@@ -975,7 +1005,8 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
                         "Spinach 2.68/lb",
                         "Sundried Tomato 5.49/lb"
                     ],
-                    "alergens": []
+                    "alergens": [],
+                    "subProducts": []
                 },
                 {
                     "id": "1400",
@@ -991,7 +1022,8 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
                         "length": "7.61",
                         "containerId": "1",
                         "containerName": "Medium Container",
-                        "estimatedVesselLoad": "5"
+                        "estimatedVesselLoad": "5",
+                        "slots": "1"
                     },
                     "weight": "8.750",
                     "weightUnit": "oz",
@@ -1155,7 +1187,8 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
                         "Red Bell",
                         "Ham Hormel Low Sodium Presliced 6/2 lbs #3133"
                     ],
-                    "alergens": []
+                    "alergens": [],
+                    "subProducts": []
                 }
             ]
         }
@@ -1190,7 +1223,8 @@ Retrieving a large list of resources in one request will degrade performance. Us
                         "length": "7.61",
                         "containerId": "1",
                         "containerName": "Medium Container",
-                        "estimatedVesselLoad": "5"
+                        "estimatedVesselLoad": "5",
+                        "slots": "1"
                     },
                     "weight": "7.500",
                     "weightUnit": "oz",
@@ -1546,7 +1580,7 @@ Retrieving a large list of resources in one request will degrade performance. Us
 To create an order, you must pass a `customerId`. If the `customerId` is not provided an error will be thrown. There are four different statuses that can be used to send order 
 data: `cancelled`, `test`,`preliminary`, `authorized`.
 
-|field | description |
+|status | description |
 |------|-------------|
 |`preliminary`| orders in queue waiting to be processed due to not being able to meet cutoff time or weekly subscription plans |
 |`authorized` | authorized transactions |
@@ -1581,7 +1615,8 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 | `shipMethod` | X* |  ship method for the order |
 | `warnings` |  |  any warnings or instructions for unexpected scenarios |
 | `transactionId` | X |  transaction id from merchant services provider |
-| `trackingNumber` |  |  tracking number for the vessel |
+| `trackingNumber` |  |  Vessel tracking number |
+| `customData` |  |  Key value pairs of data associated with the order |
 
  *ship method can not be edited once created.
 
@@ -1589,8 +1624,10 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 | field | required  | type      | example                           | description |
 |---------------|:-:|-----------|-----------------------------------|-------------|
 | `id`          | * | int       | `1`                               | FreshRealm Item ID |
+| `sku`          | * | string       | `1`                               | Merchant SKU number |
 | `quantity`    | * | int       | `1`                               | Quantity |
 
+Either ID or SKU is required. It is recommended to use SKU number instead of FreshRealm ID. SKU number is by default FreshRealm item id. SKU can be modified on FRC merchant pages.
 
 ### Place An Order [POST]
 
@@ -1802,26 +1839,38 @@ Use this URL to `GET` order information or `PUT` changes to the order.
                     }
                 ],
                 "pickupDate": null,
-                "shipMethod": "FEDEX_GROUND"
+                "shipMethod": "fedex_ground"
             }
         }
 
-
-### Update Order [PUT]
+### Update Delivery Date [PUT]      
+Have order delivered on different date than originally submitted. Delivery date change can be executed before cut off time of old and new delivery date. Use dates from availability calendar as input to this API call.
+If delivery date is not available server returns 400 error.
 
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
+    + deliveryDate (required, string)
+    
++ Response 200 (application/json)
 
-+ Request (application/json)
-This call allows you to modify an order. Once an order has reached the `processed` status, it can no longer be updated. This status change occurs at the `cutOffTime`.
-The input `id` must match the `orderId` in the URL.
-
-    + Body
-
-            {
-                "id": 109
+        {
+            "code": 200,
+            "timestamp": 1377020859,
+            "data": {
+                "id":109,
+                "deliveryDate": "2015-03-14",
             }
+        }
+
+### Update Delivery Address [PUT]      
+Delivery address can be updated after cut off time and before shipping label is printed. Address can be changed as long as the shipping service stays the same. For example, it is not possible to update address from California to New York if Vessel is supposed to be delivered by ground service. It is possible to change ground regions as long as the change is performed before cut off time for both zones. Zone change might create
+new cut off time.
+
++ Parameters
+    + orderId (required, number, `109`)
+    + token (required, string)
+    + shippingAddressId (required, int)
 
 + Response 200 (application/json)
 
@@ -1830,10 +1879,95 @@ The input `id` must match the `orderId` in the URL.
             "timestamp": 1377020859,
             "data": {
                 "id":109,
-                "status": "CANCELLED"
+                "shippingAddressId": "79920",
             }
         }
 
+### Update Products [PUT]      
+Customer can swap items on order before cut off time. If swap is performed, merchant is responsible for differences in food price. Swaps can be executed before cut off time, but cut off time might be updated as well. This operation accepts full final set of products after swap. It is recommended to use `vesselLoad` API call to make sure item change won't result into use of additional Vessel.
+
++ Parameters
+    + orderId (required, number, `109`)
+    + token (required, string)
+    + items (required, array)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1377020859,
+            "data": {
+                "id":109,
+                "items": [
+                    {
+                        "sku": "1674",
+                        "quantity": 3
+                    },
+                    {
+                        "sku": "1675",
+                        "quantity": 4
+                    }
+                ],
+            }
+        }
+
+### Update Status [PUT] 
+Order can be canceled through status updated. Supported input values for status update are `preliminary`, `authorized`, and `cancelled`. Preliminary order will be canceled if it is not updated to `authorized` before cut off time.
+        
+## Cancel an Order [/orders/cancel/{orderId}?key={token}]
+        
+### Cancel an Order [PUT]
+Order can be typically canceled before cut off time with no consequences. API supports cancels after cut off time for approved merchants. Merchant is billed for ordered food and handling fees for orders canceled after cut off time, but not for shipping fee. Order can be canceled up to the moment before shipping label is printed, which is a day before delivery.
+
++ Parameters
+    + orderId (required, number, `109`)
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1377020859,
+            "data": {
+                "id":109,
+                "status": "cancelled",
+                "cancelRequestDetail": {
+                    "id" => 54114,
+                    "reason" => "API test",
+                    "event" => "Canceled after cut off time",
+                    "cancelTime" => "2015-03-25 17:33:39"
+                    "source" => "api"
+                }
+            }
+        }
+        
+## Reschedule Pickup [/orders/reschedulepickup/{orderId}?key={token}]
+Carrier pickup is typically scheduled the next business day after delivery. FRC will reschedule Vessel pickup twice after first unsuccessful attempt. This API call allows user to delay Vessel pickup for up to one week. Old pickup request is canceled automatically and new pickup request is created. Even though pickup request is scheduled for order, in practice it is for pickup address and date. Carrier will pickup all Vessels from all customers waiting at the pickup address.
+Pickup address id can be optionally passed into this call to change pickup location.
+
+
+### Reschedule [POST]
+
++ Parameters
+    + orderId (required, number, `109`)
+    + token (required, string)
+
++ Body
+    + date (required, string)
+    + addressId (optional, integer)
+    
++ Response 200 (application/json)
+
+    {
+        "code": 200,
+        "timestamp": 1377020859,
+        "data": {
+            "orderId":109,
+            "addressId": "1154",
+            "date" => "2015-03-14"
+            }
+        }
+    }
 
 # Group Customers
 
@@ -1842,10 +1976,10 @@ This operation can be used to find a customer and to get all the orders for the 
 |Field                      |Can edit        |Description |
 |---------------------------|---------------|------------|
 |id                         |            |FreshRealm customer id |
-|myCustomerID               |            |The external customer id (customer id set by customers of FreshRealm) |
-|firstName                  |    X*       |First name of customer |
-|lastName                   |    X*       |Last name of customer |
-|email                      |    X*       |Email Address |
+|myCustomerID               |    X        |The external customer id (customer id set by customers of FreshRealm) |
+|firstName                  |    X       |First name of customer |
+|lastName                   |    X       |Last name of customer |
+|email                      |    X       |Email Address |
 |phoneNumber                |    X       |Phone Number |
 |mobilePhoneNumber          |    X       |Mobile Phone Number |
 |isAccountActive            |            |is customer Active |
@@ -1905,27 +2039,29 @@ This operation can be used to find addresses and get all the addresses for a cus
 
 |Field                      |Can edit        |Description |
 |---------------------------|---------------|------------|
+|`phoneNumber`            | X*  |Recipient phone number |
+|`fullName`            | X*  |Recipient name |
 |`prefix`            | X  |Address Prefix |
-|`streetAndNumber`   |  X |Example: 476 Main St       |
+|`streetAndNumber`   |  X* |Example: 476 Main St       |
 |`aptSuite`          | X  |Apartment number, unit number or suite. Example: Unit A        |
 |`city`              | X  |City name      |
 |`state`             | X  |State name - Example: CA or California     |
-|`zipcode`           | X  |Zipcode - Example: 93001     |
+|`zipcode`           | X*  |Zipcode - Example: 93001     |
 |`deliveryInstructions`| X |Special Delivery Instructions     |
 |`pickupInstuctions` |  X | Pickup instructions for return of Vessel |
 |`pickupLocation` |  X |Pickup location for the vessel    |
 |`type`           |  X |Residntial or Commercial    |
 |`verifyShipper`  | X  |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
 |`id`             |   |Address ID      |
-|`customerId`     |   |id of the customer      |
-|`status`         |   |status of the address, if it is active or previous, etc|
+|`customerId`     |  X* |id of the customer      |
+|`status`         |   |FRC is using external data source for address validation. Possible values are: `confirmed`, `missing_secondary`, `wrong_secondary`. Missing or wrong secondary means that apartment number is incorrect. Shipment still might be delivered (to apartment office for example), but there is a chance that carrier won't be able to find the right unit.|
 |`lat`            |   |Latitude of the customer address|
 |`lng`            |   |Longitude of the customer address     |
 |`shippingLocation`  |    |Shipping Location of the facility  |
 |`uniqueIdentifier` |    |Unique Identifier for the address    |
 |`updateTime`      |    |Update time for the last address update |
 
-
+    *Required
 
 ## Retrieve customer address [/apiaddress?key={token}]
 
@@ -2044,7 +2180,8 @@ This operation can be used to retrieve a list of all the transactions. Get trans
 | selectShipping |X | All shipping Methods  |
 | shippingMargin |X | Margin on shipping cost  |
 | shippingService | | Select a specific shipping method |
-
+| discount | X | Discount that is applied to sub-total |
+| customData | X | Set of key value pairs |
 
 ## Transaction details [/transactions?key={token}]
 ### GET [GET]
@@ -2089,7 +2226,130 @@ This operation can be used to retrieve a list of all the transactions. Get trans
            }
         }
 
+#Group Events
 
+Event API is read only stream of events for all orders. Order status is updated with certain events, but it doesn't reflect all possible states. This API should be downloaded periodically and frequently.
+
+| Event # | Name | Description | Type |
+|-------|--------|-------------|------|
+| 1000 | Created |  | Order |
+| 1100 | Updated |  | Order |
+| 1120 | Item Updated |  | Order |
+| 1130 | Delivery address updated | Order will be shipped to new address. | Order |
+| 1140 | Delivery date updated | Order delivery date changed. | Order |
+| 1200 | Connected to shipment |  | Order |
+| 1300 | Connected to purchase order | Order was added to purchase order | Order |
+| 1400 | Issue reported | Food | shipment | or Vessel issue reported by merchant or customer | Order |
+| 1500 | Canceled before cut off time | Order was canceled before food was ordered from supplier. | Order |
+| 1600 | Canceled after cut off time | Order was canceled after food was ordered from supplier but before the Vessel was shipped. | Order |
+| 1620 | Canceled after cut off time by FreshRealm | Order was not supposed to ship - requested by FreshRealm Ops Team | merchant will not be charged. | Order |
+| 1700 | Canceled after ship | Order was canceled after shipper took the Vessel. Shipper has to be contacted and Vessel will return full. | Order |
+| 5000 | Finalized | There are no updates allowed after finalization step. | Order |
+| 8000 | Created | Vessel shipment created | Vessel |
+| 8010 | Updated | Vessel shipment updated | Vessel |
+| 8020 | Canceled | Vessel shipment canceled | Vessel |
+| 8040 | Finalized | Vessel shipment finalized | Vessel |
+| 8050 | Downloaded | Downloaded by Packer | Vessel |
+| 8100 | Released | The Vessel was assembled and packed. | Vessel |
+| 8200 | Packed | The Vessel was assembled and packed. | Vessel |
+| 8300 | Shipping label printed | Weight was submitted to server and shipping label obtained from shipper. | Vessel |
+| 8400 | Reported not shipped | Vessel didn't leave packer facility. | Vessel |
+| 10000 | Shipped to zone skip | The Vessel was given to zone skip driver. | Vessel |
+| 10100 | Delivered to zone skip | The Vessel was delivered to cold storage. | Vessel |
+| 10200 | Delivered to shipper | Shipper obtained the Vessel | but system does not have confirmation yet. | Vessel |
+| 10300 | Tendered to shipper | Shipper confirmed vessel pickup by sending email or edi message. | Vessel |
+| 10400 | Delivery exception | Shipper could not deliver the vessel. | Vessel |
+| 10500 | Delivered to customer | Shipper confirmed delivery to customer. | Vessel |
+| 10600 | Reprinted return label | Shopper printed custom return shipping label. | Vessel |
+| 10700 | Shipped back | Shipper confirmed pickup. | Vessel |
+| 10750 | Shipped back using outbound label | Non-peeled outbound label was used for pickup at customer. | Vessel |
+| 10770 | Shipped back using outbound label | Non-peeled outbound label was used for pickup at customer. | Vessel |
+| 10800 | Returned to packer | Shipper confirmed delivery to packer facility. | Vessel |
+| 10900 | Received by packer | Packer confirmed the Vessel delivery. | Vessel |
+| 11000 | Reported stolen | Shipper didn't receive the Vessel and customer does not have it either. | Vessel |
+| 11100 | Reported lost | Stolen or lost shipping label. | Vessel |
+| 11150 | Reported not returned | Vessel was gifted or sold to customer. | Vessel |
+| 11200 | Reported issue | Customer or merchant reported order or vessel issue. | Vessel |
+| 60000 | Created | Pickup request created | Pickup |
+| 60100 | Removed | Pickup request removed | Pickup |
+| 60200 | Scheduled | Pickup scheduled | Pickup |
+| 60300 | Canceled | Pickup canceled | Pickup |
+| 60400 | Missed | Pickup missed | Pickup |
+| 60500 | Rescheduled | Pickup rescheduled | Pickup |
+| 60600 | Picked Up | Picked Up | Pickup |
+
+## List Events [/events]
+###Get All Events[GET]
+
++ Parameters
+    + token (required, string)
+    + limit (optional, integer)
+    + timestamp (optional, string)
+    
++ Response 200 (application/json)
+
+    {
+      "code": 200,
+      "timestamp": 1427468187,
+      "data": [
+        {
+          "id": "618eb9fa1b9f094e09ff7ead3681bd52",
+          "event": "8200",
+          "type": "Vessel",
+          "name": "Packed",
+          "createTime": "2013-12-18 00:00:00",
+          "orderId": "62"
+        },
+        {
+          "id": "9059f337e5c76d906696fcf2434007e4",
+          "event": "8300",
+          "type": "Vessel",
+          "name": "Shipping label printed",
+          "createTime": "2013-12-18 00:00:00",
+          "orderId": "62"
+        },
+        {
+          "id": "339b6fcce0c8b739278d61bde52936d2",
+          "event": "8200",
+          "type": "Vessel",
+          "name": "Packed",
+          "createTime": "2013-12-19 00:00:00",
+          "orderId": "63"
+        }
+      ]
+    }
+    
+###Get Order Events[GET]
+
++ Parameters
+    + token (required, string)
+    + orderId (optional, integer)
+    + timestamp (optional, string)
+
++ Response 200 (application/json)
+
+    {
+      "code": 200,
+      "timestamp": 1427468187,
+      "data": [
+        {
+          "id": "618eb9fa1b9f094e09ff7ead3681bd52",
+          "event": "8200",
+          "type": "Vessel",
+          "name": "Packed",
+          "createTime": "2013-12-18 00:00:00",
+          "orderId": "62"
+        },
+        {
+          "id": "9059f337e5c76d906696fcf2434007e4",
+          "event": "8300",
+          "type": "Vessel",
+          "name": "Shipping label printed",
+          "createTime": "2013-12-18 00:00:00",
+          "orderId": "62"
+        },
+      ]
+    }
 
 #Group Other API Calls
 ##Get shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
