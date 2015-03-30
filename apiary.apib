@@ -2252,40 +2252,61 @@ This operation can be used to retrieve a list of all the transactions. Get trans
     
 + Response 200 (application/json)
 
-
-        {
-           "code":200,
-           "timestamp":1400801692,
-           "data":{
-              "id":5,
-              "succeeded":"null",
-              "message":"null",
-              "subTotal":"null",
-              "shippingAndHandling":"10",
-              "salesTax":10,
-              "total":100,
-              "shippingAddressId":"null",
-              "complete":0,
-              "productLines":[
-                 {
-                    "name":"Sugar diet subscription",
-                    "description":"billing period 4/25 - 5/25\\n plan starts 4/22",
-                    "price":"2.32"
-                 },
-                 {
-                    "name":"Fish flavored gummy bears",
-                    "description":"Yummy snack your kids will love",
-                    "price":2.32
-                 }
-              ],
-              "customerId":7068,
-              "externalId":47,
-              "createTime":1400801692,
-              "updateTime":1400801692,
-              "confirmationUri":"http://myserver/confirm",
-              "redirectUri":"http://myserver/redirect"
-           }
-        }
+    {
+        "code": 200,
+        "timestamp": 1427751559,
+        "data": [
+            {
+                "id": "159847",
+                "succeeded": "1",
+                "message": "Succeeded!",
+                "subTotal": "27.27",
+                "shippingAndHandling": "0.00",
+                "salesTax": null,
+                "total": "27.27",
+                "shippingAddressId": "9428",
+                "paymentMethodToken": "NYP7dTA0eDZjyFrfcC5hl8pdNLY",
+                "deliveryDate": "2015-04-01",
+                "selectedDeliveryDates": [
+                    "2015-04-01"
+                ],
+                "isAuthorized": true,
+                "cardInfo": {
+                    "cardNumber": "9824",
+                    "type": "visa",
+                    "month": "5",
+                    "year": "2019",
+                    "fullName": "John Smith"
+                },
+                "complete": "1",
+                "productLines": [
+                    {
+                        "name": "5 Meal Sample Vessel",
+                        "id": "2",
+                        "description": "One delicious fresh meal in each drawer",
+                        "quantity": 1,
+                        "price": 27.27
+                    }
+                ],
+                "customerId": "98415",
+                "externalId": null,
+                "createTime": 1426782925,
+                "updateTime": 1426788665,
+                "confirmationUri": null,
+                "redirectUri": null,
+                "authorizationToken": "Gl9CItBJWGFGzI3vR8qhaaYzoWg",
+                "authorizeTime": "2015-03-19 16:39:33",
+                "transactionTime": "2015-03-19 16:40:20",
+                "refunds": [],
+                "vessels": null,
+                "selectShipping": null,
+                "shippingMargin": null,
+                "shippingService": null,
+                "discount": null,
+                "customData": []
+            },
+        ]
+    }
 
 #Group Events
 
@@ -2339,7 +2360,7 @@ Event API is read only stream of events for all orders. Order status is updated 
 | 60500 | Rescheduled | Pickup rescheduled | Pickup |
 | 60600 | Picked Up | Picked Up | Pickup |
 
-## List Events [/events]
+## List Events [/events?key={token}]
 ###Get All Events[GET]
 
 + Parameters
