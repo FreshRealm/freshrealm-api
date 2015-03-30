@@ -584,7 +584,7 @@ Fetch a product by its `sku`.
 ### GET
 
 + Parameters
-    + id (required, number, `1`)
+    + sku (required, number, `1`)
     + token (required, string)
 
 + Response 200 (application/json)
@@ -783,13 +783,13 @@ Fetch a product by its `sku`.
 
 
 
-## Fetch Specific Fields [/products/{productId}?key={token}&fields={fieldsList}]
+## Fetch Specific Fields [/products/{sku}?key={token}&fields={fieldsList}]
 These examples show how to limit the returned data to a specific set of fields.
 
 ### List of Ingredients [GET]
 + Parameters
     + token (required, string)
-    + productId (required, number)
+    + sku (required, number)
     + fieldsList (optional, array, `["id", "ingedients"]`)
 
 
@@ -1623,11 +1623,10 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 #### Items Attributes
 | field | required  | type      | example                           | description |
 |---------------|:-:|-----------|-----------------------------------|-------------|
-| `id`          | * | int       | `1`                               | FreshRealm Item ID |
 | `sku`          | * | string       | `1`                               | Merchant SKU number |
 | `quantity`    | * | int       | `1`                               | Quantity |
 
-Either ID or SKU is required. It is recommended to use SKU number instead of FreshRealm ID. SKU number is by default FreshRealm item id. SKU can be modified on FRC merchant pages.
+Products should be ordered by SKU.  The SKU can be modified on FRC merchant pages.
 
 ### Place An Order [POST]
 
@@ -1640,10 +1639,10 @@ Either ID or SKU is required. It is recommended to use SKU number instead of Fre
                 "customerId": 7069,
                 "shippingAddressId": 7427,
                 "items": [{
-                    "id": "1674",
+                    "sku": "1674",
                     "quantity": 3
                 },{
-                    "id": "1675",
+                    "sku": "1675",
                     "quantity": 4
                 }],
                 "totalPrice": "20.98",
@@ -1675,11 +1674,11 @@ Either ID or SKU is required. It is recommended to use SKU number instead of Fre
                 "deliveryDate": "2014-06-02",
                 "items": [
                     {
-                        "id": "1674",
+                        "sku": "1674",
                         "quantity": 3
                     },
                     {
-                        "id": "1675",
+                        "sku": "1675",
                         "quantity": 4
                     }
                 ],
