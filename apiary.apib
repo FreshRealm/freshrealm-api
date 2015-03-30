@@ -140,7 +140,7 @@ The following table describes which attributes are provided by default, and whic
 | `id`                    |          | FreshRealm item id |
 | `itemName`              |        | Name of the product |
 | `customName`            |    X    | Customize name of the product |
-| `sku`                   |        | Retailer defined item SKU used as primary identifier for product. It is a string with maximum length of 45 characters. SKU has to be a unique string.|
+| `sku`                   |        | Retailer defined item SKU used as primary identifier for product. It is a string with maximum length of 45 characters. SKU must be a unique string.|
 | `gtin`                  |        | Global gtin identification number |
 | `published`             |    X   | A published flag (boolean) |
 | `description`           |    X   | Product description |
@@ -594,9 +594,9 @@ Fetch a product by its `sku`.
                     "timestamp": 184653225,
                     "data": {
                         "id":"1391",
+                        "sku":"1391",
                         "itemName":"Turkey, Egg White & Sundried Tomato Breakfast",
                         "customName":null,
-                        "sku":"",
                         "gtin":"10826766900005",
                         "published":"0",
                         "description":null,
@@ -827,9 +827,9 @@ Some fields can be used for filtering a list of resources. `Filter` is a JSON en
             "data": [
                 {
                     "id": "1391",
+                    "sku": "1391",
                     "itemName": "Turkey, Egg White & Sundried Tomato Breakfast",
                     "customName": null,
-                    "sku": "",
                     "gtin": "10826766900005",
                     "published": "0",
                     "description": null,
@@ -1726,11 +1726,11 @@ Retrieve all the latest orders (default limit is 100 results)
                 "deliveryDate": "2014-06-02",
                 "items": [
                     {
-                        "id": "1674",
+                        "sku": "1674",
                         "quantity": 3
                     },
                     {
-                        "id": "1675",
+                        "sku": "1675",
                         "quantity": 4
                     }
                 ],
@@ -1755,11 +1755,11 @@ Retrieve all the latest orders (default limit is 100 results)
                 "deliveryDate": "2014-06-02",
                 "items": [
                     {
-                        "id": "1674",
+                        "sku": "1674",
                         "quantity": 3
                     },
                     {
-                        "id": "1675",
+                        "sku": "1675",
                         "quantity": 4
                     }
                 ],
@@ -1784,11 +1784,11 @@ Retrieve all the latest orders (default limit is 100 results)
                 "deliveryDate": "2014-06-02",
                 "items": [
                     {
-                        "id": "1674",
+                        "sku": "1674",
                         "quantity": 3
                     },
                     {
-                        "id": "1675",
+                        "sku": "1675",
                         "quantity": 4
                     }
                 ],
@@ -1829,11 +1829,11 @@ Use this URL to `GET` order information or `PUT` changes to the order.
                 "deliveryDate": "2014-06-02",
                 "items": [
                     {
-                        "id": "1674",
+                        "sku": "1674",
                         "quantity": 3
                     },
                     {
-                        "id": "1675",
+                        "sku": "1675",
                         "quantity": 4
                     }
                 ],
@@ -1849,7 +1849,14 @@ If delivery date is not available server returns 400 error.
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
-    + deliveryDate (required, string)
+    
++ Request (application/json)
+    
+    + Body
+
+            {
+                "deliveryDate": "2015-03-14",
+            }
     
 + Response 200 (application/json)
 
@@ -1869,7 +1876,14 @@ new cut off time.
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
-    + shippingAddressId (required, int)
+    
++ Request (application/json)
+    
+    + Body
+
+            {
+                "shippingAddressId": "79920",
+            }
 
 + Response 200 (application/json)
 
@@ -1888,7 +1902,22 @@ Customer can swap items on order before cut off time. If swap is performed, merc
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
-    + items (required, array)
+    
++ Request (application/json)
+    
+    + Body
+
+            {
+                "items": [
+                    {
+                        "sku": "1674",
+                        "quantity": 3
+                    },
+                    {
+                        "sku": "1675",
+                        "quantity": 4
+                    }
+            }
 
 + Response 200 (application/json)
 
@@ -1942,18 +1971,49 @@ Order can be typically canceled before cut off time with no consequences. API su
         
 ## Reschedule Pickup [/orders/reschedulepickup/{orderId}?key={token}]
 Carrier pickup is typically scheduled the next business day after delivery. FRC will reschedule Vessel pickup twice after first unsuccessful attempt. This API call allows user to delay Vessel pickup for up to one week. Old pickup request is canceled automatically and new pickup request is created. Even though pickup request is scheduled for order, in practice it is for pickup address and date. Carrier will pickup all Vessels from all customers waiting at the pickup address.
-Pickup address id can be optionally passed into this call to change pickup location.
+Pickup address id can be optionally passed into this call to change pickup location.  If pickup can not be scheduled for the requested date it will be scheduled for the next available date.
 
 
-### Reschedule [POST]
+### Reschedule For Different Date [PUT]
 
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
 
-+ Body
-    + date (required, string)
-    + addressId (optional, integer)
++ Request (application/json)
+    
+    + Body
+
+            {
+                "date": "2015-03-14"
+            }
+    
++ Response 200 (application/json)
+
+    {
+        "code": 200,
+        "timestamp": 1377020859,
+        "data": {
+            "orderId":109,
+            "addressId": "1154",
+            "date" => "2015-03-14"
+            }
+        }
+    }
+    
+### Reschedule For Different Address [PUT]
+
++ Parameters
+    + orderId (required, number, `109`)
+    + token (required, string)
+
++ Request (application/json)
+    
+    + Body
+
+            {
+                "addressId": "1154"
+            }
     
 + Response 200 (application/json)
 
@@ -2227,7 +2287,7 @@ This operation can be used to retrieve a list of all the transactions. Get trans
 
 #Group Events
 
-Event API is read only stream of events for all orders. Order status is updated with certain events, but it doesn't reflect all possible states. This API should be downloaded periodically and frequently.
+Event API is read only stream of events for all orders. Order status is updated with certain events, but it does not reflect all possible states. The events API should be checked for new events periodically and frequently.  The timestamp returned with each request should always be used with the next request to only retrieve new events.
 
 | Event # | Name | Description | Type |
 |-------|--------|-------------|------|
@@ -2238,10 +2298,10 @@ Event API is read only stream of events for all orders. Order status is updated 
 | 1140 | Delivery date updated | Order delivery date changed. | Order |
 | 1200 | Connected to shipment |  | Order |
 | 1300 | Connected to purchase order | Order was added to purchase order | Order |
-| 1400 | Issue reported | Food | shipment | or Vessel issue reported by merchant or customer | Order |
+| 1400 | Issue reported | Food shipment or Vessel issue reported by merchant or customer | Order |
 | 1500 | Canceled before cut off time | Order was canceled before food was ordered from supplier. | Order |
 | 1600 | Canceled after cut off time | Order was canceled after food was ordered from supplier but before the Vessel was shipped. | Order |
-| 1620 | Canceled after cut off time by FreshRealm | Order was not supposed to ship - requested by FreshRealm Ops Team | merchant will not be charged. | Order |
+| 1620 | Canceled after cut off time by FreshRealm | Order was not supposed to ship - requested by FreshRealm Ops Team merchant will not be charged. | Order |
 | 1700 | Canceled after ship | Order was canceled after shipper took the Vessel. Shipper has to be contacted and Vessel will return full. | Order |
 | 5000 | Finalized | There are no updates allowed after finalization step. | Order |
 | 8000 | Created | Vessel shipment created | Vessel |
@@ -2255,7 +2315,7 @@ Event API is read only stream of events for all orders. Order status is updated 
 | 8400 | Reported not shipped | Vessel didn't leave packer facility. | Vessel |
 | 10000 | Shipped to zone skip | The Vessel was given to zone skip driver. | Vessel |
 | 10100 | Delivered to zone skip | The Vessel was delivered to cold storage. | Vessel |
-| 10200 | Delivered to shipper | Shipper obtained the Vessel | but system does not have confirmation yet. | Vessel |
+| 10200 | Delivered to shipper | Shipper obtained the Vessel but system does not have confirmation yet. | Vessel |
 | 10300 | Tendered to shipper | Shipper confirmed vessel pickup by sending email or edi message. | Vessel |
 | 10400 | Delivery exception | Shipper could not deliver the vessel. | Vessel |
 | 10500 | Delivered to customer | Shipper confirmed delivery to customer. | Vessel |
@@ -2317,38 +2377,7 @@ Event API is read only stream of events for all orders. Order status is updated 
         }
       ]
     }
-    
-###Get Order Events[GET]
 
-+ Parameters
-    + token (required, string)
-    + orderId (optional, integer)
-    + timestamp (optional, string)
-
-+ Response 200 (application/json)
-
-    {
-      "code": 200,
-      "timestamp": 1427468187,
-      "data": [
-        {
-          "id": "618eb9fa1b9f094e09ff7ead3681bd52",
-          "event": "8200",
-          "type": "Vessel",
-          "name": "Packed",
-          "createTime": "2013-12-18 00:00:00",
-          "orderId": "62"
-        },
-        {
-          "id": "9059f337e5c76d906696fcf2434007e4",
-          "event": "8300",
-          "type": "Vessel",
-          "name": "Shipping label printed",
-          "createTime": "2013-12-18 00:00:00",
-          "orderId": "62"
-        },
-      ]
-    }
 
 #Group Other API Calls
 ##Get shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
