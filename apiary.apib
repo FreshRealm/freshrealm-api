@@ -2204,8 +2204,248 @@ This operation can be used to find available categories to which products belong
                "name": "Category 1",
                "published": "1"
             }
-            
+        
+        
+#Group Tag Groups
 
+Manage tag groups.  All tags must belong to a tag group.
+
+| Field | Can Edit   | Description |
+|-------|---------|-------------|
+| `id` |   | Tag group id |
+| `name` | X  | Tag group name |
+| `maxTags` | X | Maximum number of distinct tags to allow in group |
+
+## Tag Groups [/taggroups?key={token}]
+
+List all tag groups and create new tag groups.
+
+### List Tag Groups [GET]
+
++ Parameters
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1428957796,
+            "data": [
+                {
+                    "id": "1",
+                    "name": "Tag Group 1",
+                    "maxTags": null
+                },
+                {
+                    "id": "2",
+                    "name": "Tag Group 2",
+                    "maxTags": null
+                }
+            ]
+        }
+        
+### Create new Tag Group [POST]
+
++ Parameters
+    + token (required, string)
+
++ Request (application/json)
+            
+        {
+            "name": "Tag Group 3"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1428964852,
+            "data": {
+                "id": "1",
+                "name": "Tag Group 3",
+                "maxTags": null
+            }
+        }
+        
+## Tag Group [/taggroups/{id}?key={token}]
+
+Manipulate a tag group by its `id`.
+
+### Get Tag Group [GET]
+
++ Parameters
+    + id (required, number, `1`)
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1428959155,
+            "data": {
+                "id": "1",
+                "name": "Tag Group 1",
+                "maxTags": null
+            }
+        }
+
+### Modify Tag Group [PUT]
+
++ Parameters
+    + id (required, number, `1`)
+    + token (required, string)
+    
++ Request (application/json)
+            
+        {
+            "name": "Tag Group 4"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1428964998,
+            "data": {
+                "id": "1",
+                "name": "Tag Group 4",
+                "maxTags": null
+            }
+        }
+
+#Group Tags
+
+Manage tags.  All tags must belong to a tag group.
+
+| Field | Can Edit   | Description |
+|-------|---------|-------------|
+| `id` |   | Tag id |
+| `tagGroupId` | X  | Tag group id |
+| `name` | X  | Tag name |
+| `sort` | X | Optional numeric sort value |
+
+## Tags [/tags?key={token}]
+
+List all tags and create new tags.
+
+### List Tags [GET]
+
++ Parameters
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1428971739,
+            "data": [
+                {
+                    "id": "1",
+                    "tagGroupId": "1",
+                    "name": "Tag 4",
+                    "sort": "-1"
+                },
+                {
+                    "id": "2",
+                    "tagGroupId": "1",
+                    "name": "Tag 1",
+                    "sort": "1"
+                },
+                {
+                    "id": "3",
+                    "tagGroupId": "1",
+                    "name": "Tag 3",
+                    "sort": "3"
+                }
+            ]
+        }
+        
+### Create new Tag [POST]
+
++ Parameters
+    + token (required, string)
+
++ Request (application/json)
+            
+        {
+            "name": "Tag 3",
+            "tagGroupId": 1,
+            "sort": 3
+        }
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1428965884,
+            "data": {
+                "id": "3",
+                "tagGroupId": 1,
+                "name": "Tag 3",
+                "sort": 3
+            }
+        }
+        
+## Tag [/tags/{id}?key={token}]
+
+Manipulate a tag by its `id`.
+
+### Get Tag [GET]
+
++ Parameters
+    + id (required, number, `1`)
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1428966091,
+            "data": {
+                "id": "1",
+                "tagGroupId": "1",
+                "name": "Tag 1",
+                "sort": null
+            }
+        }
+        
+### Modify Tag [PUT]
+
++ Parameters
+    + id (required, number, `1`)
+    + token (required, string)
+    
++ Request (application/json)
+            
+        {
+            "name": "Tag 4",
+            "sort": -1
+        }
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1428966182,
+            "data": {
+                "id": "1",
+                "tagGroupId": "1",
+                "name": "Tag 4",
+                "sort": -1
+            }
+        }
+        
+#Group Product Tags
+
+Manage the tags that are set on products.
+
+| Field | Can Edit   | Description |
+|-------|---------|-------------|
+| `id` |   | Tag id |
+| `productId` | X  | Product id |
+| `tagId` | X  | Tag id |
+
+        
 #Group Transactions
 
 This operation can be used to retrieve a list of all the transactions. Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.
