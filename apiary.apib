@@ -2963,7 +2963,9 @@ The return data is an array of one or more vessels that would be used to pack th
 
 ## Verify Zipcode availability [/zipcodeavailability?key={token}&zipcode={zipcode}]
 
-Checks to verify if service is available in the requested area. 
+Checks to verify if service is available in the requested area.
+
+The returned data includes the ship from zipcode for the zipcode being shipped to and available shippingMethods if any.
 
 
 ### Zipcode availability [POST]
