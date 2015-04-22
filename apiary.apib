@@ -2229,15 +2229,15 @@ List all tag groups and create new tag groups.
 
         {
             "code": 200,
-            "timestamp": 1428957796,
+            "timestamp": 1429659071,
             "data": [
                 {
-                    "id": "1",
+                    "id": "tag-group-1-16",
                     "name": "Tag Group 1",
                     "maxTags": null
                 },
                 {
-                    "id": "2",
+                    "id": "tag-group-2-16",
                     "name": "Tag Group 2",
                     "maxTags": null
                 }
@@ -2252,17 +2252,17 @@ List all tag groups and create new tag groups.
 + Request (application/json)
             
         {
-            "name": "Tag Group 3"
+            "name": "Tag Group 4"
         }
 
 + Response 200 (application/json)
 
         {
             "code": 200,
-            "timestamp": 1428964852,
+            "timestamp": 1429659179,
             "data": {
-                "id": "1",
-                "name": "Tag Group 3",
+                "id": "tag-group-4-16",
+                "name": "Tag Group 4",
                 "maxTags": null
             }
         }
@@ -2274,17 +2274,17 @@ Manipulate a tag group by its `id`.
 ### Get Tag Group [GET]
 
 + Parameters
-    + id (required, number, `1`)
+    + id (required, string)
     + token (required, string)
 
 + Response 200 (application/json)
 
         {
             "code": 200,
-            "timestamp": 1428959155,
+            "timestamp": 1429659238,
             "data": {
-                "id": "1",
-                "name": "Tag Group 1",
+                "id": "tag-group-4-16",
+                "name": "Tag Group 4",
                 "maxTags": null
             }
         }
@@ -2292,24 +2292,40 @@ Manipulate a tag group by its `id`.
 ### Modify Tag Group [PUT]
 
 + Parameters
-    + id (required, number, `1`)
+    + id (required, string)
     + token (required, string)
     
 + Request (application/json)
-            
+
         {
-            "name": "Tag Group 4"
+            "maxTags": 5 
         }
 
 + Response 200 (application/json)
 
         {
             "code": 200,
-            "timestamp": 1428964998,
+            "timestamp": 1429659295,
             "data": {
-                "id": "1",
+                "id": "tag-group-4-16",
                 "name": "Tag Group 4",
-                "maxTags": null
+                "maxTags": 5
+            }
+        }
+        
+### Delete Tag Group [DELETE]
+
++ Parameters
+    + id (required, string)
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1429660986,
+            "data": {
+                "status": "OK"
             }
         }
 
@@ -2337,25 +2353,19 @@ List all tags and create new tags.
 
         {
             "code": 200,
-            "timestamp": 1428971739,
+            "timestamp": 1429659511,
             "data": [
                 {
-                    "id": "1",
-                    "tagGroupId": "1",
-                    "name": "Tag 4",
-                    "sort": "-1"
-                },
-                {
-                    "id": "2",
-                    "tagGroupId": "1",
+                    "id": "tag-1-tag-group-4-16",
+                    "tagGroupId": "tag-group-4-16",
                     "name": "Tag 1",
-                    "sort": "1"
+                    "sort": null
                 },
                 {
-                    "id": "3",
-                    "tagGroupId": "1",
-                    "name": "Tag 3",
-                    "sort": "3"
+                    "id": "tag-2-tag-group-4-16",
+                    "tagGroupId": "tag-group-4-16",
+                    "name": "Tag 2",
+                    "sort": null
                 }
             ]
         }
@@ -2369,20 +2379,20 @@ List all tags and create new tags.
             
         {
             "name": "Tag 3",
-            "tagGroupId": 1,
-            "sort": 3
+            "tagGroupId": "tag-group-4-16",
+            "sort": 0
         }
 
 + Response 200 (application/json)
 
         {
             "code": 200,
-            "timestamp": 1428965884,
+            "timestamp": 1429659487,
             "data": {
-                "id": "3",
-                "tagGroupId": 1,
+                "id": "tag-3-tag-group-4-16",
+                "tagGroupId": "tag-group-4-16",
                 "name": "Tag 3",
-                "sort": 3
+                "sort": 0
             }
         }
         
@@ -2393,32 +2403,31 @@ Manipulate a tag by its `id`.
 ### Get Tag [GET]
 
 + Parameters
-    + id (required, number, `1`)
+    + id (required, string)
     + token (required, string)
 
 + Response 200 (application/json)
 
         {
             "code": 200,
-            "timestamp": 1428966091,
+            "timestamp": 1429659680,
             "data": {
-                "id": "1",
-                "tagGroupId": "1",
-                "name": "Tag 1",
-                "sort": null
+                "id": "tag-3-tag-group-4-16",
+                "tagGroupId": "tag-group-4-16",
+                "name": "Tag 3",
+                "sort": "0"
             }
         }
         
 ### Modify Tag [PUT]
 
 + Parameters
-    + id (required, number, `1`)
+    + id (required, string)
     + token (required, string)
     
 + Request (application/json)
             
         {
-            "name": "Tag 4",
             "sort": -1
         }
 
@@ -2426,12 +2435,28 @@ Manipulate a tag by its `id`.
 
         {
             "code": 200,
-            "timestamp": 1428966182,
+            "timestamp": 1429659720,
             "data": {
-                "id": "1",
-                "tagGroupId": "1",
-                "name": "Tag 4",
+                "id": "tag-3-tag-group-4-16",
+                "tagGroupId": "tag-group-4-16",
+                "name": "Tag 3",
                 "sort": -1
+            }
+        }
+        
+### Delete Tag [DELETE]
+
++ Parameters
+    + id (required, string)
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1429661335,
+            "data": {
+                "status": "OK"
             }
         }
         
@@ -2445,6 +2470,119 @@ Manage the tags that are set on products.
 | `productId` | X  | Product id |
 | `tagId` | X  | Tag id |
 
+## Product Tags [/producttags?key={token}]
+
+List all product tags and create new product tags.
+
+### List Product Tags [GET]
+
++ Parameters
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1429660634,
+            "data": [
+                {
+                    "id": "1997_tag-1-tag-group-4-16",
+                    "productId": "1997",
+                    "tagId": "tag-1-tag-group-4-16"
+                },
+                {
+                    "id": "1997_tag-2-tag-group-4-16",
+                    "productId": "1997",
+                    "tagId": "tag-2-tag-group-4-16"
+                }
+            ]
+        }
+        
+### Create new Product Tag [POST]
+
++ Parameters
+    + token (required, string)
+
++ Request (application/json)
+            
+        {
+            "tagId": "tag-3-tag-group-4-16",
+            "productId": 1997
+        }
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1429660669,
+            "data": {
+                "id": "1997_tag-3-tag-group-4-16",
+                "productId": "1997",
+                "tagId": "tag-3-tag-group-4-16"
+            }
+        }
+        
+## Product Tag [/producttags/{id}?key={token}]
+
+Manipulate a product tag by its `id`.
+
+### Get Product Tag [GET]
+
++ Parameters
+    + id (required, string)
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1429660738,
+            "data": {
+                "id": "1997_tag-3-tag-group-4-16",
+                "productId": "1997",
+                "tagId": "tag-3-tag-group-4-16"
+            }
+        }
+        
+### Modify Product Tag [PUT]
+
++ Parameters
+    + id (required, string)
+    + token (required, string)
+    
++ Request (application/json)
+            
+        {
+            "tagId": "tag-2-tag-group-4-16"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1429660784,
+            "data": {
+                "id": "1997_tag-2-tag-group-4-16",
+                "productId": "1997",
+                "tagId": "tag-2-tag-group-4-16"
+            }
+        }
+
+### Delete Product Tag [DELETE]
+
++ Parameters
+    + id (required, string)
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1429660868,
+            "data": {
+                "status": "OK"
+            }
+        }
         
 #Group Transactions
 
