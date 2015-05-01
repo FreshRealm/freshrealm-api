@@ -2027,6 +2027,40 @@ Pickup address id can be optionally passed into this call to change pickup locat
             }
         }
     }
+    
+## Create Shipping Label [/orders/createshippinglabel/{orderId}?key={token}]
+
+Create new return shipping labels for all of the vessels used by an order.  This method returns an array of tracking numbers for the newly created shipping label(s) which can be used with the Shipping Label Download method to retrieve a PDF of the shipping label.
+
+### Create Shipping Label [GET]
+
++ Parameters
+    + orderId (required, number, `109`)
+    + token (required, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1430512169,
+            "data": [
+                "99998458496"
+            ]
+        }
+        
+## Shipping Label Download [/orders/shippinglabeldownload/{trackingNumber}?key={token}]
+
+Download a shipping label created with the Create Shipping Label method.  Shipping labels are PDF documents in letter format.
+
+### Shipping Label Download [GET]
+
++ Parameters
+    + trackingNumber (required, string, `99998458496`)
+    + token (required, string)
+
++ Response 200 (application/octet-stream)
+
+        *BINARY DATA*
 
 # Group Customers
 
