@@ -1971,6 +1971,9 @@ Order can be typically canceled before cut off time with no consequences. API su
         
 ## Reschedule Pickup [/orders/reschedulepickup/{orderId}?key={token}]
 Carrier pickup is typically scheduled the next business day after delivery. FRC will reschedule Vessel pickup twice after first unsuccessful attempt. This API call allows user to delay Vessel pickup for up to one week. Old pickup request is canceled automatically and new pickup request is created. Even though pickup request is scheduled for order, in practice it is for pickup address and date. Carrier will pickup all Vessels from all customers waiting at the pickup address.
+
+Pickup requests can be scheduled a maximum of 7 days in advanced and must be scheduled for after the delivery date of the order.
+
 Pickup address id can be optionally passed into this call to change pickup location.  If pickup can not be scheduled for the requested date it will be scheduled for the next available date.
 
 
