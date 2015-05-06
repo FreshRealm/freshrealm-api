@@ -2761,12 +2761,13 @@ Event API is read only stream of events for all orders. Order status is updated 
 | 10700 | Shipped back | Shipper confirmed pickup. | Vessel |
 | 10750 | Shipped back using outbound label | Non-peeled outbound label was used for pickup at customer. | Vessel |
 | 10770 | Shipped back using outbound label | Non-peeled outbound label was used for pickup at customer. | Vessel |
-| 10800 | Returned to packer | Shipper confirmed delivery to packer facility. | Vessel |
+| 10800 | Returned to packer | Shipper confirmed delivery to packer facility. Lost Vessel fee will not be charged. | Vessel |
 | 10900 | Received by packer | Packer confirmed the Vessel delivery. | Vessel |
 | 11000 | Reported stolen | Shipper didn't receive the Vessel and customer does not have it either. | Vessel |
 | 11100 | Reported lost | Stolen or lost shipping label. | Vessel |
 | 11150 | Reported not returned | Vessel was gifted or sold to customer. | Vessel |
 | 11200 | Reported issue | Customer or merchant reported order or vessel issue. | Vessel |
+| 11300 | Lost Vessel Fee | Lost Vessel fee has been charged. | Vessel |
 | 60000 | Created | Pickup request created | Pickup |
 | 60100 | Removed | Pickup request removed | Pickup |
 | 60200 | Scheduled | Pickup scheduled | Pickup |
