@@ -1608,7 +1608,7 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 | `salesTax` | X |  sales tax for the order |
 | `updateTime` |  | update time for the order |
 | `createTime` |  |  Create time when the order was created |
-| `orderNumber` | X |  order number  |
+| `orderNumber` | X |  merchant's order number  |
 | `deliveryDate` | X |  delivery date for the order |
 | `items` | X | list of all items in the order |
 | `pickupDate` | X |  pickup date for the order|
@@ -1617,6 +1617,8 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 | `transactionId` | X |  transaction id from merchant services provider |
 | `trackingNumber` |  |  Vessel tracking number |
 | `customData` |  |  Key value pairs of data associated with the order |
+| `subscriptionId` | X |  merchant's subscription id if order is part of subscription |
+| `subscriptionTemplateId` | X |  merchant's subscription template id if order is part of a subscription with a fixed product template |
 
  *ship method can not be edited once created.
 
