@@ -2900,17 +2900,20 @@ The number of shipping days to reach the shopper. The limit parameter controls t
             ]
         }
 
-##Get Vessel Load [/vesselload?key={token}&skus={skus}]
+##Get Vessel Load [/vesselload?key={token}&skus={skus}&zipcode={zipcode}]
 
 Get Vessel Load for and packing information for a list of product SKUs passed as a JSON encoded array.
 
 The return data is an array of one or more vessels that would be used to pack the products.  For each vessel the load attribute is a 0-100 value indicating percent of capacity used.  The containersInside and containersFree attributes provide information about how many of each container size are packed in the vessel and how many of each container size would still fit.
 
+Zip code should always be passed if available because vessel capacity may vary based on delivery zone.
+
 ###Get Vessel Load [GET]
 
 + Parameters
     + token (required, string)
-    + items (required, array)
+    + skus (required, array)
+    + zipcode (optional, string)
 
 + Response 200 (application/json)
 
