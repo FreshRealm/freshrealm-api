@@ -1577,14 +1577,19 @@ Retrieving a large list of resources in one request will degrade performance. Us
 # Group Orders
 
 ## Place An Order [/orders]
-To create an order, you must pass a `customerId`. If the `customerId` is not provided an error will be thrown. There are four different statuses that can be used to send order 
-data: `cancelled`, `test`,`preliminary`, `authorized`.
+To create an order, you must create customer and address resources first. FRC validates deliverability to shipping address, product and date availability. There are four different statuses that can be used to send order 
+data:
+
+ * `authorized` - Order will be processed by FRC once it passes its cut off time
+ * `preliminary` - Order will be canceled by FRC once it passes its cut off time unless it is updated to authorized status. Preliminary status is useful in scenario when orders are first submitted to FRC to verify deliverability, customer is charged and orders are updated to authorized status if payment is successful.
+ * `test` - Order will be validated by FRC, but not stored. Api returns 200 status code if order can be fullfiled. This is an alternative to preliminary / authorized workflow.
+ * `cancelled` - Order won't be processed by FRC. See "Cancel Order API call"
 
 |status | description |
 |------|-------------|
 |`preliminary`| orders in queue waiting to be processed due to not being able to meet cutoff time or weekly subscription plans |
 |`authorized` | authorized transactions |
-|`processed` | processed transactions |
+|`processed` | submitted to food makers |
 |`in_transit`| orders in transit |
 |`at_customer`| vessel with the customer and waiting for pickup |
 |`cancelled` | cancelled order |
@@ -1598,7 +1603,7 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 | `customerId` | X |  Customer Id, see `Customers` resource |
 | `codropId` | X |  Codrop Id, see `codrop` resource  |
 | `shippingAddressId` | X |  Shipping Address Id |
-| `status` | X |  Customer Id, see `Customers` resource |
+| `status` | X |  One of the following: `preliminary`, `authorized`, `processed`, `in_transit`, `at_customer`, `cancelled`, `in_transit_back, `vessel_returned` |
 | `manufactureDate` |  |  Manufacture Date for the order |
 | `freshrealmSubtotal` |  |  Freshrealm total cost |
 | `shippingAndHandling` |  |  Shipping and Handling charges for the order |
@@ -1608,7 +1613,7 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 | `salesTax` | X |  sales tax for the order |
 | `updateTime` |  | update time for the order |
 | `createTime` |  |  Create time when the order was created |
-| `orderNumber` | X |  merchant's order number  |
+| `orderNumber` | X |  merchant's order number provided by e-commerce platform  |
 | `deliveryDate` | X |  delivery date for the order |
 | `items` | X | list of all items in the order |
 | `pickupDate` | X |  pickup date for the order|
@@ -1619,7 +1624,8 @@ data: `cancelled`, `test`,`preliminary`, `authorized`.
 | `customData` |  |  Key value pairs of data associated with the order |
 | `subscriptionId` | X |  merchant's subscription id if order is part of subscription |
 | `subscriptionTemplateId` | X |  merchant's subscription template id if order is part of a subscription with a fixed product template |
-
+| `confirmationNumber` |   | Confirmation number is generated once order is authorized. It is 12 digit numerical code. |
+| `replaceOrderId` | X | When order updates are done through canceling old orders and placing new one, provide FreshRealm order id of canceled order to keep all modified orders in the same group. |
  *ship method can not be edited once created.
 
 #### Items Attributes
@@ -1995,16 +2001,16 @@ Pickup address id can be optionally passed into this call to change pickup locat
     
 + Response 200 (application/json)
 
-    {
-        "code": 200,
-        "timestamp": 1377020859,
-        "data": {
-            "orderId":109,
-            "addressId": "1154",
-            "date" => "2015-03-14"
+        {
+            "code": 200,
+            "timestamp": 1377020859,
+            "data": {
+                "orderId":109,
+                "addressId": "1154",
+                "date" => "2015-03-14"
             }
         }
-    }
+    
     
 ### Reschedule For Different Address [PUT]
 
@@ -2022,16 +2028,15 @@ Pickup address id can be optionally passed into this call to change pickup locat
     
 + Response 200 (application/json)
 
-    {
-        "code": 200,
-        "timestamp": 1377020859,
-        "data": {
-            "orderId":109,
-            "addressId": "1154",
-            "date" => "2015-03-14"
+        {
+            "code": 200,
+            "timestamp": 1377020859,
+            "data": {
+                "orderId":109,
+                "addressId": "1154",
+                "date" => "2015-03-14"
             }
         }
-    }
     
 ## Create Shipping Label [/orders/createshippinglabel/{orderId}?key={token}]
 
@@ -2133,7 +2138,7 @@ This operation can be used to find a customer and to get all the orders for the 
 
 #Group Addresses
 
-This operation can be used to find addresses and get all the addresses for a customer.
+List of all shopper addresses. Shoppers have ability to update their shipping preferences on FRC shopper pages. Periodic address synchronization ensures that address on e-commerce platform is the same as the one in FRC.
 
 |Field                      |Can edit        |Description |
 |---------------------------|---------------|------------|
@@ -2161,7 +2166,7 @@ This operation can be used to find addresses and get all the addresses for a cus
 
     *Required
 
-## Retrieve addresses [/addresses?key={token}]
+## Operations [/addresses?key={token}]
 
 ###GET
 
@@ -2175,23 +2180,73 @@ This operation can be used to find addresses and get all the addresses for a cus
            "timestamp": 1401126092,
            "data": [
                 {
-                   "prefix": "Deliver to"
-                   "streetAndNumber": "139 Wall St"
-                   "aptSuite": "Apt H"
-                   "city": "Ventura"
-                   "state": "CA"
-                   "zipcode": "93001"
-                   "deliveryInstructions": "Knock the door",
-                   "pickupInstructions": "Knock the door",
-                   "pickupLocation": "back_door",
-                   "type": "residential",
+                   "id": 11554512,
+                   "prefix": "FreshRealm",
+                   "phoneNumber": "8050000000",
+                   "fullName": "HR department",
+                   "streetAndNumber": "476 E Main St",
+                   "aptSuite": "",
+                   "city": "Ventura",
+                   "state": "CA",
+                   "zipcode": "93001",
+                   "deliveryInstructions": "Ring the bell",
+                   "pickupInstructions": "Ring the bell",
+                   "pickupLocation": "front_door",
+                   "type": "commercial",
                    "status": "confirmed",
                    "lat": "34.28329",
                    "lng": "-119.29941",
                    "shippingLocation" : "null",
-                   "uniqueIdentifier": "139-WALL-ST-APT-H-VENTURA-CA"
+                   "uniqueIdentifier": "476-E-MAIN-ST-VENTURA-CA"
                 }
             ]
+        }
+
+### POST
+
+Address is validated agains USPS and FedEx database for deliverability. Minor errors such as type on street name or city will be corrected automatically.
+
++ Parameters
+    + token (required, string)
+
++ Request (application/json)
+            
+        {
+            "prefix": "FreshRealm",
+            "phoneNumber": "8050000000",
+            "fullName": "HR department",
+            "streetAndNumber": "476 E Main St",
+            "zipcode": "93001",
+            "deliveryInstructions": "Ring the bell",
+            "pickupInstructions": "Ring the bell",
+            "pickupLocation": "front_door",
+        }
+        
++ Response 200 (application/json)
+
+        {
+           "code": 200,
+           "timestamp": 1401126092,
+           "data": {
+                   "id": 11554512,
+                   "prefix": "FreshRealm",
+                   "streetAndNumber": "476 E Main St",
+                   "aptSuite": "",
+                   "city": "Ventura",
+                   "phoneNumber": "8050000000",
+                   "fullName": "HR department",
+                   "state": "CA",
+                   "zipcode": "93001",
+                   "deliveryInstructions": "Ring the bell",
+                   "pickupInstructions": "Ring the bell",
+                   "pickupLocation": "front_door",
+                   "type": "commercial",
+                   "status": "confirmed",
+                   "lat": "34.28329",
+                   "lng": "-119.29941",
+                   "shippingLocation" : "null",
+                   "uniqueIdentifier": "476-E-MAIN-ST-VENTURA-CA"
+                }
         }
 
 # Group Categories
@@ -3010,6 +3065,14 @@ Checks to verify if service is available in the requested area.
 
 The returned data includes the ship from zipcode for the zipcode being shipped to and available shippingMethods if any.
 
+In case the zipcode is invalid, system returns the folloging errors with 400 status code:
+
+ * `No zipcode provided` - check the API request zipcode attribute
+ * `Not a deliverable zipcode.` - zipcode not found in USA zipcode database
+ * `You have entered a zip code that is designated as unique (government, university, corporation). We currently do not deliver to these addresses`
+ * `You have entered a PO Box only zip code and we do not ship to PO Boxes. Please try anothe zip code.`
+
+FreshRealm doesn't deliver Vessels to PO Box, unique or military type of address.
 
 ### Zipcode availability [POST]
 
