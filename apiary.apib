@@ -3,7 +3,7 @@ HOST: http://api2.sandbox.freshrealm.co
 
 # FreshRealm REST API 2.0 Documentation
 
-This document describes the calls needed to interact with FreshRealmís Merchant API.
+This document describes the calls needed to interact with FreshRealm‚Äôs Merchant API.
 
 # Output Format and Structure
 JSON will be returned in all responses from this API, with the following structure.
@@ -12,7 +12,7 @@ JSON will be returned in all responses from this API, with the following structu
         "code": 200,
         "timestamp": 1367975121,
         "data": {
-            ìidî: 5,
+            ‚Äúid‚Äù: 5,
             ...,
             ...,
             ...
@@ -51,7 +51,7 @@ For performance reasons, FreshRealm recommends retrieving the minimum number of 
 
 To obtain multiple fields, separate the fields by commas:
 
-`http://api2.sandbox.freshrealm.co/products/1918?fields=["id","costs","pricesî]`
+`http://api2.sandbox.freshrealm.co/products/1918?fields=["id","costs","prices‚Äù]`
 
 Some calls retrieve nested arrays.  When this is the case you must use the key of the array to retrieve a subset of the fields.  For example to retrieve customer information for order 678 (e.g. email, phone...) you could use this call:
 
@@ -90,7 +90,7 @@ The following workflow will significantly improve performance of api data transe
 This API documentation lives on Github. If you see an error or a typo, please submit a pull request at [https://github.com/freshrealm/freshrealm-api](https://github.com/freshrealm/freshrealm-api). We're always happy to have contributions.
 
 # Group Authentication
-FreshRealmís REST API currently uses a proprietary authentication system. Each client gets its own API access token, which must be a part of every request sent to the FreshRealm API.  You must obtain this token by using our authentication call and supplying your secret, which we will provide to you.
+FreshRealm‚Äôs REST API currently uses a proprietary authentication system. Each client gets its own API access token, which must be a part of every request sent to the FreshRealm API.  You must obtain this token by using our authentication call and supplying your secret, which we will provide to you.
 The token has lifespan of one month, but it can expire earlier. The token can be passed in url as GET or in request body with PUT or POST parameters.
 
 ### Recommended api authentication flow
@@ -504,7 +504,7 @@ Fetch a product by its `sku`.
                     }
                 }
 
-## Product Availabilities [/productavailability?key={token}&zipcode={zipcode}&date={?date}]
+## Product Availabilities [/productavailability?key={token}&zipcode={zipcode}&date={date}]
 This API call helps to determine what products are available on given delivery date and location. Zipcode parameter is required and is used to find the closest packer facility. For example, if there is a product that is using item SKU that is available on east coast only, west coast customer won't see any products having this SKU as ingredient.
 
 The second, optional, parameter is a delivery date - loaded through shipping days API call. Output will be filtered using both maker and merchant data availability data. If there is a temporary item shortage item any products using this item will be filtered out.
@@ -515,7 +515,7 @@ If the date is empty, API call will return currently available products.
 + Parameters
     + token (required, string)
     + zipcode (required, number)
-    + date (optional, string`)
+    + date (optional, string)
     
 + Response 200 (application/json)
 
@@ -1999,7 +1999,7 @@ Address is validated agains USPS and FedEx database for deliverability. Minor er
 
 # Group Categories
 
-This operation can be used to find available categories to which products belong.  See the ëCategoriesí  resource table for more information.
+This operation can be used to find available categories to which products belong.  See the ‚ÄòCategories‚Äô  resource table for more information.
 
 | Field | Can Edit   | Description |
 |-------|---------|-------------|
