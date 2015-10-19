@@ -508,7 +508,7 @@ Fetch a product by its `sku`.
 This API call helps to determine what products are available on given delivery date and location. Zipcode parameter is required and is used to find the closest packer facility. For example, if there is a product that is using item SKU that is available on east coast only, west coast customer won't see any products having this SKU as ingredient.
 
 The second, optional, parameter is a delivery date - loaded through shipping days API call. Output will be filtered using both maker and merchant data availability data. If there is a temporary item shortage item any products using this item will be filtered out.
-Merchant will be able to control product availability as well by setting availability date ranges in product configuration screen. I will send you updated manual with screen shots once this feature is implemented.
+Merchant will be able to control product availability as well by setting availability date ranges in product configuration screen. 
 If the date is empty, API call will return currently available products.
 
 ### Products available in the future [GET]
