@@ -2702,7 +2702,163 @@ The number of shipping days to reach the shopper. The limit parameter controls t
                 }
             ]
         }
+##Pack Products [/packproducts?key={token}&skus={skus}&zipcode={zipcode}&additional={true}&deliveryDate={deliveryDate}]
 
+Get Vessel Load and packing information for a list of product SKUs and delivery zipcode.
+
+Skus is JSON encoded list of product skus, for example skus=["044512","vegetable-sandwich"].
+The returned data is an array of one or more vessels that would be used to pack the products. 
+For each vessel the load attribute is a 0-100 value indicating percent of capacity used. 
+The containersInside and containersFree attributes provide information about how many of each container size are packed in the vessel and how many of each container size would still fit.
+
+Additional flag triggers product lookup that could fit into the Vessel - functionality 
+mostly used for upsale at checkout page. Product SKUs returned in canPackSkus section are the ones 
+that fit into the last Vessel and are marked as purchasable by merchant. Product lookup is 
+expensive operation and might take longer than regular packProducts call.
+
+Zip code is used to calculate ice count for the Vessel that affects capacity for food. If delivery to provided zipcode is not available, system returns 400 error.
+
+Delivery date checks for product availability on given date. The date has to be valid delivery date obtained from shipping calendar and all provided products have to be active on that date. Upsale skus are filtered to the ones available on delivery date.
+
+Possible 400 error outputs for this call are:
+  * Please provide items as an array of product ids or skus.
+  * Not a deliverable zipcode.
+  * Invalid date format. (valid format is yyyy-mm-dd)
+  * Date is too far, availability can be predicted for up to 60 weeks.
+  
+###Pack Products [GET]
+
++ Parameters
+    + token (required, string)
+    + skus (required, array)
+    + zipcode (required, string)
+    + available (optional, boolean)
+    + deliveryDate (optional, string)
+
+
++ Response 200 (application/json)
+
+        {  
+          "code": 200,
+          "timestamp": 1446596552,
+          "data": [
+            {
+              "version": 12,
+              "vesselName": "Medium",
+              "vesselType": "2",
+              "coolantInside": 5,
+              "coolantNeeded": "5",
+              "itemsInside": 2,
+              "flatCoolantInside": 2,
+              "notchesUsed": 5,
+              "drawerCount": 5,
+              "freeDrawers": 0,
+              "load": 10,
+              "totalWeight": 33.56875,
+              "emptyWeight": 27.35,
+              "containersInside": {
+                "1": 2
+              },
+              "containersFree": {
+                "1": 18,
+                "2": 9,
+                "4": 36,
+                "5": 13,
+                "6": 4,
+                "7": 36,
+                "8": 13,
+                "9": 13
+              },
+              "drawers": [
+                {
+                  "vesselNotchNumber": 1,
+                  "number": 1,
+                  "items": [],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                },
+                {
+                  "vesselNotchNumber": 2,
+                  "number": 2,
+                  "items": [],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                },
+                {
+                  "vesselNotchNumber": 3,
+                  "number": 3,
+                  "items": [],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                },
+                {
+                  "vesselNotchNumber": 4,
+                  "number": 4,
+                  "items": [],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                },
+                {
+                  "vesselNotchNumber": 5,
+                  "number": 5,
+                  "items": [
+                    {
+                      "itemId": "2144",
+                      "orderId": null,
+                      "codropLabel": "",
+                      "description": "MP Half Ham Sandwich with Fruit & Carrots",
+                      "groupId": "1067-0",
+                      "productId": null,
+                      "orderItemId": null,
+                      "mealSticker": null,
+                      "prePrintedSticker": ""
+                    },
+                    {
+                      "itemId": "2139",
+                      "orderId": null,
+                      "codropLabel": "",
+                      "description": "MP Ka-POWer Greens 7.75oz",
+                      "groupId": "1072-1",
+                      "productId": null,
+                      "orderItemId": null,
+                      "mealSticker": null,
+                      "prePrintedSticker": ""
+                    }
+                  ],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                }
+              ],
+              "canPackSkus": [
+                "FRM-HAMSNDWCH-1",
+                "FRM-APPLEDIPPERS-1",
+                "FRM-COBBSALAD-1",
+                "FRM-SANTAFESALAD-1",
+                "FRM-KALESALAD-1",
+                "FRM-CAESARSALAD-1",
+                "FRM-ASIANSALAD-1",
+                "FRM-TURKEYSNDWCH-1"
+              ],
+              "packIns": []
+            }
+          ]
+        }
+        
 ##Get Vessel Load [/vesselload?key={token}&skus={skus}&zipcode={zipcode}]
 
 Get Vessel Load for and packing information for a list of product SKUs passed as a JSON encoded array.
@@ -2710,6 +2866,8 @@ Get Vessel Load for and packing information for a list of product SKUs passed as
 The return data is an array of one or more vessels that would be used to pack the products.  For each vessel the load attribute is a 0-100 value indicating percent of capacity used.  The containersInside and containersFree attributes provide information about how many of each container size are packed in the vessel and how many of each container size would still fit.
 
 Zip code should always be passed if available because vessel capacity may vary based on delivery zone.
+
+Note: this API call is deprecated since zipcode is optional and system can't predict how much ice is required.
 
 ###Get Vessel Load [GET]
 
