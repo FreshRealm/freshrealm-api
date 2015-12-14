@@ -1374,6 +1374,10 @@ data:
 | `subscriptionTemplateId` | X |  merchant's subscription template id if order is part of a subscription with a fixed product template |
 | `confirmationNumber` |   | Confirmation number is generated once order is authorized. It is 12 digit numerical code. |
 | `replaceOrderId` | X | When order updates are done through canceling old orders and placing new one, provide FreshRealm order id of canceled order to keep all modified orders in the same group. |
+| `modifiedItems` |   | Contains list of food items that have been removed or replaced during fullfilment stage. Missing item: {sku, productName, upc, itemName, status: 'missing'}, replaced item: {sku, productName, upc, itemName, originalItemName, originalUpc, staus: 'replaced'}|
+| `shippingTierId` |   | Shipping tier that indirectly coresponds to shipping zone from shipper to support different pricing models on shipping charge. Zone is estimated based on distance between pack facility and customer location. This is auto increment number. |
+| `shippingTierName` |   | Description of shipping tier |
+| `shippingTierNumber` |   | Lower shipping tiers are closer to customer |
  *ship method can not be edited once created.
 
 #### Items Attributes
@@ -1911,6 +1915,7 @@ List of all shopper addresses. Shoppers have ability to update their shipping pr
 |`shippingLocation`  |    |Shipping Location of the facility  |
 |`uniqueIdentifier` |    |Unique Identifier for the address    |
 |`updateTime`      |    |Update time for the last address update |
+|`override`       |     |Skip delivery validation. Use this feature only after regular create address call fails. Customer can be offered option to proceed with not validated address with lower chance that Vessel will be delivered.  |
 
     *Required
 
