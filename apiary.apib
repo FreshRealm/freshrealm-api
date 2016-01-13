@@ -2631,7 +2631,7 @@ Event API is read only stream of events for all orders. Order status is updated 
 
 
 #Group Other API Calls
-##Get shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
+##Get Shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
 
 The number of shipping days to reach the shopper. The limit parameter controls the number of weeks worth of shipping days returned.
 
@@ -2709,6 +2709,54 @@ The number of shipping days to reach the shopper. The limit parameter controls t
                 }
             ]
         }
+
+##Get Shipping Week Days [/shippingweekdays?key={token}&zipcode={zipcode}]
+
+The days of the week for which Orders can be delivered for the provided zipcode.
+
+###Get shipping week days[GET]
+
++ Parameters
+    + token (required, string)
+    + zipcode (required, integer)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1404151616,
+            "data": [
+                {
+                    "day": "Sunday",
+                    "available": false,
+                },
+                {
+                    "day": "Monday",
+                    "available": false,
+                },
+                {
+                    "day": "Tuesday",
+                    "available": true,
+                },
+                {
+                    "day": "Wednesday",
+                    "available": false,
+                },
+                {
+                    "day": "Thursday",
+                    "available": true,
+                },
+                {
+                    "day": "Friday",
+                    "available": false,
+                },
+                {
+                    "day": "Saturday",
+                    "available": true,
+                }
+            ]
+        }
+
 ##Pack Products [/packproducts?key={token}&skus={skus}&zipcode={zipcode}&additional={true}&deliveryDate={deliveryDate}]
 
 Get Vessel Load and packing information for a list of product SKUs and delivery zipcode.
