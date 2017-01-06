@@ -2635,11 +2635,15 @@ Event API is read only stream of events for all orders. Order status is updated 
 
 The number of shipping days to reach the shopper. The limit parameter controls the number of weeks worth of shipping days returned.
 
+The Skip Capacity Check flag defaults to true. When it is set to false, the "isOverCapacity" attribute will be added to each day returned indicating whether or not the day has reached capacity.
+
 ###Get all shipping days[GET]
 
 + Parameters
     + token (required, string)
     + zipcode (required, integer)
+    + limit (optional, integer)
+    + skipCapacityCheck (optinal, boolean)
 
 + Response 200 (application/json)
 
@@ -2651,31 +2655,36 @@ The number of shipping days to reach the shopper. The limit parameter controls t
                     "locationId": "16",
                     "shipDate": "2014-07-03",
                     "deliveryDate": "2014-07-04",
-                    "cutOffTime": 1404305100
+                    "cutOffTime": 1404305100,
+                    "isOverCapacity": true
                 },
                 {
                     "locationId": "16",
                     "shipDate": "2014-07-07",
                     "deliveryDate": "2014-07-08",
-                    "cutOffTime": 1404492300
+                    "cutOffTime": 1404492300,
+                    "isOverCapacity": false
                 },
                 {
                     "locationId": "16",
                     "shipDate": "2014-07-10",
                     "deliveryDate": "2014-07-11",
-                    "cutOffTime": 1404909900
+                    "cutOffTime": 1404909900,
+                    "isOverCapacity": false
                 },
                 {
                     "locationId": "16",
                     "shipDate": "2014-07-14",
                     "deliveryDate": "2014-07-15",
-                    "cutOffTime": 1405097100
+                    "cutOffTime": 1405097100,
+                    "isOverCapacity": false
                 },
                 {
                     "locationId": "16",
                     "shipDate": "2014-07-17",
                     "deliveryDate": "2014-07-18",
-                    "cutOffTime": 1405514700
+                    "cutOffTime": 1405514700,
+                    "isOverCapacity": false
                 },
                 {
                     "locationId": "16",
@@ -2687,25 +2696,29 @@ The number of shipping days to reach the shopper. The limit parameter controls t
                     "locationId": "16",
                     "shipDate": "2014-07-24",
                     "deliveryDate": "2014-07-25",
-                    "cutOffTime": 1406119500
+                    "cutOffTime": 1406119500,
+                    "isOverCapacity": false
                 },
                 {
                     "locationId": "16",
                     "shipDate": "2014-07-28",
                     "deliveryDate": "2014-07-29",
-                    "cutOffTime": 1406306700
+                    "cutOffTime": 1406306700,
+                    "isOverCapacity": false
                 },
                 {
                     "locationId": "16",
                     "shipDate": "2014-07-31",
                     "deliveryDate": "2014-08-01",
-                    "cutOffTime": 1406724300
+                    "cutOffTime": 1406724300,
+                    "isOverCapacity": false
                 },
                 {
                     "locationId": "16",
                     "shipDate": "2014-08-04",
                     "deliveryDate": "2014-08-05",
-                    "cutOffTime": 1406911500
+                    "cutOffTime": 1406911500,
+                    "isOverCapacity": false
                 }
             ]
         }
@@ -2766,14 +2779,16 @@ The returned data is an array of one or more vessels that would be used to pack 
 For each vessel the load attribute is a 0-100 value indicating percent of capacity used. 
 The containersInside and containersFree attributes provide information about how many of each container size are packed in the vessel and how many of each container size would still fit.
 
-Additional flag triggers product lookup that could fit into the Vessel - functionality 
-mostly used for upsale at checkout page. Product SKUs returned in canPackSkus section are the ones 
-that fit into the last Vessel and are marked as purchasable by merchant. Product lookup is 
+The additional flag triggers product lookup that could fit into the Vessel - functionality 
+mostly used for upsale at a checkout page. Product SKUs returned in canPackSkus section are the ones 
+that fit into the last Vessel and are marked as purchasable by merchant. Product lookup is an 
 expensive operation and might take longer than regular packProducts call.
 
 Zip code is used to calculate ice count for the Vessel that affects capacity for food. If delivery to provided zipcode is not available, system returns 400 error.
 
-Delivery date checks for product availability on given date. The date has to be valid delivery date obtained from shipping calendar and all provided products have to be active on that date. Upsale skus are filtered to the ones available on delivery date.
+Delivery date checks for product availability on given date. The date has to be a valid delivery date obtained from the shipping calendar and all provided products have to be active on that date. Upsale skus are filtered to the ones available on delivery date.
+
+It is highly encouraged to include the delivery date with all pack requests as it can effect the results due to differences in coolant configurations over time in addition to differences in product availability.
 
 Possible 400 error outputs for this call are:
   * Please provide items as an array of product ids or skus.
@@ -2787,7 +2802,7 @@ Possible 400 error outputs for this call are:
     + token (required, string)
     + skus (required, array)
     + zipcode (required, string)
-    + available (optional, boolean)
+    + additional (optional, boolean)
     + deliveryDate (optional, string)
 
 
