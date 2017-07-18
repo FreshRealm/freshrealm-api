@@ -5,6 +5,45 @@ HOST: http://api2.sandbox.freshrealm.co
 
 This document describes the calls needed to interact with FreshRealm’s Merchant API.
 
+# Example API Flow
+This section describes a sample customer flow through a simple e-commerce experience and the necessary API calls to support it. Details of each call can be found in the documentation that follows.
+
+### Step 0: API Authentication
+The e-commerce system should use the `Authentication` resource to get an authentication token that will be used in all other API calls.
+This authentication call should be done server-side in order to protect the merchant's authentication secret.
+
+### Step 1: Checking Delivery Availability
+When a customer first arrives, they should be asked for their zip code so that it can be validated whether their Orders can be fulfilled.
+
+This is often most efficiently done by making a call to the `Get Shipping Days` resource.
+This serves two purposes: first, it verifies that the zip code is servicable by FreshRealm; second, it returns a list of upcoming available delivery dates that can be used to schedule the delivery of the customer's Order.
+
+### Step 2: Checking Product Availability
+Products have both regional and seasonal availabiltiy based on their availability for production from FreshRealm's Food Makers.
+
+In order to safely present a list of available products to a customer and have confidence that their eventual Order will be fulfilled,
+the e-commerce system should filter the products presented to the customer using the results of the `Product Availabilities` resource. This resource requires both the zip code and the delivery date be provided.
+
+If a customer changes their delivery zip code or their delivery date, their selected products should be re-validated with regards to availability. An Order that includes unavailable products will be rejected by the FreshRealm Cloud.
+
+### Step 3: Validating a Customer's Cart can be Ordered
+In addition to pre-validating the products that are made available to the customer, it may be desirable to validate how a customer's Order will be fulfilled before converting their Cart into an Order.
+Cart validation rules related to Porter fullness in particular may be desirable (for example, shipping a Porter that only has a couple of food containers in it results in a bad customer experience).
+
+The most useful tool for this is the `Pack Products` resource. Each Porter's data in the result set can be evaluated against a set of business rules and the customer's Cart.
+For instance, if the result set includes only a single Porter with a 20% load value, then the customer could be present a message stating that they must select more products for their Order.
+
+This step should be re-done if the Customer subsequently changes their zip code or their delivery date. 
+This is because the Porter Pack will vary by zip code and delivery date due to the way weather forecasts are used to determine the required coolant counts for the shipment, which then affects the pack.
+
+### Step 4: Placing the Order
+Once a customer's cart has been validated, their email and delivery address information can be gathered and an Order can be created. A typical API patern for new customers is to:
+1. Create a new `Customer` record and save their FreshRealm Cloud customer ID for future use
+2. Create a new `Address` record and save the resulting FreshRealm Cloud address ID for future use
+3. Create a new `Order` record using the customer and address IDs previously created
+
+For repeat customers steps 1 and 2 can be skipped if their FreshRealm Cloud IDs were saved within the e-commerce system. This will result in reduced API usage and increased performance related to Order creation.
+
 # Output Format and Structure
 JSON will be returned in all responses from this API, with the following structure.
 
@@ -36,13 +75,6 @@ JSON will be returned in all responses from this API, with the following structu
 
 # Service Endpoints
 An endpoint is the URL of the server that handles your request.  The API endpoint for all requests in this document is http://api2.sandbox.freshrealm.co/
-
-# Example
-In the case where you want to retrieve recent order information, you would use the GET HTTP method to the following URL:
-
-`http://api2.sandbox.freshrealm.co/orders?key=myaccesstoken`
-
-A `key` is a required attribute for each call. See the authentication diagram at the bottom of this document for more information.
 
 # Requesting Specific Fields
 For performance reasons, FreshRealm recommends retrieving the minimum number of fields. In addition, not all fields are retrieved by default, so additional fields may be requested (details of the attributes of the resources are described in the Resource Description section).  To retrieve fewer (or more) fields, use the `fields` attribute in the GET request.
@@ -86,6 +118,9 @@ The following workflow will significantly improve performance of api data transe
   - if `X-Pagination-Current-Page` header is less then `X-Pagination-Page-Count` call again with incremented offset
  - save timestamp from latest call to cache/db/filesystem
 
+# Vessel/Porter Terminology
+Due to it's use in older resource URLs, this documentation refers to both Vessels and Porters. Both terms refer to the shipping container used for FreshRealm deliveries.
+
 # Contributing
 This API documentation lives on Github. If you see an error or a typo, please submit a pull request at [https://github.com/freshrealm/freshrealm-api](https://github.com/freshrealm/freshrealm-api). We're always happy to have contributions.
 
@@ -127,10 +162,9 @@ Your FreshRealm secret must be obtained by contacting FreshRealm.
             }
         }
 
-
 # Group Products
 
-A **product** is an active item or set of items available for customer to purchase. Product is using "SKU" number as primary identifier for order API and product updates. 
+A **product** is an active item or set of items available for customer to purchase. Product is using "SKU" number as primary identifier for order API and product updates.
 
 The following table describes which attributes are provided by default, and which can be used as a filter.
 
@@ -151,7 +185,7 @@ The following table describes which attributes are provided by default, and whic
 | `availabilityStart2`    |    X   | Product will be published on this date |
 | `availabilityEnd2`      |    X   | Product will be unpublished on this date |
 | `description`           |    X   | Product description |
-| `size`                  |        | An array containing `height`, `width`, `length`, `containerId`, `containerName`, `estimatedVesselLoad` and `slots`. A Vessel has capacity of 40 slots. |
+| `size`                  |        | An array containing `height`, `width`, `length`, `containerId`, `containerName`, `estimatedVesselLoad` and `slots`. A Porter has capacity of 40 slots. |
 | `weight`                |        | Weight |
 | `weightUnit`            |        | Unit of weight used e.g. lb, oz, etc. |
 | `itemType`            |        | Either `product` or `meal_plan` |
@@ -505,10 +539,10 @@ Fetch a product by its `sku`.
                 }
 
 ## Product Availabilities [/productavailability?key={token}&zipcode={zipcode}&date={date}]
-This API call helps to determine what products are available on given delivery date and location. Zipcode parameter is required and is used to find the closest packer facility. For example, if there is a product that is using item SKU that is available on east coast only, west coast customer won't see any products having this SKU as ingredient.
+This API call helps to determine what products are available on given delivery date and location. The `zipcode` parameter is required and is used to find the closest packer facility. For example, if there is a product that is using item SKU that is available on east coast only, west coast customer won't see any products having this SKU as ingredient.
 
 The second, optional, parameter is a delivery date - loaded through shipping days API call. Output will be filtered using both maker and merchant data availability data. If there is a temporary item shortage item any products using this item will be filtered out.
-Merchant will be able to control product availability as well by setting availability date ranges in product configuration screen. 
+Merchant will be able to control product availability as well by setting availability date ranges in product configuration screen.
 If the date is empty, API call will return currently available products.
 
 ### Products available in the future [GET]
@@ -516,7 +550,7 @@ If the date is empty, API call will return currently available products.
     + token (required, string)
     + zipcode (required, number)
     + date (optional, string)
-    
+
 + Response 200 (application/json)
 
         {
@@ -530,7 +564,7 @@ If the date is empty, API call will return currently available products.
                 "product5"
             ]
         }
-        
+
 ## Fetch Specific Fields [/products/{sku}?key={token}&fields={fieldsList}]
 These examples show how to limit the returned data to a specific set of fields.
 
@@ -1322,10 +1356,462 @@ Retrieving a large list of resources in one request will degrade performance. Us
             ]
         }
 
+# Group Availability
+These resources deal with delivery availability. Primarily they require a zip code to be provided.
+
+## Verify Zip Code Availability [/zipcodeavailability?key={token}&zipcode={zipcode}]
+
+Checks to verify if service is available in the requested area.
+
+The returned data includes the ship from zip code for the zip code being shipped to and available shippingMethods if any.
+
+In case the zip code is invalid, system returns the folloging errors with 400 status code:
+
+ * `No zipcode provided` - check the API request `zipcode` attribute
+ * `Not a deliverable zipcode.` - zip code not found in USA zip code database
+ * `You have entered a zip code that is designated as unique (government, university, corporation). We currently do not deliver to these addresses`
+ * `You have entered a PO Box only zip code and we do not ship to PO Boxes. Please try anothe zip code.`
+
+FreshRealm doesn't deliver Porters to PO Box, unique or military type of address.
+
+### Zipcode availability [POST]
+
+
+
++ Parameters
+    + token (required, string)
+    + zipcode (required, integer)
+
+
++ Response 200 (application/json)
+
+        {
+            {
+                "code": 200,
+                "timestamp": 1404146938,
+                "data": {
+                    "available": 1,
+                    "id": "16",
+                    "zipcode": "95828",
+                    "shppingMethods": [
+                        "fedex_ground"
+                    ]
+                }
+            }
+        }
+
+##Get Shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
+
+The number of shipping days to reach the shopper. The limit parameter controls the number of weeks worth of shipping days returned.
+
+The Skip Capacity Check flag defaults to true. When it is set to false, the "isOverCapacity" attribute will be added to each day returned indicating whether or not the day has reached capacity.
+
+###Get all shipping days[GET]
+
++ Parameters
+    + token (required, string)
+    + zipcode (required, integer)
+    + limit (optional, integer)
+    + skipCapacityCheck (optinal, boolean)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1404151616,
+            "data": [
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-03",
+                    "deliveryDate": "2014-07-04",
+                    "cutOffTime": 1404305100,
+                    "isOverCapacity": true
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-07",
+                    "deliveryDate": "2014-07-08",
+                    "cutOffTime": 1404492300,
+                    "isOverCapacity": false
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-10",
+                    "deliveryDate": "2014-07-11",
+                    "cutOffTime": 1404909900,
+                    "isOverCapacity": false
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-14",
+                    "deliveryDate": "2014-07-15",
+                    "cutOffTime": 1405097100,
+                    "isOverCapacity": false
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-17",
+                    "deliveryDate": "2014-07-18",
+                    "cutOffTime": 1405514700,
+                    "isOverCapacity": false
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-21",
+                    "deliveryDate": "2014-07-22",
+                    "cutOffTime": 1405701900
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-24",
+                    "deliveryDate": "2014-07-25",
+                    "cutOffTime": 1406119500,
+                    "isOverCapacity": false
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-28",
+                    "deliveryDate": "2014-07-29",
+                    "cutOffTime": 1406306700,
+                    "isOverCapacity": false
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-07-31",
+                    "deliveryDate": "2014-08-01",
+                    "cutOffTime": 1406724300,
+                    "isOverCapacity": false
+                },
+                {
+                    "locationId": "16",
+                    "shipDate": "2014-08-04",
+                    "deliveryDate": "2014-08-05",
+                    "cutOffTime": 1406911500,
+                    "isOverCapacity": false
+                }
+            ]
+        }
+
+##Get Shipping Week Days [/shippingweekdays?key={token}&zipcode={zipcode}]
+
+The days of the week for which Orders can be delivered for the provided zip code.
+Note that this does not reflect specific delivery dates that are blocked by holidays but is meant to be used to check general availability of a day of week for delivery.
+
+###Get shipping week days[GET]
+
++ Parameters
+    + token (required, string)
+    + zipcode (required, integer)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1404151616,
+            "data": [
+                {
+                    "day": "Sunday",
+                    "available": false,
+                },
+                {
+                    "day": "Monday",
+                    "available": false,
+                },
+                {
+                    "day": "Tuesday",
+                    "available": true,
+                },
+                {
+                    "day": "Wednesday",
+                    "available": false,
+                },
+                {
+                    "day": "Thursday",
+                    "available": true,
+                },
+                {
+                    "day": "Friday",
+                    "available": false,
+                },
+                {
+                    "day": "Saturday",
+                    "available": true,
+                }
+            ]
+        }
+
+#Group Porter Pack
+These resources assist in checking how an order will be packed.
+
+##Pack Products [/packproducts?key={token}&skus={skus}&zipcode={zipcode}&additional={true}&deliveryDate={deliveryDate}]
+
+Get information regarding how a list of product SKUs will be packed for a delivery zip code.
+
+The skus parameter is a JSON encoded list of product SKUs, for example skus=["044512","vegetable-sandwich"].
+The returned data is an array of one or more Porters that would be used to pack the products.
+For each Porter the load attribute is a 0-100 value indicating percent of capacity used.
+The containersInside and containersFree attributes provide information about how many of each container size are packed in the Porter and how many of each container size would still fit.
+
+The additional flag triggers a product lookup that finds what products would fit into the Porter. This functionality is
+mostly used for upsale at a checkout page. Product SKUs returned in the canPackSkus section are the ones
+that fit into the last Porter and are marked as purchasable by the merchant. **Product lookup is an
+expensive operation and might take longer than a regular packProducts call.**
+
+Zip code is used to calculate ice count for the Porter that affects capacity for food. If delivery to provided zip code is not available, system returns 400 error.
+
+Delivery date checks for product availability on given date. The date has to be a valid delivery date obtained from the shipping calendar and all provided products have to be active on that date. Upsale skus are filtered to the ones available on delivery date.
+
+It is highly encouraged to include the delivery date with all pack requests as it can effect the results due to differences in coolant configurations over time in addition to differences in product availability.
+
+Possible 400 error outputs for this call are:
+  * Please provide items as an array of product ids or skus.
+  * Not a deliverable zip code.
+  * Invalid date format. (valid format is yyyy-mm-dd)
+  * Date is too far, availability can be predicted for up to 60 weeks.
+
+###Pack Products [GET]
+
++ Parameters
+    + token (required, string)
+    + skus (required, array)
+    + zipcode (required, string)
+    + additional (optional, boolean)
+    + deliveryDate (optional, string)
+
+
++ Response 200 (application/json)
+
+        {
+          "code": 200,
+          "timestamp": 1446596552,
+          "data": [
+            {
+              "version": 12,
+              "vesselName": "Medium",
+              "vesselType": "2",
+              "coolantInside": 5,
+              "coolantNeeded": "5",
+              "itemsInside": 2,
+              "flatCoolantInside": 2,
+              "notchesUsed": 5,
+              "drawerCount": 5,
+              "freeDrawers": 0,
+              "load": 10,
+              "totalWeight": 33.56875,
+              "emptyWeight": 27.35,
+              "containersInside": {
+                "1": 2
+              },
+              "containersFree": {
+                "1": 18,
+                "2": 9,
+                "4": 36,
+                "5": 13,
+                "6": 4,
+                "7": 36,
+                "8": 13,
+                "9": 13
+              },
+              "drawers": [
+                {
+                  "vesselNotchNumber": 1,
+                  "number": 1,
+                  "items": [],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                },
+                {
+                  "vesselNotchNumber": 2,
+                  "number": 2,
+                  "items": [],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                },
+                {
+                  "vesselNotchNumber": 3,
+                  "number": 3,
+                  "items": [],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                },
+                {
+                  "vesselNotchNumber": 4,
+                  "number": 4,
+                  "items": [],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                },
+                {
+                  "vesselNotchNumber": 5,
+                  "number": 5,
+                  "items": [
+                    {
+                      "itemId": "2144",
+                      "orderId": null,
+                      "codropLabel": "",
+                      "description": "MP Half Ham Sandwich with Fruit & Carrots",
+                      "groupId": "1067-0",
+                      "productId": null,
+                      "orderItemId": null,
+                      "mealSticker": null,
+                      "prePrintedSticker": ""
+                    },
+                    {
+                      "itemId": "2139",
+                      "orderId": null,
+                      "codropLabel": "",
+                      "description": "MP Ka-POWer Greens 7.75oz",
+                      "groupId": "1072-1",
+                      "productId": null,
+                      "orderItemId": null,
+                      "mealSticker": null,
+                      "prePrintedSticker": ""
+                    }
+                  ],
+                  "coolants": [
+                    {
+                      "itemId": 720
+                    }
+                  ]
+                }
+              ],
+              "canPackSkus": [
+                "FRM-HAMSNDWCH-1",
+                "FRM-APPLEDIPPERS-1",
+                "FRM-COBBSALAD-1",
+                "FRM-SANTAFESALAD-1",
+                "FRM-KALESALAD-1",
+                "FRM-CAESARSALAD-1",
+                "FRM-ASIANSALAD-1",
+                "FRM-TURKEYSNDWCH-1"
+              ],
+              "packIns": []
+            }
+          ]
+        }
+
+##Get Vessel Load [/vesselload?key={token}&skus={skus}&zipcode={zipcode}]
+
+Get information regarding how a list of either product SKUs or ReshRealm Item IDs will be packed. The list should be passed as a JSON encoded array.
+
+The return data is an array of one or more Porters that would be used to pack the products.  For each Porter the load attribute is a 0-100 value indicating percent of capacity used.  The containersInside and containersFree attributes provide information about how many of each container size are packed in the Porter and how many of each container size would still fit.
+
+Zip code should always be passed if available because Porter capacity may vary based on delivery zone.
+
+**Note: this API call is deprecated since zip code is optional and system can't predict how much ice is required.**
+
+###Get Vessel Load [GET]
+
++ Parameters
+    + token (required, string)
+    + skus (required, array)
+    + zipcode (optional, string)
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1404152982,
+            "data": [
+                {
+                    "version": 5,
+                    "vesselName": "Medium",
+                    "vesselType": "2",
+                    "coolantInside": 5,
+                    "coolantNeeded": 5,
+                    "itemsInside": 3,
+                    "flatCoolantInside": 2,
+                    "notchesUsed": 3,
+                    "drawerCount": 3,
+                    "freeDrawers": 2,
+                    "load": 10,
+                    "totalWeight": 8.125,
+                    "emptyWeight": 0,
+                    "containersInside": {
+                        "0": 1,
+                        "1": 2
+                    },
+                    "containersFree": {
+                        "1": 5,
+                        "2": 2,
+                        "4": 13
+                    },
+                    "drawers": [
+                        {
+                            "vesselNotchNumber": 1,
+                            "number": 1,
+                            "items": [
+                                {
+                                    "itemId": "1676",
+                                    "orderId": null,
+                                    "codropLabel": "",
+                                    "description": "Roasting Red Potatoes"
+                                },
+                                {
+                                    "itemId": "1676",
+                                    "orderId": null,
+                                    "codropLabel": "",
+                                    "description": "Roasting Red Potatoes"
+                                },
+                                {
+                                    "itemId": "1401",
+                                    "orderId": null,
+                                    "codropLabel": "",
+                                    "description": "Red Apples - Bagged"
+                                }
+                            ],
+                            "coolants": [
+                                {
+                                    "itemId": "1684"
+                                }
+                            ]
+                        },
+                        {
+                            "vesselNotchNumber": 2,
+                            "number": 2,
+                            "items": [],
+                            "coolants": [
+                                {
+                                    "itemId": "1684"
+                                },
+                                {
+                                    "itemId": "1684"
+                                },
+                                {
+                                    "itemId": "1684"
+                                },
+                                {
+                                    "itemId": "1684"
+                                }
+                            ]
+                        },
+                        {
+                            "vesselNotchNumber": 3,
+                            "number": 3,
+                            "items": [],
+                            "coolants": []
+                        }
+                    ]
+                }
+            ]
+        }
+
 # Group Orders
 
 ## Place An Order [/orders]
-To create an order, you must create customer and address resources first. FRC validates deliverability to shipping address, product and date availability. There are four different statuses that can be used to send order 
+To create an order, you must create customer and address resources first. FRC validates deliverability to shipping address, product and date availability. There are four different statuses that can be used to send order
 data:
 
  * `authorized` - Order will be processed by FRC once it passes its cut off time
@@ -1339,15 +1825,15 @@ data:
 |`authorized` | authorized transactions |
 |`processed` | submitted to food makers |
 |`in_transit`| orders in transit |
-|`at_customer`| vessel with the customer and waiting for pickup |
+|`at_customer`| Porter is with the customer and waiting for pickup |
 |`cancelled` | cancelled order |
-|`in_transit_back` | vessel on its way back to the facility  |
-|`vessel_returned` | vessel returned back to the facility|
+|`in_transit_back` | Porter is on its way back to the facility  |
+|`vessel_returned` | Porter has been returned back to the facility|
 
 ### Attributes
 | field           | Can Edit | description |
 |-----------------------|-----------|---------------------------------------|
-| `id`            |  | FreshRealm Order Id |                   
+| `id`            |  | FreshRealm Order Id |
 | `customerId` | X |  Customer Id, see `Customers` resource |
 | `codropId` | X |  Codrop Id, see `codrop` resource  |
 | `shippingAddressId` | X |  Shipping Address Id |
@@ -1368,7 +1854,7 @@ data:
 | `shipMethod` | X* |  ship method for the order |
 | `warnings` |  |  any warnings or instructions for unexpected scenarios |
 | `transactionId` | X |  transaction id from merchant services provider |
-| `trackingNumber` |  |  Vessel tracking number |
+| `trackingNumber` |  |  Porter tracking number |
 | `customData` |  |  Key value pairs of data associated with the order |
 | `subscriptionId` | X |  merchant's subscription id if order is part of subscription |
 | `subscriptionTemplateId` | X |  merchant's subscription template id if order is part of a subscription with a fixed product template |
@@ -1604,22 +2090,22 @@ Use this URL to `GET` order information or `PUT` changes to the order.
             }
         }
 
-### Update Delivery Date [PUT]      
+### Update Delivery Date [PUT]
 Have order delivered on different date than originally submitted. Delivery date change can be executed before cut off time of old and new delivery date. Use dates from availability calendar as input to this API call.
 If delivery date is not available server returns 400 error.
 
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
-    
+
 + Request (application/json)
-    
+
     + Body
 
             {
                 "deliveryDate": "2015-03-14",
             }
-    
+
 + Response 200 (application/json)
 
         {
@@ -1631,16 +2117,16 @@ If delivery date is not available server returns 400 error.
             }
         }
 
-### Update Delivery Address [PUT]      
-Delivery address can be updated after cut off time and before shipping label is printed. Address can be changed as long as the shipping service stays the same. For example, it is not possible to update address from California to New York if Vessel is supposed to be delivered by ground service. It is possible to change ground regions as long as the change is performed before cut off time for both zones. Zone change might create
+### Update Delivery Address [PUT]
+Delivery address can be updated after cut off time and before shipping label is printed. Address can be changed as long as the shipping service stays the same. For example, it is not possible to update address from California to New York if Porter is supposed to be delivered by ground service. It is possible to change ground regions as long as the change is performed before cut off time for both zones. Zone change might create
 new cut off time.
 
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
-    
+
 + Request (application/json)
-    
+
     + Body
 
             {
@@ -1658,15 +2144,15 @@ new cut off time.
             }
         }
 
-### Update Products [PUT]      
-Customer can swap items on order before cut off time. If swap is performed, merchant is responsible for differences in food price. Swaps can be executed before cut off time, but cut off time might be updated as well. This operation accepts full final set of products after swap. It is recommended to use `vesselLoad` API call to make sure item change won't result into use of additional Vessel.
+### Update Products [PUT]
+Customer can swap items on order before cut off time. If swap is performed, merchant is responsible for differences in food price. Swaps can be executed before cut off time, but cut off time might be updated as well. This operation accepts full final set of products after swap. It is recommended to use `vesselLoad` API call to make sure item change won't result into use of additional Porter.
 
 + Parameters
     + orderId (required, number, `109`)
     + token (required, string)
-    
+
 + Request (application/json)
-    
+
     + Body
 
             {
@@ -1701,11 +2187,11 @@ Customer can swap items on order before cut off time. If swap is performed, merc
             }
         }
 
-### Update Status [PUT] 
+### Update Status [PUT]
 Order can be canceled through status updated. Supported input values for status update are `preliminary`, `authorized`, and `cancelled`. Preliminary order will be canceled if it is not updated to `authorized` before cut off time.
-        
+
 ## Cancel an Order [/orders/cancel/{orderId}?key={token}]
-        
+
 ### Cancel an Order [PUT]
 Order can be typically canceled before cut off time with no consequences. API supports cancels after cut off time for approved merchants. Merchant is billed for ordered food and handling fees for orders canceled after cut off time, but not for shipping fee. Order can be canceled up to the moment before shipping label is printed, which is a day before delivery.
 
@@ -1730,9 +2216,9 @@ Order can be typically canceled before cut off time with no consequences. API su
                 }
             }
         }
-        
+
 ## Reschedule Pickup [/orders/reschedulepickup/{orderId}?key={token}]
-Carrier pickup is typically scheduled the next business day after delivery. FRC will reschedule Vessel pickup twice after first unsuccessful attempt. This API call allows user to delay Vessel pickup for up to one week. Old pickup request is canceled automatically and new pickup request is created. Even though pickup request is scheduled for order, in practice it is for pickup address and date. Carrier will pickup all Vessels from all customers waiting at the pickup address.
+Carrier pickup is typically scheduled the next business day after delivery. FRC will reschedule Porter pickup twice after first unsuccessful attempt. This API call allows user to delay Porter pickup for up to one week. Old pickup request is canceled automatically and new pickup request is created. Even though pickup request is scheduled for order, in practice it is for pickup address and date. Carrier will pickup all Porters from all customers waiting at the pickup address.
 
 Pickup requests can be scheduled a maximum of 7 days in advanced and must be scheduled for after the delivery date of the order.
 
@@ -1746,13 +2232,13 @@ Pickup address id can be optionally passed into this call to change pickup locat
     + token (required, string)
 
 + Request (application/json)
-    
+
     + Body
 
             {
                 "date": "2015-03-14"
             }
-    
+
 + Response 200 (application/json)
 
         {
@@ -1764,8 +2250,8 @@ Pickup address id can be optionally passed into this call to change pickup locat
                 "date" => "2015-03-14"
             }
         }
-    
-    
+
+
 ### Reschedule For Different Address [PUT]
 
 + Parameters
@@ -1773,13 +2259,13 @@ Pickup address id can be optionally passed into this call to change pickup locat
     + token (required, string)
 
 + Request (application/json)
-    
+
     + Body
 
             {
                 "addressId": "1154"
             }
-    
+
 + Response 200 (application/json)
 
         {
@@ -1791,10 +2277,10 @@ Pickup address id can be optionally passed into this call to change pickup locat
                 "date" => "2015-03-14"
             }
         }
-    
+
 ## Create Shipping Label [/orders/createshippinglabel/{orderId}?key={token}]
 
-Create new return shipping labels for all of the vessels used by an order.  This method returns an array of tracking numbers for the newly created shipping label(s) which can be used with the Shipping Label Download method to retrieve a PDF of the shipping label.
+Create new return shipping labels for all of the Porters used by an order.  This method returns an array of tracking numbers for the newly created shipping label(s) which can be used with the Shipping Label Download method to retrieve a PDF of the shipping label.
 
 ### Create Shipping Label [GET]
 
@@ -1811,7 +2297,7 @@ Create new return shipping labels for all of the vessels used by an order.  This
                 "99998458496"
             ]
         }
-        
+
 ## Shipping Label Download [/orders/shippinglabeldownload/{trackingNumber}?key={token}]
 
 Download a shipping label created with the Create Shipping Label method.  Shipping labels are PDF documents in letter format.
@@ -1846,7 +2332,7 @@ This operation can be used to find a customer and to get all the orders for the 
 |addresses                  |            |List of all the shipping addresses |
 
   *cannot be edited once created
-  
+
 ## Create new Customer with address [/customers?key={token}]
 
 ### Create new Customer with address[POST]
@@ -1855,7 +2341,7 @@ This operation can be used to find a customer and to get all the orders for the 
     + token (required, string)
 
 + Request (application/json)
-            
+
         {  "firstName": "Mark",
             "lastName": "Zuckeberg",
             "email": "zuckeberg@freshrealm.co",
@@ -1874,7 +2360,7 @@ This operation can be used to find a customer and to get all the orders for the 
         {
             "code": 200,
             "timestamp": 1377020859,
-            "data": 
+            "data":
             {
             "firstName": "Mark",
             "lastName": "Zuckeberg",
@@ -1888,7 +2374,7 @@ This operation can be used to find a customer and to get all the orders for the 
                     "zipcode": "93001"
                 }
         }
-         
+
 
 #Group Addresses
 
@@ -1903,12 +2389,12 @@ List of all shopper addresses. Shoppers have ability to update their shipping pr
 |`aptSuite`          | X  |Apartment number, unit number or suite. Example: Unit A        |
 |`city`              | X  |City name      |
 |`state`             | X  |State name - Example: CA or California     |
-|`zipcode`           | X*  |Zipcode - Example: 93001     |
+|`zipcode`           | X*  |Zip code - Example: 93001     |
 |`deliveryInstructions`| X |Special Delivery Instructions     |
-|`pickupInstuctions` |  X | Pickup instructions for return of Vessel |
-|`pickupLocation` |  X |Pickup location for the vessel    |
+|`pickupInstuctions` |  X | Pickup instructions for return of Porter |
+|`pickupLocation` |  X |Pickup location for the Porter    |
 |`type`           |  X |Residntial or Commercial    |
-|`verifyShipper`  | X  |Set to `1` to run validation against address database. This extra validation can catch incorrect zipcode or house number. Use this feature to make sure that the package will be delivered to the right address. |
+|`verifyShipper`  | X  |Set to `1` to run validation against address database. This extra validation can catch incorrect zip code or house number. Use this feature to make sure that the package will be delivered to the right address. |
 |`id`             |   |Address ID      |
 |`customerId`     |  X* |id of the customer      |
 |`status`         |   |FRC is using external data source for address validation. Possible values are: `confirmed`, `missing_secondary`, `wrong_secondary`. Missing or wrong secondary means that apartment number is incorrect. Shipment still might be delivered (to apartment office for example), but there is a chance that carrier won't be able to find the right unit.|
@@ -1917,7 +2403,7 @@ List of all shopper addresses. Shoppers have ability to update their shipping pr
 |`shippingLocation`  |    |Shipping Location of the facility  |
 |`uniqueIdentifier` |    |Unique Identifier for the address    |
 |`updateTime`      |    |Update time for the last address update |
-|`override`       |     |Skip delivery validation. Use this feature only after regular create address call fails. Customer can be offered option to proceed with not validated address with lower chance that Vessel will be delivered.  |
+|`override`       |     |Skip delivery validation. Use this feature only after regular create address call fails. Customer can be offered option to proceed with not validated address with lower chance that Porter will be delivered.  |
 
     *Required
 
@@ -1965,7 +2451,7 @@ Address is validated agains USPS and FedEx database for deliverability. Minor er
     + token (required, string)
 
 + Request (application/json)
-            
+
         {
             "prefix": "FreshRealm",
             "phoneNumber": "8050000000",
@@ -1976,7 +2462,7 @@ Address is validated agains USPS and FedEx database for deliverability. Minor er
             "pickupInstructions": "Ring the bell",
             "pickupLocation": "front_door",
         }
-        
+
 + Response 200 (application/json)
 
         {
@@ -2053,8 +2539,8 @@ This operation can be used to find available categories to which products belong
                "name": "Category 1",
                "published": "1"
             }
-        
-        
+
+
 #Group Tag Groups
 
 Manage tag groups.  All tags must belong to a tag group.
@@ -2092,14 +2578,14 @@ List all tag groups and create new tag groups.
                 }
             ]
         }
-        
+
 ### Create new Tag Group [POST]
 
 + Parameters
     + token (required, string)
 
 + Request (application/json)
-            
+
         {
             "name": "Tag Group 4"
         }
@@ -2115,7 +2601,7 @@ List all tag groups and create new tag groups.
                 "maxTags": null
             }
         }
-        
+
 ## Tag Group [/taggroups/{id}?key={token}]
 
 Manipulate a tag group by its `id`.
@@ -2143,11 +2629,11 @@ Manipulate a tag group by its `id`.
 + Parameters
     + id (required, string)
     + token (required, string)
-    
+
 + Request (application/json)
 
         {
-            "maxTags": 5 
+            "maxTags": 5
         }
 
 + Response 200 (application/json)
@@ -2161,7 +2647,7 @@ Manipulate a tag group by its `id`.
                 "maxTags": 5
             }
         }
-        
+
 ### Delete Tag Group [DELETE]
 
 + Parameters
@@ -2218,14 +2704,14 @@ List all tags and create new tags.
                 }
             ]
         }
-        
+
 ### Create new Tag [POST]
 
 + Parameters
     + token (required, string)
 
 + Request (application/json)
-            
+
         {
             "name": "Tag 3",
             "tagGroupId": "tag-group-4-16",
@@ -2244,7 +2730,7 @@ List all tags and create new tags.
                 "sort": 0
             }
         }
-        
+
 ## Tag [/tags/{id}?key={token}]
 
 Manipulate a tag by its `id`.
@@ -2267,15 +2753,15 @@ Manipulate a tag by its `id`.
                 "sort": "0"
             }
         }
-        
+
 ### Modify Tag [PUT]
 
 + Parameters
     + id (required, string)
     + token (required, string)
-    
+
 + Request (application/json)
-            
+
         {
             "sort": -1
         }
@@ -2292,7 +2778,7 @@ Manipulate a tag by its `id`.
                 "sort": -1
             }
         }
-        
+
 ### Delete Tag [DELETE]
 
 + Parameters
@@ -2308,7 +2794,7 @@ Manipulate a tag by its `id`.
                 "status": "OK"
             }
         }
-        
+
 #Group Product Tags
 
 Manage the tags that are set on products.
@@ -2346,14 +2832,14 @@ List all product tags and create new product tags.
                 }
             ]
         }
-        
+
 ### Create new Product Tag [POST]
 
 + Parameters
     + token (required, string)
 
 + Request (application/json)
-            
+
         {
             "tagId": "tag-3-tag-group-4-16",
             "productId": 1997
@@ -2370,7 +2856,7 @@ List all product tags and create new product tags.
                 "tagId": "tag-3-tag-group-4-16"
             }
         }
-        
+
 ## Product Tag [/producttags/{id}?key={token}]
 
 Manipulate a product tag by its `id`.
@@ -2392,15 +2878,15 @@ Manipulate a product tag by its `id`.
                 "tagId": "tag-3-tag-group-4-16"
             }
         }
-        
+
 ### Modify Product Tag [PUT]
 
 + Parameters
     + id (required, string)
     + token (required, string)
-    
+
 + Request (application/json)
-            
+
         {
             "tagId": "tag-2-tag-group-4-16"
         }
@@ -2432,7 +2918,7 @@ Manipulate a product tag by its `id`.
                 "status": "OK"
             }
         }
-        
+
 #Group Transactions
 
 This operation can be used to retrieve a list of all the transactions. Get transactions will give you the ids for those requested transaction to allow you to then get orders for them.
@@ -2476,7 +2962,7 @@ This operation can be used to retrieve a list of all the transactions. Get trans
 
 + Parameters
     + token (required, string)
-    
+
 + Response 200 (application/json)
 
     {
@@ -2548,38 +3034,38 @@ Event API is read only stream of events for all orders. Order status is updated 
 | 1140 | Delivery date updated | Order delivery date changed. | Order |
 | 1200 | Connected to shipment |  | Order |
 | 1300 | Connected to purchase order | Order was added to purchase order | Order |
-| 1400 | Issue reported | Food shipment or Vessel issue reported by merchant or customer | Order |
+| 1400 | Issue reported | Food shipment or Porter issue reported by merchant or customer | Order |
 | 1500 | Canceled before cut off time | Order was canceled before food was ordered from supplier. | Order |
-| 1600 | Canceled after cut off time | Order was canceled after food was ordered from supplier but before the Vessel was shipped. | Order |
+| 1600 | Canceled after cut off time | Order was canceled after food was ordered from supplier but before the Porter was shipped. | Order |
 | 1620 | Canceled after cut off time by FreshRealm | Order was not supposed to ship - requested by FreshRealm Ops Team merchant will not be charged. | Order |
-| 1700 | Canceled after ship | Order was canceled after shipper took the Vessel. Shipper has to be contacted and Vessel will return full. | Order |
+| 1700 | Canceled after ship | Order was canceled after shipper took the Porter. Shipper has to be contacted and Porter will return full. | Order |
 | 5000 | Finalized | There are no updates allowed after finalization step. | Order |
-| 8000 | Created | Vessel shipment created | Vessel |
-| 8010 | Updated | Vessel shipment updated | Vessel |
-| 8020 | Canceled | Vessel shipment canceled | Vessel |
-| 8040 | Finalized | Vessel shipment finalized | Vessel |
+| 8000 | Created | Porter shipment created | Vessel |
+| 8010 | Updated | Porter shipment updated | Vessel |
+| 8020 | Canceled | Porter shipment canceled | Vessel |
+| 8040 | Finalized | Porter shipment finalized | Vessel |
 | 8050 | Downloaded | Downloaded by Packer | Vessel |
-| 8100 | Released | The Vessel was assembled and packed. | Vessel |
-| 8200 | Packed | The Vessel was assembled and packed. | Vessel |
+| 8100 | Released | The Porter was assembled and packed. | Vessel |
+| 8200 | Packed | The Porter was assembled and packed. | Vessel |
 | 8300 | Shipping label printed | Weight was submitted to server and shipping label obtained from shipper. | Vessel |
-| 8400 | Reported not shipped | Vessel didn't leave packer facility. | Vessel |
-| 10000 | Shipped to zone skip | The Vessel was given to zone skip driver. | Vessel |
-| 10100 | Delivered to zone skip | The Vessel was delivered to cold storage. | Vessel |
-| 10200 | Delivered to shipper | Shipper obtained the Vessel but system does not have confirmation yet. | Vessel |
-| 10300 | Tendered to shipper | Shipper confirmed vessel pickup by sending email or edi message. | Vessel |
-| 10400 | Delivery exception | Shipper could not deliver the vessel. | Vessel |
+| 8400 | Reported not shipped | Porter didn't leave packer facility. | Vessel |
+| 10000 | Shipped to zone skip | The Porter was given to zone skip driver. | Vessel |
+| 10100 | Delivered to zone skip | The Porter was delivered to cold storage. | Vessel |
+| 10200 | Delivered to shipper | Shipper obtained the Porter but system does not have confirmation yet. | Vessel |
+| 10300 | Tendered to shipper | Shipper confirmed Porter pickup by sending email or edi message. | Vessel |
+| 10400 | Delivery exception | Shipper could not deliver the Porter. | Vessel |
 | 10500 | Delivered to customer | Shipper confirmed delivery to customer. | Vessel |
 | 10600 | Reprinted return label | Shopper printed custom return shipping label. | Vessel |
 | 10700 | Shipped back | Shipper confirmed pickup. | Vessel |
 | 10750 | Shipped back using outbound label | Non-peeled outbound label was used for pickup at customer. | Vessel |
 | 10770 | Shipped back using outbound label | Non-peeled outbound label was used for pickup at customer. | Vessel |
-| 10800 | Returned to packer | Shipper confirmed delivery to packer facility. Lost Vessel fee will not be charged. | Vessel |
-| 10900 | Received by packer | Packer confirmed the Vessel delivery. | Vessel |
-| 11000 | Reported stolen | Shipper didn't receive the Vessel and customer does not have it either. | Vessel |
+| 10800 | Returned to packer | Shipper confirmed delivery to packer facility. Lost Porter fee will not be charged. | Vessel |
+| 10900 | Received by packer | Packer confirmed the Porter delivery. | Vessel |
+| 11000 | Reported stolen | Shipper didn't receive the Porter and customer does not have it either. | Vessel |
 | 11100 | Reported lost | Stolen or lost shipping label. | Vessel |
-| 11150 | Reported not returned | Vessel was gifted or sold to customer. | Vessel |
-| 11200 | Reported issue | Customer or merchant reported order or vessel issue. | Vessel |
-| 11300 | Lost Vessel Fee | Lost Vessel fee has been charged. | Vessel |
+| 11150 | Reported not returned | Porter was gifted or sold to customer. | Vessel |
+| 11200 | Reported issue | Customer or merchant reported order or Porter issue. | Vessel |
+| 11300 | Lost Vessel Fee | Lost Porter fee has been charged. | Vessel |
 | 60000 | Created | Pickup request created | Pickup |
 | 60100 | Removed | Pickup request removed | Pickup |
 | 60200 | Scheduled | Pickup scheduled | Pickup |
@@ -2595,7 +3081,7 @@ Event API is read only stream of events for all orders. Order status is updated 
     + token (required, string)
     + limit (optional, integer)
     + timestamp (optional, string)
-    
+
 + Response 200 (application/json)
 
     {
@@ -2628,450 +3114,3 @@ Event API is read only stream of events for all orders. Order status is updated 
         }
       ]
     }
-
-
-#Group Other API Calls
-##Get Shipping Days [/shippingdays?key={token}&zipcode={zipcode}]
-
-The number of shipping days to reach the shopper. The limit parameter controls the number of weeks worth of shipping days returned.
-
-The Skip Capacity Check flag defaults to true. When it is set to false, the "isOverCapacity" attribute will be added to each day returned indicating whether or not the day has reached capacity.
-
-###Get all shipping days[GET]
-
-+ Parameters
-    + token (required, string)
-    + zipcode (required, integer)
-    + limit (optional, integer)
-    + skipCapacityCheck (optinal, boolean)
-
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1404151616,
-            "data": [
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-07-03",
-                    "deliveryDate": "2014-07-04",
-                    "cutOffTime": 1404305100,
-                    "isOverCapacity": true
-                },
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-07-07",
-                    "deliveryDate": "2014-07-08",
-                    "cutOffTime": 1404492300,
-                    "isOverCapacity": false
-                },
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-07-10",
-                    "deliveryDate": "2014-07-11",
-                    "cutOffTime": 1404909900,
-                    "isOverCapacity": false
-                },
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-07-14",
-                    "deliveryDate": "2014-07-15",
-                    "cutOffTime": 1405097100,
-                    "isOverCapacity": false
-                },
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-07-17",
-                    "deliveryDate": "2014-07-18",
-                    "cutOffTime": 1405514700,
-                    "isOverCapacity": false
-                },
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-07-21",
-                    "deliveryDate": "2014-07-22",
-                    "cutOffTime": 1405701900
-                },
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-07-24",
-                    "deliveryDate": "2014-07-25",
-                    "cutOffTime": 1406119500,
-                    "isOverCapacity": false
-                },
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-07-28",
-                    "deliveryDate": "2014-07-29",
-                    "cutOffTime": 1406306700,
-                    "isOverCapacity": false
-                },
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-07-31",
-                    "deliveryDate": "2014-08-01",
-                    "cutOffTime": 1406724300,
-                    "isOverCapacity": false
-                },
-                {
-                    "locationId": "16",
-                    "shipDate": "2014-08-04",
-                    "deliveryDate": "2014-08-05",
-                    "cutOffTime": 1406911500,
-                    "isOverCapacity": false
-                }
-            ]
-        }
-
-##Get Shipping Week Days [/shippingweekdays?key={token}&zipcode={zipcode}]
-
-The days of the week for which Orders can be delivered for the provided zipcode.
-
-###Get shipping week days[GET]
-
-+ Parameters
-    + token (required, string)
-    + zipcode (required, integer)
-
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1404151616,
-            "data": [
-                {
-                    "day": "Sunday",
-                    "available": false,
-                },
-                {
-                    "day": "Monday",
-                    "available": false,
-                },
-                {
-                    "day": "Tuesday",
-                    "available": true,
-                },
-                {
-                    "day": "Wednesday",
-                    "available": false,
-                },
-                {
-                    "day": "Thursday",
-                    "available": true,
-                },
-                {
-                    "day": "Friday",
-                    "available": false,
-                },
-                {
-                    "day": "Saturday",
-                    "available": true,
-                }
-            ]
-        }
-
-##Pack Products [/packproducts?key={token}&skus={skus}&zipcode={zipcode}&additional={true}&deliveryDate={deliveryDate}]
-
-Get Vessel Load and packing information for a list of product SKUs and delivery zipcode.
-
-Skus is JSON encoded list of product skus, for example skus=["044512","vegetable-sandwich"].
-The returned data is an array of one or more vessels that would be used to pack the products. 
-For each vessel the load attribute is a 0-100 value indicating percent of capacity used. 
-The containersInside and containersFree attributes provide information about how many of each container size are packed in the vessel and how many of each container size would still fit.
-
-The additional flag triggers product lookup that could fit into the Vessel - functionality 
-mostly used for upsale at a checkout page. Product SKUs returned in canPackSkus section are the ones 
-that fit into the last Vessel and are marked as purchasable by merchant. Product lookup is an 
-expensive operation and might take longer than regular packProducts call.
-
-Zip code is used to calculate ice count for the Vessel that affects capacity for food. If delivery to provided zipcode is not available, system returns 400 error.
-
-Delivery date checks for product availability on given date. The date has to be a valid delivery date obtained from the shipping calendar and all provided products have to be active on that date. Upsale skus are filtered to the ones available on delivery date.
-
-It is highly encouraged to include the delivery date with all pack requests as it can effect the results due to differences in coolant configurations over time in addition to differences in product availability.
-
-Possible 400 error outputs for this call are:
-  * Please provide items as an array of product ids or skus.
-  * Not a deliverable zipcode.
-  * Invalid date format. (valid format is yyyy-mm-dd)
-  * Date is too far, availability can be predicted for up to 60 weeks.
-  
-###Pack Products [GET]
-
-+ Parameters
-    + token (required, string)
-    + skus (required, array)
-    + zipcode (required, string)
-    + additional (optional, boolean)
-    + deliveryDate (optional, string)
-
-
-+ Response 200 (application/json)
-
-        {  
-          "code": 200,
-          "timestamp": 1446596552,
-          "data": [
-            {
-              "version": 12,
-              "vesselName": "Medium",
-              "vesselType": "2",
-              "coolantInside": 5,
-              "coolantNeeded": "5",
-              "itemsInside": 2,
-              "flatCoolantInside": 2,
-              "notchesUsed": 5,
-              "drawerCount": 5,
-              "freeDrawers": 0,
-              "load": 10,
-              "totalWeight": 33.56875,
-              "emptyWeight": 27.35,
-              "containersInside": {
-                "1": 2
-              },
-              "containersFree": {
-                "1": 18,
-                "2": 9,
-                "4": 36,
-                "5": 13,
-                "6": 4,
-                "7": 36,
-                "8": 13,
-                "9": 13
-              },
-              "drawers": [
-                {
-                  "vesselNotchNumber": 1,
-                  "number": 1,
-                  "items": [],
-                  "coolants": [
-                    {
-                      "itemId": 720
-                    }
-                  ]
-                },
-                {
-                  "vesselNotchNumber": 2,
-                  "number": 2,
-                  "items": [],
-                  "coolants": [
-                    {
-                      "itemId": 720
-                    }
-                  ]
-                },
-                {
-                  "vesselNotchNumber": 3,
-                  "number": 3,
-                  "items": [],
-                  "coolants": [
-                    {
-                      "itemId": 720
-                    }
-                  ]
-                },
-                {
-                  "vesselNotchNumber": 4,
-                  "number": 4,
-                  "items": [],
-                  "coolants": [
-                    {
-                      "itemId": 720
-                    }
-                  ]
-                },
-                {
-                  "vesselNotchNumber": 5,
-                  "number": 5,
-                  "items": [
-                    {
-                      "itemId": "2144",
-                      "orderId": null,
-                      "codropLabel": "",
-                      "description": "MP Half Ham Sandwich with Fruit & Carrots",
-                      "groupId": "1067-0",
-                      "productId": null,
-                      "orderItemId": null,
-                      "mealSticker": null,
-                      "prePrintedSticker": ""
-                    },
-                    {
-                      "itemId": "2139",
-                      "orderId": null,
-                      "codropLabel": "",
-                      "description": "MP Ka-POWer Greens 7.75oz",
-                      "groupId": "1072-1",
-                      "productId": null,
-                      "orderItemId": null,
-                      "mealSticker": null,
-                      "prePrintedSticker": ""
-                    }
-                  ],
-                  "coolants": [
-                    {
-                      "itemId": 720
-                    }
-                  ]
-                }
-              ],
-              "canPackSkus": [
-                "FRM-HAMSNDWCH-1",
-                "FRM-APPLEDIPPERS-1",
-                "FRM-COBBSALAD-1",
-                "FRM-SANTAFESALAD-1",
-                "FRM-KALESALAD-1",
-                "FRM-CAESARSALAD-1",
-                "FRM-ASIANSALAD-1",
-                "FRM-TURKEYSNDWCH-1"
-              ],
-              "packIns": []
-            }
-          ]
-        }
-        
-##Get Vessel Load [/vesselload?key={token}&skus={skus}&zipcode={zipcode}]
-
-Get Vessel Load for and packing information for a list of product SKUs passed as a JSON encoded array.
-
-The return data is an array of one or more vessels that would be used to pack the products.  For each vessel the load attribute is a 0-100 value indicating percent of capacity used.  The containersInside and containersFree attributes provide information about how many of each container size are packed in the vessel and how many of each container size would still fit.
-
-Zip code should always be passed if available because vessel capacity may vary based on delivery zone.
-
-Note: this API call is deprecated since zipcode is optional and system can't predict how much ice is required.
-
-###Get Vessel Load [GET]
-
-+ Parameters
-    + token (required, string)
-    + skus (required, array)
-    + zipcode (optional, string)
-
-+ Response 200 (application/json)
-
-        {
-            "code": 200,
-            "timestamp": 1404152982,
-            "data": [
-                {
-                    "version": 5,
-                    "vesselName": "Medium",
-                    "vesselType": "2",
-                    "coolantInside": 5,
-                    "coolantNeeded": 5,
-                    "itemsInside": 3,
-                    "flatCoolantInside": 2,
-                    "notchesUsed": 3,
-                    "drawerCount": 3,
-                    "freeDrawers": 2,
-                    "load": 10,
-                    "totalWeight": 8.125,
-                    "emptyWeight": 0,
-                    "containersInside": {
-                        "0": 1,
-                        "1": 2
-                    },
-                    "containersFree": {
-                        "1": 5,
-                        "2": 2,
-                        "4": 13
-                    },
-                    "drawers": [
-                        {
-                            "vesselNotchNumber": 1,
-                            "number": 1,
-                            "items": [
-                                {
-                                    "itemId": "1676",
-                                    "orderId": null,
-                                    "codropLabel": "",
-                                    "description": "Roasting Red Potatoes"
-                                },
-                                {
-                                    "itemId": "1676",
-                                    "orderId": null,
-                                    "codropLabel": "",
-                                    "description": "Roasting Red Potatoes"
-                                },
-                                {
-                                    "itemId": "1401",
-                                    "orderId": null,
-                                    "codropLabel": "",
-                                    "description": "Red Apples - Bagged"
-                                }
-                            ],
-                            "coolants": [
-                                {
-                                    "itemId": "1684"
-                                }
-                            ]
-                        },
-                        {
-                            "vesselNotchNumber": 2,
-                            "number": 2,
-                            "items": [],
-                            "coolants": [
-                                {
-                                    "itemId": "1684"
-                                },
-                                {
-                                    "itemId": "1684"
-                                },
-                                {
-                                    "itemId": "1684"
-                                },
-                                {
-                                    "itemId": "1684"
-                                }
-                            ]
-                        },
-                        {
-                            "vesselNotchNumber": 3,
-                            "number": 3,
-                            "items": [],
-                            "coolants": []
-                        }
-                    ]
-                }
-            ]
-        }
-
-## Verify Zipcode availability [/zipcodeavailability?key={token}&zipcode={zipcode}]
-
-Checks to verify if service is available in the requested area.
-
-The returned data includes the ship from zipcode for the zipcode being shipped to and available shippingMethods if any.
-
-In case the zipcode is invalid, system returns the folloging errors with 400 status code:
-
- * `No zipcode provided` - check the API request zipcode attribute
- * `Not a deliverable zipcode.` - zipcode not found in USA zipcode database
- * `You have entered a zip code that is designated as unique (government, university, corporation). We currently do not deliver to these addresses`
- * `You have entered a PO Box only zip code and we do not ship to PO Boxes. Please try anothe zip code.`
-
-FreshRealm doesn't deliver Vessels to PO Box, unique or military type of address.
-
-### Zipcode availability [POST]
-
-
-
-+ Parameters
-    + token (required, string)
-    + zipcode (required, integer)
-
-
-+ Response 200 (application/json)
-
-        {
-            {
-                "code": 200,
-                "timestamp": 1404146938,
-                "data": {
-                    "available": 1,
-                    "id": "16",
-                    "zipcode": "95828",
-                    "shppingMethods": [
-                        "fedex_ground"
-                    ]
-                }
-            }
-        }
