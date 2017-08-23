@@ -2407,6 +2407,82 @@ List of all shopper addresses. Shoppers have ability to update their shipping pr
 
     *Required
 
+## Validation [/addresses/verify?key={token}]
+
+###POST
+
+Address is validated against USPS and FedEx database for deliverability. Minor errors such as type on street name or city will be corrected automatically. Under no circumstances is the address saved. If any required fields are missing, the API will return a status of 400 and a message specifying the missing required fields.
+
++ Parameters
+    + token (required, string)
+
++ Request (application/json)
+
+        {
+            "prefix": "FreshRealm",
+            "phoneNumber": "8050000000",
+            "fullName": "HR department",
+            "streetAndNumber": "476 E Main St",
+            "state": "CA",
+            "zipcode": "93001",
+            "deliveryInstructions": "Ring the bell",
+            "pickupInstructions": "Ring the bell",
+            "pickupLocation": "front_door",
+        }
+
++ Response 200 (application/json)
+
+        {
+            "code": 200,
+            "timestamp": 1503531209,
+            "data": {
+                "prefix": "FreshRealm",
+                "streetAndNumber": "476 E Main St",
+                "aptSuite": null,
+                "city": null,
+                "state": "CA",
+                "zipcode": "93001",
+                "deliveryInstructions": "Ring the bell",
+                "pickupInstructions": "Ring the bell",
+                "pickupLocation": "front_door",
+                "type": "476-E-MAIN-ST-93001-93001-CA",
+                "phoneNumber": "8050000000",
+                "fullName": "HR department",
+                "isDefault": null,
+                "status": "not_validated",
+                "lat": null,
+                "lng": null,
+                "shippingLocation": {
+                    "id": "16",
+                    "zipcode": "95824",
+                    "shipper": "fedex"
+                },
+                "uniqueIdentifier": "476-E-MAIN-ST-93001-93001-CA"
+            }
+        }
+
++ Request (application/json)
+
+        {
+            "prefix": "FreshRealm",
+            "phoneNumber": "8050000000",
+            "fullName": "HR department",
+            "streetAndNumber": "476 E Main St",
+            "deliveryInstructions": "Ring the bell",
+            "pickupInstructions": "Ring the bell",
+            "pickupLocation": "front_door"
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "timestamp": 1503531393,
+            "data": {
+                "message": "Zipcode cannot be blank. Invalid state code "
+            }
+        }
+
 ## Operations [/addresses?key={token}]
 
 ###GET
@@ -2445,7 +2521,7 @@ List of all shopper addresses. Shoppers have ability to update their shipping pr
 
 ### POST
 
-Address is validated agains USPS and FedEx database for deliverability. Minor errors such as type on street name or city will be corrected automatically.
+Address is validated against USPS and FedEx database for deliverability. Minor errors such as type on street name or city will be corrected automatically.
 
 + Parameters
     + token (required, string)
@@ -2489,6 +2565,7 @@ Address is validated agains USPS and FedEx database for deliverability. Minor er
                    "uniqueIdentifier": "476-E-MAIN-ST-VENTURA-CA"
                 }
         }
+
 
 # Group Categories
 
